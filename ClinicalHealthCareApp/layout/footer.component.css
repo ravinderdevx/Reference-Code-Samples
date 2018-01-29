@@ -1,0 +1,8 @@
+.footer {
+    bottom: 0;
+    width: 100%;
+    line-height: 60px;
+    background-color: #f8f8f8;
+    color: #fff;
+    font-size: 16px;
+}

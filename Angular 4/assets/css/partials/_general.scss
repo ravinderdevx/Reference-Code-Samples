@@ -1,0 +1,176 @@
+* {
+  margin: 0;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  font-family: $primaryFont;
+  font-size: 16px;
+  color: $mineShaft;
+  height: 100%;
+  background: $white;
+  overflow-x: hidden;
+}
+
+a {
+  color: $mineShaft;
+  @include transition($transitionValue);
+  &:hover, :focus {
+    background: inherit;
+    outline: 0;
+    color: inherit;
+  }
+}
+
+.mainWrapper {
+  min-height: 100%;
+}
+
+textarea:focus,
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="datetime"]:focus,
+input[type="datetime-local"]:focus,
+input[type="date"]:focus,
+input[type="month"]:focus,
+input[type="time"]:focus,
+input[type="week"]:focus,
+input[type="number"]:focus,
+input[type="email"]:focus,
+input[type="url"]:focus,
+input[type="search"]:focus,
+input[type="tel"]:focus,
+input[type="color"]:focus,
+input[type="select"]:focus,
+.uneditable-input:focus,
+.noFocus {
+  border-color: transparent;
+  box-shadow: none;
+  outline: 0 none;
+}
+
+.inlineBlockTop {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.inlineBlockMiddle {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.primary-color {
+  color: $primaryColor;
+}
+
+label {
+  font-weight: 500;
+  margin: 0;
+}
+
+input.form-control {
+  border: 1px solid $alto;
+  &:focus {
+    border-color: $alto;
+  }
+}
+
+.error-class {
+  color: $marron;
+}
+
+.generTopSpace {
+  margin-top: 30px;
+}
+.generBottomSpace {
+  margin-bottom: 15px;
+}
+
+.controlTopSpace{
+  margin-top: 10px;
+}
+
+.noPad {
+  padding: 0;
+}
+
+.noPadLeft {
+  padding-left: 0;
+}
+
+.noPadRight {
+  padding-right: 0;
+}
+
+.spaceRightLeft {
+  margin: 0 15px;
+}
+
+.gutterLeft{
+  padding-left: 15px;
+}
+
+.gutterRight{
+  padding-right: 15px;
+}
+
+.gutter5{
+  padding: 0 5px;
+}
+
+.noDeco {
+  &:hover, &:focus {
+    text-decoration: none;
+  }
+}
+
+.wrapper300{
+  max-height: 300px;
+}
+
+.defaultScroller{
+  overflow: auto;
+}
+
+.vhCenter{
+  @include centered-element(50%,50%,-50%,-50%);
+}
+
+.flexWrapper{
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  > [class*="col-"]{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    > *{
+      width: 100%;
+    }
+  }
+  @include Mq(MMD){
+    display: block;
+    > [class*="col-"]{
+      display: block;
+      > *{
+        width: auto;
+      }
+    }
+    .vhCenter{
+      @include centered-element(0,0,0,0);
+      position: static;
+    }
+  }
+}
+
+.centeredInput{
+  width: 100%;
+}

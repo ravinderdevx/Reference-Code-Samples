@@ -1,0 +1,10 @@
+.error-msg {
+  color: #ff1010;
+}
+.fix-error-icon {
+  top: 27px;
+}
+
+.has-error .form-control {
+  border-color: #ff1010;
+}

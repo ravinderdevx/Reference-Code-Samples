@@ -1,0 +1,128 @@
+.radioCheckWrap {
+  input[type=radio], input[type=checkbox] {
+    display: none;
+    + label {
+      position: relative;
+      font-weight: $fwRegular;
+      span{
+        @extend .inlineBlockMiddle;
+      }
+    }
+    &[disabled] + label{
+      opacity: 0.5;
+    }
+  }
+
+  input[type=checkbox] + label:before, input[type=radio] + label:before {
+    content: "";
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    margin-right: 5px;
+    background-color: $white;
+    border: 1px solid $alto;
+    border-radius: 2px;
+    position: relative;
+    font-size: 16px;
+  }
+
+  input[type=radio] + label:before {
+    border-radius: 50%;
+  }
+
+  input[type=radio]:checked + label:before {
+    content: ""; /* Tick */
+    color: $primaryColor;
+    background-color: $primaryColor;
+    text-align: center;
+    line-height: 20px;
+    font-size: 30px;
+    text-indent: -1px;
+    margin-top: 1px;
+  }
+
+  input[type=checkbox]:checked + label:before {
+    content: "\2714"; /* Tick */
+    color: $white;
+    background-color: $primaryColor;
+    text-align: center;
+    line-height: 20px;
+  }
+
+  @include Mq(XS){
+    input[type=radio], input[type=checkbox] {
+      + label {
+        span{
+          //display: inline-block;
+          //width: calc(100% - 26px);
+        }
+      }
+    }
+  }
+}
+
+.select2-container {
+  min-width: 100%;
+  .select2-selection--single {
+    height: 34px;
+    border: 1px solid $alto;
+    outline: 0;
+    .select2-selection__arrow {
+      height: 30px;
+    }
+    .select2-selection__rendered {
+      font-size: 14px;
+      color: $doveGray;
+      line-height: 32px;
+    }
+  }
+}
+
+.select2-container--default {
+  .select2-results__options {
+    font-size: 14px;
+    color: $doveGray;
+    .select2-results__option--highlighted[aria-selected] {
+      background: $primaryColor;
+    }
+  }
+}
+
+.table-responsive{
+  border: 1px solid $primaryColor;
+  border-radius: 5px;
+  .select2-container{
+    min-width: 100%;
+  }
+  table{
+    margin-bottom: 0;
+    thead{
+      tr{
+        th{
+          background: $primaryColor + 16;
+          border: 0;
+          color: $white;
+          min-width: 100px;
+          width:1%;
+          white-space:nowrap;
+          &:nth-child(even){
+            background: $primaryColor;
+          }
+        }
+      }
+    }
+    tbody{
+      tr{
+        td{
+          min-width: 100px;
+          width:1%;
+          white-space:nowrap;
+          .form-control{
+            width: auto;
+          }
+        }
+      }
+    }
+  }
+}

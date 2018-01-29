@@ -1,0 +1,24 @@
+@import "partials/_mixins";
+
+//vendor css
+@import "vendor/bootstrap-theme.min.css";
+@import "vendor/bootstrap.min.css";
+@import "vendor/bootstrap-treeview.min.css";
+@import "vendor/mCustomScrollbar.min.css";
+@import "vendor/bootstrap-datepicker.min.css";
+@import "vendor/bootstrap-datepicker.standalone.min.css";
+@import "vendor/lightbox.css";
+@import "vendor/animate.css";
+@import "vendor/_icon-fonts";
+
+//Bootswatch.scss
+@import "bootswatch/boot-variables";
+@import "bootswatch/bootswatch";
+
+//partials
+@import "partials/_variables";
+@import "partials/_mixins";
+@import "partials/_general";
+@import "partials/_common";
+@import "partials/_component";
+@import "partials/_form-controls";

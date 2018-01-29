@@ -1,0 +1,90 @@
+<div class="row">
+    <div class="col-lg-12 col-sm-12 col-xs-12 title mb-20">
+        <h3 class="pull-left">Medications</h3>
+        <a routerLink="/medications/add-medications">
+          <button class="btn btn-primary pull-right mt-15">Add Medication</button>
+        </a>
+    </div>
+    <div class="col-lg-12 col-sm-12 col-xs-12">
+      <table class="table medication-table">
+        <thead class="thead-default">
+          <tr>
+              <th class="pointer" (click)="sort('Name')">
+                  Name
+                <i class="fa" [ngClass]="{'fa-sort': column != 'Name', 'fa-sort-asc': (column == 'Name' && isDesc), 'fa-sort-desc': (column == 'Name' && !isDesc) }" aria-hidden="true"> </i>
+              </th>
+              <th class="pointer" (click)="sort('Quantity')">
+                  Quantity
+                <i class="fa" [ngClass]="{'fa-sort': column != 'Quantity', 'fa-sort-asc': (column == 'Quantity' && isDesc), 'fa-sort-desc': (column == 'Quantity' && !isDesc) }" aria-hidden="true"> </i>
+              </th>
+              <th class="pointer" (click)="sort('Dosage')">
+                  Dosage
+                <i class="fa" [ngClass]="{'fa-sort': column != 'Dosage', 'fa-sort-asc': (column == 'Dosage' && isDesc), 'fa-sort-desc': (column == 'Dosage' && !isDesc) }" aria-hidden="true"> </i>
+              </th>
+              <th class="pointer" (click)="sort('Unit')">
+                  Unit
+                <i class="fa" [ngClass]="{'fa-sort': column != 'Unit', 'fa-sort-asc': (column == 'Unit' && isDesc), 'fa-sort-desc': (column == 'Unit' && !isDesc) }" aria-hidden="true"> </i>
+              </th>
+              <th class="pointer" (click)="sort('Form')">
+                  Form
+                <i class="fa" [ngClass]="{'fa-sort': column != 'Form', 'fa-sort-asc': (column == 'Form' && isDesc), 'fa-sort-desc': (column == 'Form' && !isDesc) }" aria-hidden="true"> </i>
+              </th>
+              <th class="pointer" (click)="sort('Method')">
+                  Method
+                <i class="fa" [ngClass]="{'fa-sort': column != 'Method', 'fa-sort-asc': (column == 'Method' && isDesc), 'fa-sort-desc': (column == 'Method' && !isDesc) }" aria-hidden="true"> </i>
+              </th>
+              <th class="pointer" (click)="sort('Indication')">
+                  Indication
+                <i class="fa" [ngClass]="{'fa-sort': column != 'Indication', 'fa-sort-asc': (column == 'Indication' && isDesc), 'fa-sort-desc': (column == 'Indication' && !isDesc) }" aria-hidden="true"> </i>
+              </th>
+              <th class="pointer" (click)="sort('Frequency')">
+                  Frequency
+                <i class="fa" [ngClass]="{'fa-sort': column != 'Frequency', 'fa-sort-asc': (column == 'Frequency' && isDesc), 'fa-sort-desc': (column == 'Frequency' && !isDesc) }" aria-hidden="true"> </i>
+              </th>
+              <th class="pointer" (click)="sort('Duration')">
+                  Duration
+                <i class="fa" [ngClass]="{'fa-sort': column != 'Duration', 'fa-sort-asc': (column == 'Duration' && isDesc), 'fa-sort-desc': (column == 'Duration' && !isDesc) }" aria-hidden="true"> </i>
+              </th>
+              <!-- <th class="pointer" (click)="sort('Start')">
+                  Start
+                <i class="fa" [ngClass]="{'fa-sort': column != 'Start', 'fa-sort-asc': (column == 'Start' && isDesc), 'fa-sort-desc': (column == 'Start' && !isDesc) }" aria-hidden="true"> </i>
+              </th>
+              <th class="pointer" (click)="sort('End')">
+                  End
+                <i class="fa" [ngClass]="{'fa-sort': column != 'End', 'fa-sort-asc': (column == 'End' && isDesc), 'fa-sort-desc': (column == 'End' && !isDesc) }" aria-hidden="true"> </i>
+              </th> -->
+              <th class="pointer" (click)="sort('Notes')">
+                  Notes
+                <i class="fa" [ngClass]="{'fa-sort': column != 'Notes', 'fa-sort-asc': (column == 'Notes' && isDesc), 'fa-sort-desc': (column == 'Notes' && !isDesc) }" aria-hidden="true"> </i>
+              </th>
+              <th class="pointer" (click)="sort('Active')">
+                  Active
+                <i class="fa" [ngClass]="{'fa-sort': column != 'Active', 'fa-sort-asc': (column == 'Active' && isDesc), 'fa-sort-desc': (column == 'Active' && !isDesc) }" aria-hidden="true"> </i>
+              </th>
+          </tr>
+        </thead>
+        <tbody *ngIf="Medications.length>0">
+          <tr *ngFor="let medication of Medications | orderBy: {property: column, direction: direction}">
+            <td>{{medication.Name}}</td>
+            <td>{{medication.Quantity}}</td>
+            <td>{{medication.Dosage}}</td>
+            <td>{{medication.Unit}}</td>
+            <td>{{medication.Form}}</td>
+            <td>{{medication.Method}}</td>
+            <td>{{medication.Indication}}</td>
+            <td>{{medication.Frequency}}</td>
+            <td>{{medication.Duration}}</td>
+            <!-- <td>{{medication.StartDate | date :"MM/dd/y"}}</td>
+            <td>{{medication.EndDate | date :"MM/dd/y"}}</td> -->
+            <td>{{medication.Notes}}</td>
+            <td>{{medication.Active?'Active':'Inactive'}}</td>
+          </tr>
+        </tbody>
+          <tbody *ngIf="Medications.length==0">
+              <tr>
+                  <td colspan="11"><p class="active text-center">No Records Found.</p></td>
+              </tr>
+          </tbody>
+        </table>
+    </div>
+  </div>

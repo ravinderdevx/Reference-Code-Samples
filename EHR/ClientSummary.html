@@ -1,0 +1,689 @@
+﻿<!-- PAGE CONTENT WRAPPER -->
+<div class="page-content-wrap">
+    
+    <div class="row">
+        <div class="col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-body profile">
+                    <!--style="background: url('/App/Assets/Theme/assets/images/gallery/music-4.jpg') center center no-repeat;"-->
+                    <div class="profile-image profile-img-container">
+                        <img ng-src="{{clientProfileImg}}" alt="" style="height:100px;"/>
+                        <a ng-click="addClientSocialProfileImage()" tooltip-placement="{{placement.options[0]}}" uib-tooltip="Change Image"><i class="fa fa-edit">Change</i></a>
+                    </div>
+                    <div class="profile-data ">
+                        <div class="profile-data-name">{{clientRegistrationDetail.FName}} {{clientRegistrationDetail.LName}}</div>
+                        <div class="profile-data-title" style="color: #FFF;">Software Developer</div>
+                    </div>
+                    <div class="profile-controls">
+                        <!--<a href="#" class="profile-control-left twitter"><span class="fa fa-twitter"></span></a>
+                        <a href="#" class="profile-control-right facebook"><span class="fa fa-facebook"></span></a>-->
+                    </div>
+                </div>
+                <!--<div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <button class="btn btn-info btn-rounded btn-block"><span class="fa fa-check"></span> Following</button>
+                        </div>
+                        <div class="col-md-6">
+                            <button class="btn btn-primary btn-rounded btn-block"><span class="fa fa-comments"></span> Chat</button>
+                        </div>
+                    </div>
+                </div>-->
+            </div>
+        </div>
+        <div class="col-md-9">
+            <!-- Client Registration Detail -->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="panel-title-box">
+                        <h3>{{screenTitleClientRegisteration}}</h3>
+                    </div>
+                    <ul class="panel-controls" style="margin-top: 2px;">
+                        <!--<li><a href="#" class="panel-refresh" ng-click="refreshGetAllTodayRegisterClient()"><span class="fa fa-refresh"></span></a></li>-->
+                        <li><a class="panel-edit" ng-click="editRegisterClient(clientRegistrationDetail)"><span tooltip-placement="{{placement.options[0]}}" uib-tooltip="{{editTooltipTitle}} {{screenTitleClientRegisteration}}" class="fa fa-pencil"></span></a></li>
+                    </ul>
+                </div>
+                <div class="panel-body panel-body-table">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <tr><td>Client Name</td><td>{{clientRegistrationDetail.FName}} {{clientRegistrationDetail.LName}}</td><td>Email</td><td>{{clientRegistrationDetail.Email}}</td></tr>
+                            <tr><td>SSN</td><td>{{clientRegistrationDetail.SSN|ssnFilter}}</td><td>Phone Number</td><td>{{clientRegistrationDetail.Ph|tel}}</td></tr>
+                            <tr><td>DateOfBirth</td><td>{{clientRegistrationDetail.DOB|date :dateFormat}}</td><td>Payment Due</td><td>{{totalPaymentDue}}</td></tr>
+                        </table>
+                        <div ng-show="isLoadingPersonalDetail" class="panel-refresh-layer"><img src="/App/Assets/Theme/img/loaders/default.gif" /></div>
+                    </div>
+                </div>
+            </div>
+            <!-- END Client Registration Detail -->
+
+        </div>
+
+        <div class="col-md-12">
+            <!-- EMERGENCY CONTACT DETAIL -->
+            <div class="panel panel-default" >
+                <div class="panel-heading">
+                    <div class="panel-title-box">
+                        <h3>{{screenTitleEmergencyContact}}</h3>
+                    </div>
+                    <ul class="panel-controls" style="margin-top: 2px;">
+                        <li><a tooltip-placement="{{placement.options[0]}}" uib-tooltip="{{refreshIconTooltip}}" class="panel-refresh" ng-click="refreshGetAllEmergencyContact()"><span class="fa fa-refresh"></span></a></li>
+                        <li><a tooltip-placement="{{placement.options[0]}}" uib-tooltip="{{addTooltipTitle}} {{screenTitleEmergencyContact}}" class="panel-add" ng-click="addEmergencyContact()"><span class="fa fa-plus"></span></a></li>
+                    </ul>
+                </div>
+                <div class="panel-body panel-body-table">
+                    <div class="table-responsive">
+                        <table ng-table="tableAllEmergencyContactDetailParams" class="table  table-bordered table-striped table-hover text-center custom-setting">
+                            <!--show-filter="true"-->
+                            <tr ng-repeat="ECList in getEmergencyContactList">
+                                <td title="'First Name'" sortable="'FirstName'">
+                                    {{ECList.FirstName}}
+                                </td>
+                                <td title="'Last Name'" sortable="'LastName'">
+                                    {{ECList.LastName}}
+                                </td>
+                                <td title="'Email'" sortable="'Email'">
+                                    {{ECList.Email}}
+                                </td>
+                                <td title="'Relation'" sortable="'RelationShip'">
+                                    {{ECList.RelationShip}}
+                                </td>
+                                <td title="'Phone'">
+                                    {{ECList.Phone|tel}}
+                                </td>
+                                <td title="'Action'">
+                                    <a tooltip-placement="{{placement.options[0]}}" uib-tooltip="{{editTooltipTitle}} {{screenTitleEmergencyContact}}" ng-click="editEmergencyContact(ECList)"><i class="fa fa-pencil"></i></a>
+                                    <a tooltip-placement="{{placement.options[0]}}" uib-tooltip="{{deleteTooltipTitle}} {{screenTitleEmergencyContact}}"><i class="fa fa-trash" ng-click="deleteEmergencyContact(ECList)"></i></a>
+                                </td>
+                            </tr>
+                            <tr ng-show="getEmergencyContactList == 0 && isLoadingEmergencyContact == false">
+                                <td colspan="6" class="text-center">No {{screenTitleEmergencyContact}}.</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div ng-show="isLoadingEmergencyContact" class="panel-refresh-layer"><img src="/App/Assets/Theme/img/loaders/default.gif" /></div>
+            </div>
+            <!-- END EMERGENCY CONTACT DETAIL -->
+        </div>
+
+        <div class="col-md-6">
+            <!-- Client Personal Detail -->
+            <div class="panel panel-default panel-248">
+                <div class="panel-heading">
+                    <div class="panel-title-box">
+                        <h3>{{screenTitlePersonalDetail}}</h3>
+                    </div>
+                    <ul class="panel-controls" style="margin-top: 2px;">
+                        <li ng-show="clientPersonalDetail==null"><a tooltip-placement="{{placement.options[3]}}" uib-tooltip="{{addTooltipTitle}} Personal Detail" class="panel-add" ng-click="addClientPersonalDetailFun()"><span class="fa fa-plus"></span></a></li>
+                        <li ng-show="clientPersonalDetail!=null"><a tooltip-placement="{{placement.options[3]}}" uib-tooltip="{{editTooltipTitle}} Personal Detail" class="panel-edit" ng-click="editClientPersonalDetailFun(clientPersonalDetail)"><span class="fa fa-pencil"></span></a></li>
+                    </ul>
+                </div>
+                <div class="panel-body panel-body-table">
+                    <div class="table-responsive">
+                        <table class="table " ng-show="clientPersonalDetail!=null">
+                            <tr><td>Gender</td><td>{{clientPersonalDetail.Gender=='M'?'Male':clientPersonalDetail.Gender=='F'?'Female':'Other'}}</td></tr>
+                            <tr><td>Marital Status</td><td>{{clientPersonalDetail.MaritalStatus}}</td></tr>
+                            <tr><td>Blood Group</td><td>{{clientPersonalDetail.BloodGroupName}}</td></tr>
+                        </table>
+                        <table class="table" ng-show="clientPersonalDetail==null">
+                            <tr><td class="text-center">No {{screenTitlePersonalDetail}}.</td></tr>
+                        </table>
+                        <div ng-show="isLoadingClientPersonalDetail" class="panel-refresh-layer"><img src="/App/Assets/Theme/img/loaders/default.gif" /></div>
+                    </div>
+                </div>
+            </div>
+            <!-- END Client Registration Detail -->
+        </div>
+        <div class="col-md-6">
+            <!-- Client Registration Detail -->
+            <div class="panel panel-default panel-248">
+                <div class="panel-heading">
+                    <div class="panel-title-box">
+                        <h3>{{screenTitleContactDetail}}</h3>
+                    </div>
+                    <ul class="panel-controls" style="margin-top: 2px;">
+                        <li ng-show="clientContactDetail==null"><a tooltip-placement="{{placement.options[0]}}" uib-tooltip="{{addTooltipTitle}} {{screenTitleContactDetail}}" class="panel-add" ng-click="addClientContact()"><span class="fa fa-plus"></span></a></li>
+                        <li ng-show="clientContactDetail!=null"><a tooltip-placement="{{placement.options[0]}}" uib-tooltip="{{editTooltipTitle}} {{screenTitleContactDetail}}" class="panel-edit" ng-click="editClientContact(clientContactDetail)"><span class="fa fa-pencil"></span></a></li>
+                    </ul>
+                </div>
+                <div class="panel-body panel-body-table">
+                    <div class="table-responsive">
+                        <table class="table" ng-show="clientContactDetail!=null">
+                            <tr><td>Address</td><td>{{clientContactDetail.Address}}</td></tr>
+                            <tr><td>Country</td><td>{{clientContactDetail.CountryName}}</td></tr>
+                            <tr><td>City</td><td>{{clientContactDetail.StateName}}</td></tr>
+                            <tr><td>State</td><td>{{clientContactDetail.CityName}}</td></tr>
+                            <tr><td>ZipCode</td><td>{{clientContactDetail.ZipCode}}</td></tr>
+                        </table>
+                        <table class="table" ng-show="clientContactDetail==null">
+                            <tr><td class="text-center">No {{screenTitleContactDetail}}.</td></tr>
+                        </table>
+                        <div ng-show="isLoadingContactDetail" class="panel-refresh-layer"><img src="/App/Assets/Theme/img/loaders/default.gif" /></div>
+                    </div>
+                </div>
+            </div>
+            <!-- END Client Registration Detail -->
+        </div>
+
+        <div class="col-md-12">
+            <!-- CLIENT INSURANCE DETAIL -->
+            <div class="panel panel-default" >
+                <div class="panel-heading">
+                    <div class="panel-title-box">
+                        <h3>Insurance Detail</h3>
+                    </div>
+                    <ul class="panel-controls" style="margin-top: 2px;">
+                        <li><a tooltip-placement="{{placement.options[0]}}" uib-tooltip="{{refreshIconTooltip}}" class="panel-refresh" ng-click="refreshGetAllClientInsuranceDetail()"><span class="fa fa-refresh"></span></a></li>
+                        <li><a tooltip-placement="{{placement.options[0]}}" uib-tooltip="{{addTooltipTitle}} Insurance Detail" class="panel-add" ng-click="addClientInsuranceDetail()"><span class="fa fa-plus"></span></a></li>
+                    </ul>
+                </div>
+                <div class="panel-body panel-body-table">
+                    <div class="table-responsive">
+                        <table ng-table="tableAllClientInsuranceDetailParams" class="table  table-bordered table-striped table-hover text-center custom-setting">
+                            <!--show-filter="true"-->
+                            <tr ng-repeat="CIDList in getClientInsuranceDetailList">
+                                <td title="'Provider Name'" sortable="'ICN'">
+                                    {{CIDList.ICN}}
+                                </td>
+                                <td title="'CardHolder Name'" sortable="'CHN'">
+                                    {{CIDList.CHN}}
+                                </td>
+                                <td title="'ExpireOn'" sortable="'ExpireOn'">
+                                    {{CIDList.ExpireOn|date :dateFormat}}
+                                </td>
+                                <td title="'Relation'" sortable="'RS'">
+                                    {{CIDList.RS}}
+                                </td>
+                                <td title="'Card Number'">
+                                    {{CIDList.CardNumber}}
+                                </td>
+                                <td title="'Action'">
+                                    <a tooltip-placement="{{placement.options[0]}}" uib-tooltip="{{editTooltipTitle}} Insurance Detail" ng-click="editClientInsuranceDetail(CIDList)"><i class="fa fa-pencil"></i></a>
+                                    <a tooltip-placement="{{placement.options[0]}}" uib-tooltip="{{deleteTooltipTitle}} Insurance Detail"><i class="fa fa-trash" ng-click="deleteClientInsuranceDetail(CIDList)"></i></a>
+                                </td>
+                            </tr>
+                            <tr ng-show="getClientInsuranceDetailList == 0 && isLoadingClientInsuranceDetail == false">
+                                <td colspan="6" class="text-center">No Insurance Detail.</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div ng-show="isLoadingClientInsuranceDetail" class="panel-refresh-layer"><img src="/App/Assets/Theme/img/loaders/default.gif" /></div>
+            </div>
+            <!-- END CLIENT INSURANCE DETAIL -->
+        </div>
+
+        <div class="col-md-12">
+            <!-- Client Family Health Detail -->
+            <div class="panel panel-default" >
+                <div class="panel-heading">
+                    <div class="panel-title-box">
+                        <h3>{{screenTitleFamilyHealthDetail}}</h3>
+                    </div>
+                    <ul class="panel-controls" style="margin-top: 2px;">
+                        <li><a tooltip-placement="{{placement.options[0]}}" uib-tooltip="{{refreshIconTooltip}}" class="panel-refresh" ng-click="refreshGetAllFamilyHealthDetail()"><span class="fa fa-refresh"></span></a></li>
+                        <li><a tooltip-placement="{{placement.options[0]}}" uib-tooltip="{{addTooltipTitle}} {{screenTitleFamilyHealthDetail}}" class="panel-add" ng-click="addClientFamilyHealthDetail()"><span class="fa fa-plus"></span></a></li>
+                    </ul>
+                </div>
+
+                <div class="panel-body panel-body-table">
+                    <div class="table-responsive">
+                        <table ng-table="tableAllClientFamilyHealthDetailParams" class="table  table-bordered table-striped table-hover text-center custom-setting">
+                            <tr ng-repeat="CFHDList in getClientFamilyHealthDetailList">
+                                <td title="'First Name'" sortable="'FirstName'">
+                                    {{CFHDList.FirstName}}
+                                </td>
+                                <td title="'Last Name'" sortable="'LastName'">
+                                    {{CFHDList.LastName}}
+                                </td>
+                                <td title="'Diseases'" sortable="'Diseases'">
+                                    {{CFHDList.Diseases}}
+                                </td>
+                                <td title="'Relation'" sortable="'RS'">
+                                    {{CFHDList.RS}}
+                                </td>
+                                <td title="'FromWhen'">
+                                    {{CFHDList.FromWhen|date :dateFormat}}
+                                </td>
+                                <td title="'ToWhen'">
+                                    {{CFHDList.ToWhen|date :dateFormat}}
+                                </td>
+
+                                <td title="'Action'">
+                                    <a tooltip-placement="{{placement.options[0]}}" uib-tooltip="{{editTooltipTitle}} {{screenTitleFamilyHealthDetail}}" ng-click="editClientFamilyHealthDetail(CFHDList)"><i class="fa fa-pencil"></i></a>
+                                    <a tooltip-placement="{{placement.options[0]}}" uib-tooltip="{{deleteTooltipTitle}} {{screenTitleFamilyHealthDetail}}"><i class="fa fa-trash" ng-click="deleteClientFamilyHealthDetail(CFHDList)"></i></a>
+                                </td>
+                            </tr>
+                            <tr ng-show="getClientFamilyHealthDetailList == 0 && isLoadingClientFamilyHealthDetail == false">
+                                <td colspan="7" class="text-center">No {{screenTitleFamilyHealthDetail}}.</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div ng-show="isLoadingClientFamilyHealthDetail" class="panel-refresh-layer"><img src="/App/Assets/Theme/img/loaders/default.gif" /></div>
+            </div>
+            <!-- END Client Family Health Detail -->
+        </div>
+
+        <div class="col-md-12">
+            <!-- Client Vital Sign Detail -->
+            <div class="panel panel-default" >
+                <div class="panel-heading">
+                    <div class="panel-title-box">
+                        <h3>{{screenTitleVitalSignDetail}}</h3>
+                    </div>
+                    <ul class="panel-controls" style="margin-top: 2px;">
+                        <li><a tooltip-placement="{{placement.options[0]}}" uib-tooltip="{{refreshIconTooltip}}" class="panel-refresh" ng-click="refreshGetAllClientVitalSignDetail()"><span class="fa fa-refresh"></span></a></li>
+                        <li><a tooltip-placement="{{placement.options[0]}}" uib-tooltip="{{addTooltipTitle}} {{screenTitleVitalSignDetail}}" class="panel-add" ng-click="addClientVitalSignDetail()"><span class="fa fa-plus"></span></a></li>
+                    </ul>
+                </div>
+                <div class="panel-body panel-body-table">
+                    <div class="table-responsive">
+                        <table ng-table="tableAllClientVitalSignDetailParams" class="table  table-bordered table-striped table-hover text-center">
+                            <tr ng-repeat="CVSDList in getClientVitalSignDetailList">
+                                <td title="'Weight'">
+                                    {{CVSDList.Weight}}
+                                </td>
+                                <td title="'Height'">
+                                    {{CVSDList.Height}}
+                                </td>
+                                <td title="'Temp'" sortable="'Temperature'">
+                                    {{CVSDList.Temperature}}
+                                </td>
+                                <td title="'HeartRate'" sortable="'HeartPluseRate'">
+                                    {{CVSDList.HeartPluseRate}}
+                                </td>
+                                <td title="'OxygenSaturation'" sortable="'OxygenSaturation'">
+                                    {{CVSDList.OxygenSaturation}}
+                                </td>
+                                <td title="'DiastolicBP'" sortable="'DiastolicBP'">
+                                    {{CVSDList.DiastolicBP}}
+                                </td>
+                                <td title="'SystolicBP'" sortable="'SystolicBP'">
+                                    {{CVSDList.SystolicBP}}
+                                </td>
+                                <td title="'Glucose'" sortable="'Glucose'">
+                                    {{CVSDList.Glucose}}
+                                </td>
+                                <td title="'RespiratoryRate'" sortable="'RespiratoryRate'">
+                                    {{CVSDList.RespiratoryRate}}
+                                </td>
+                                <td title="'BMI'" sortable="'BodyMassIndex'">
+                                    {{CVSDList.BodyMassIndex}}
+                                </td>
+                                <td title="'Created On'" sortable="'CDT'">
+                                    {{CVSDList.CDT|date :dateFormat}}
+                                </td>
+                                <td title="'Action'">
+                                    <a tooltip-placement="{{placement.options[0]}}" uib-tooltip="{{editTooltipTitle}} {{screenTitleVitalSignDetail}}" ng-click="editClientVitalSignDetail(CVSDList)"><i class="fa fa-pencil"></i></a>
+                                    <a tooltip-placement="{{placement.options[0]}}" uib-tooltip="{{deleteTooltipTitle}} {{screenTitleVitalSignDetail}}"><i class="fa fa-trash" ng-click="deleteClientVitalSignDetail(CVSDList)"></i></a>
+                                </td>
+                            </tr>
+                            <tr ng-show="getClientVitalSignDetailList == 0 && isLoadingClientVitalSignDetail == false">
+                                <td colspan="12" class="text-center">No {{screenTitleVitalSignDetail}}.</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div ng-show="isLoadingClientVitalSignDetail" class="panel-refresh-layer"><img src="/App/Assets/Theme/img/loaders/default.gif" /></div>
+            </div>
+            <!-- Client Vital Sign Detail -->
+        </div>
+
+        <div class="col-md-12">
+            <!-- Client Allergy Information Detail -->
+            <div class="panel panel-default" >
+                <div class="panel-heading">
+                    <div class="panel-title-box">
+                        <h3>{{screenTitleAllergyDetail}}</h3>
+                    </div>
+                    <ul class="panel-controls" style="margin-top: 2px;">
+                        <li><a tooltip-placement="{{placement.options[0]}}" uib-tooltip="{{refreshIconTooltip}}" class="panel-refresh" ng-click="refreshGetAllClientAllergyInformationDetail()"><span class="fa fa-refresh"></span></a></li>
+                        <li><a tooltip-placement="{{placement.options[3]}}" uib-tooltip="{{addTooltipTitle}} {{screenTitleAllergyDetail}}" class="panel-add" ng-click="addClientAllergyInformationDetail()"><span class="fa fa-plus"></span></a></li>
+                    </ul>
+                </div>
+                <div class="panel-body panel-body-table">
+                    <div class="table-responsive">
+                        <table ng-table="tableAllClientAllergyInformationDetailParams" class="table  table-bordered table-striped table-hover text-center custom-setting">
+                            <tr ng-repeat="CAIDList in getClientAllergyInformationDetailList">
+                                <td title="'AllergyName'" sortable="'AllergyName'">
+                                    {{CAIDList.AllergyName}}
+                                </td>
+                                <td title="'Cause'" sortable="'Cause'">
+                                    {{CAIDList.Cause}}
+                                </td>
+                                <td title="'Status'" sortable="'Status'">
+                                    {{CAIDList.Status}}
+                                </td>
+
+                                <td title="'Severity'" sortable="'Severity'">
+                                    {{CAIDList.Severity}}
+                                </td>
+                                <td title="'Reactions'" sortable="'Reactions'">
+                                    {{CAIDList.Reactions| limitTo:20 }}..
+                                </td>
+                                <td title="'Action'">
+                                    <a tooltip-placement="{{placement.options[0]}}" uib-tooltip="{{editTooltipTitle}} {{screenTitleAllergyDetail}}" ng-click="editClientAllergyInformationDetail(CAIDList)"><i class="fa fa-pencil"></i></a>
+                                    <a tooltip-placement="{{placement.options[0]}}" uib-tooltip="{{deleteTooltipTitle}} {{screenTitleAllergyDetail}}"><i class="fa fa-trash" ng-click="deleteClientAllergyInformationDetail(CAIDList)"></i></a>
+                                </td>
+                            </tr>
+                            <tr ng-show="getClientAllergyInformationDetailList == 0 && isLoadingClientAllergyInformationDetail == false">
+                                <td colspan="3" class="text-center">No {{screenTitleAllergyDetail}}.</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div ng-show="isLoadingClientAllergyInformationDetail" class="panel-refresh-layer"><img src="/App/Assets/Theme/img/loaders/default.gif" /></div>
+            </div>
+            <!-- End Client Allergy Information Detail -->
+        </div>
+        <div class="col-md-12">
+            <!-- Client Social Information Detail -->
+            <div class="panel panel-default panel-331">
+                <div class="panel-heading">
+                    <div class="panel-title-box">
+                        <h3>{{screenTitleSocialDetail}}</h3>
+                    </div>
+                    <ul class="panel-controls" style="margin-top: 2px;">
+                        <li><a tooltip-placement="{{placement.options[0]}}" uib-tooltip="{{refreshIconTooltip}}" class="panel-refresh" ng-click="refreshGetAllClientSocialInformationDetail()"><span class="fa fa-refresh"></span></a></li>
+                        <li><a tooltip-placement="{{placement.options[0]}}" uib-tooltip="{{addTooltipTitle}} {{screenTitleSocialDetail}}" class="panel-add" ng-click="addClientSocialInformationDetail()"><span class="fa fa-plus"></span></a></li>
+                    </ul>
+                </div>
+                <div class="panel-body panel-body-table">
+                    <div class="table-responsive">
+                        <table ng-table="tableAllClientSocialInformationDetailParams" class="table  table-bordered table-striped table-hover text-center custom-setting">
+                            <tr ng-repeat="CSIDList in getClientSocialInformationDetailList" style="height:37px">
+                                <td title="'AnyBadHabit'" sortable="'AnyBadHabit'" >
+                                    {{CSIDList.AnyBadHabit}}
+                                </td>
+                                <td title="'FromWhen'"  >
+                                    {{CSIDList.FromWhen |date :dateFormat}}
+                                </td>
+                                <td title="'Action'"  >
+                                    <a tooltip-placement="{{placement.options[0]}}" uib-tooltip="{{editTooltipTitle}} Social Information" ng-click="editClientSocialInformationDetail(CSIDList)"><i class="fa fa-pencil"></i></a>
+                                    <a tooltip-placement="{{placement.options[0]}}" uib-tooltip="{{deleteTooltipTitle}} Social Information"><i class="fa fa-trash" ng-click="deleteClientSocialInformationDetail(CSIDList)"></i></a>
+                                </td>
+                            </tr>
+                            <tr ng-show="getClientSocialInformationDetailList == 0 && isLoadingClientSocialInformationDetail == false">
+                                <td colspan="3" class="text-center">No {{screenTitleSocialDetail}}.</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div ng-show="isLoadingClientSocialInformationDetail" class="panel-refresh-layer"><img src="/App/Assets/Theme/img/loaders/default.gif" /></div>
+            </div>
+            <!-- End Client Social Information Detail -->
+        </div>
+
+        <div class="col-md-12">
+            <!-- Client Vaccine Detail -->
+            <div class="panel panel-default" >
+                <div class="panel-heading">
+                    <div class="panel-title-box">
+                        <h3>{{screenTitleVaccineDetail}}</h3>
+                    </div>
+                    <ul class="panel-controls" style="margin-top: 2px;">
+                        <li><a tooltip-placement="{{placement.options[0]}}" uib-tooltip="{{refreshIconTooltip}}" class="panel-refresh" ng-click="refreshGetAllClientVaccineDetail()"><span class="fa fa-refresh"></span></a></li>
+                        <li><a tooltip-placement="{{placement.options[0]}}" uib-tooltip="{{addTooltipTitle}} {{screenTitleVaccineDetail}}" class="panel-add" ng-click="addClientVaccineDetail()"><span class="fa fa-plus"></span></a></li>
+                    </ul>
+                </div>
+                <div class="panel-body panel-body-table">
+                    <div class="table-responsive">
+                        <table ng-table="tableAllClientVaccineDetailParams" class="table  table-bordered table-striped table-hover text-center custom-setting">
+                            <tr ng-repeat="CVDList in getClientVaccineDetailList">
+                                <td title="'Vaccine Type'" sortable="'VaccineType'">
+                                    {{CVDList.VaccineType}}
+                                </td>
+                                <td title="'Dose'" sortable="'Dose'">
+                                    {{CVDList.Dose}}
+                                </td>
+                                <td title="'Given On'" sortable="'GivenOn'">
+                                    {{CVDList.GivenOn | date :dateTimeFormat}}
+                                </td>
+                                <td title="'ReVaccine DateTime'" sortable="'ReVaccineDateTime'">
+                                    {{CVDList.ReVaccineDateTime| date :dateTimeFormat}}
+                                </td>
+                                <td title="'Action'">
+                                    <a tooltip-placement="{{placement.options[0]}}" uib-tooltip="{{editTooltipTitle}} {{screenTitleVitalSignDetail}}" ng-click="editClientVaccineDetail(CVDList)"><i class="fa fa-pencil"></i></a>
+                                    <a tooltip-placement="{{placement.options[0]}}" uib-tooltip="{{deleteTooltipTitle}} {{screenTitleVitalSignDetail}}"><i class="fa fa-trash" ng-click="deleteClientVaccineDetail(CVDList)"></i></a>
+                                </td>
+                            </tr>
+                            <tr ng-show="getClientVaccineDetailList == 0 && isLoadingClientVaccineDetail == false">
+                                <td colspan="7" class="text-center">No {{screenTitleVaccineDetail}}.</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div ng-show="isLoadingClientVaccineDetail" class="panel-refresh-layer"><img src="/App/Assets/Theme/img/loaders/default.gif" /></div>
+            </div>
+            <!-- Client Vital Sign Detail -->
+        </div>
+
+        <div class="col-md-12">
+            <!-- Client Prescription Detail-->
+            <div class="panel panel-default" >
+                <div class="panel-heading">
+                    <div class="panel-title-box">
+                        <h3>{{screenTitlePrescriptionDetail}}</h3>
+                    </div>
+                    <ul class="panel-controls" style="margin-top: 2px;">
+                        <li><a tooltip-placement="{{placement.options[0]}}" uib-tooltip="{{refreshIconTooltip}}" class="panel-refresh" ng-click="refreshGetAllClientPrescriptionDetail()"><span class="fa fa-refresh"></span></a></li>
+                        <li><a tooltip-placement="{{placement.options[0]}}" uib-tooltip="{{addTooltipTitle}} {{screenTitlePrescriptionDetail}}" class="panel-add" ng-click="addPrescriptionDetail()"><span class="fa fa-plus"></span></a></li>
+                    </ul>
+                </div>
+                <div class="panel-body panel-body-table">
+                    <div class="table-responsive">
+                        <table ng-table="tableAllClientPrescriptionDetailParams" class="table  table-bordered table-striped table-hover text-center custom-setting">
+                            <tr ng-repeat="CPDList in getClientPrescriptionDetailList">
+                                <td title="'Medication'" sortable="'DrugName'">
+                                    {{CPDList.DrugName}}
+                                </td>
+                                <td title="'Strength'">
+                                    {{CPDList.Strength}} {{CPDList.SM}}
+                                </td>
+                                <td title="'Quantity'" sortable="'Quantity'">
+                                    {{CPDList.Quantity}}
+                                </td>
+                                <td title="'DirectionForUse'">
+                                    {{CPDList.DFU}}
+                                </td>
+                                <td title="'Refills'">
+                                    {{CPDList.Refills}}
+                                </td>
+                                <td title="'Created On'">
+                                    {{CPDList.CDT | date :dateTimeFormat}}
+                                </td>
+                                <td title="'Action'">
+                                    <a tooltip-placement="{{placement.options[0]}}" uib-tooltip="{{editTooltipTitle}} {{screenTitleVitalSignDetail}}" ng-click="editClientPrescriptionDetail(CPDList)"><i class="fa fa-pencil"></i></a>
+                                    <a tooltip-placement="{{placement.options[0]}}" uib-tooltip="{{deleteTooltipTitle}} {{screenTitleVitalSignDetail}}"><i class="fa fa-trash" ng-click="deleteClientPrescriptionDetail(CPDList)"></i></a>
+                                </td>
+                            </tr>
+                            <tr ng-show="getClientPrescriptionDetailList == 0 && isLoadingClientPrescriptionDetail == false">
+                                <td colspan="7" class="text-center">No {{screenTitlePrescriptionDetail}}.</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div ng-show="isLoadingClientPrescriptionDetail" class="panel-refresh-layer"><img src="/App/Assets/Theme/img/loaders/default.gif" /></div>
+            </div>
+            <!-- Client Prescription Detail -->
+        </div>
+
+        <div class="col-md-12">
+            <!-- CLIENT PROGRESS DETAIL -->
+            <div class="panel panel-default" >
+                <div class="panel-heading">
+                    <div class="panel-title-box">
+                        <h3>{{screenTitleProgressNote}}</h3>
+                    </div>
+                    <ul class="panel-controls" style="margin-top: 2px;">
+                        <li><a tooltip-placement="{{placement.options[0]}}" uib-tooltip="{{refreshIconTooltip}}" class="panel-refresh" ng-click="refreshGetAllClientProgressNote()"><span class="fa fa-refresh"></span></a></li>
+                        <li><a class="panel-add" ng-click="addClientProgressNote()" tooltip-placement="{{placement.options[3]}}" uib-tooltip="{{addTooltipTitle}} {{screenTitleProgressNote}}"><span class="fa fa-plus"></span></a></li>
+                    </ul>
+                </div>
+                <div class="panel-body panel-body-table">
+                    <div class="table-responsive">
+                        <table ng-table="tableAllClientProgressNoteParams" class="table  table-bordered table-striped table-hover text-center custom-setting">
+                            <tr ng-repeat="CPNList in getClientProgressNoteList">
+                                <td title="'Condition'">
+                                    {{CPNList.ClientCondition}}
+                                </td>
+                                <td title="'Written By'">
+                                    {{CPNList.UserName}}
+                                </td>
+                                <td title="'Created On'" sortable="'CDT'">
+                                    {{CPNList.CDT| date :dateFormat}}
+                                </td>
+                                <td title="'Action'">
+                                    <a tooltip-placement="{{placement.options[0]}}" uib-tooltip="{{editTooltipTitle}} {{screenTitleProgressNote}}" ng-click="editClientProgressNote(CPNList)"><i class="fa fa-pencil"></i></a>
+                                    <a tooltip-placement="{{placement.options[0]}}" uib-tooltip="{{deleteTooltipTitle}} {{screenTitleProgressNote}}"><i class="fa fa-trash" ng-click="deleteClientProgressNote(CPNList)"></i></a>
+                                </td>
+                            </tr>
+                            <tr ng-show="getClientProgressNoteList == 0 && isLoadingClientProgressNote == false">
+                                <td colspan="4" class="text-center">No {{screenTitleProgressNote}}.</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div ng-show="isLoadingClientProgressNote" class="panel-refresh-layer"><img src="/App/Assets/Theme/img/loaders/default.gif" /></div>
+                <!-- END CLIENT PROGRESS -->
+            </div>
+        </div>
+        <div class="col-md-12">
+            <!-- APPOINTMENT DETAIL -->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="panel-title-box">
+                        <h3>{{screenTitleAppointment}}</h3>
+                    </div>
+                    <ul class="panel-controls" style="margin-top: 2px;">
+                        <li><a tooltip-placement="{{placement.options[0]}}" uib-tooltip="{{refreshIconTooltip}}"  class="panel-refresh" ng-click="refreshGetClientAppointmentDetail()"><span class="fa fa-refresh"></span></a></li>
+                        <li><a class="panel-add" ng-click="addAppointment()"><span class="fa fa-plus"></span></a></li>
+                    </ul>
+                </div>
+                <div class="panel-body panel-body-table">
+                    <div class="table-responsive">
+                        <table ng-table="tableGetClientAppointmentDetailParams" class="table  table-bordered table-striped table-hover text-center custom-setting">
+                            <tr ng-repeat="CADList in getClientAppointmentDetailList">
+                                <td title="'Appointment With'">
+                                    {{CADList.UserName}}
+                                </td>
+                                <td title="'Start'" sortable="'start'">
+                                    {{CADList.start| date :dateTimeFormat}}
+                                </td>
+                                <td title="'End'" sortable="'end'">
+                                    {{CADList.end| date :dateTimeFormat}}
+                                </td>
+                                <td title="'Action'">
+                                    <a tooltip-placement="{{placement.options[0]}}" uib-tooltip="{{editTooltipTitle}} {{screenTitleAppointment}}" ng-click="editAppointment(CADList)"><i class="fa fa-pencil"></i></a>
+                                </td>
+                            </tr>
+                            <tr ng-show="getClientAppointmentDetailList == 0 && isLoadingClientAppointmentDetail == false">
+                                <td colspan="4" class="text-center">No {{screenTitleAppointment}}.</td>
+                            </tr>
+                        </table>
+                        
+                    </div>
+                </div>
+                <div ng-show="isLoadingClientAppointmentDetail" class="panel-refresh-layer"><img src="/App/Assets/Theme/img/loaders/default.gif" /></div>
+            </div>
+            <!-- END APPOINTMENT DETAIL -->
+        </div>
+
+
+        <div class="col-md-12">
+            <!-- BILLING DETAIL -->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="panel-title-box">
+                        <h3>{{screenTitleBillingDetail}}</h3>
+                        <span>Total Bill {{totalClientBill}}</span>
+                    </div>
+                    <ul class="panel-controls" style="margin-top: 2px;">
+                        <li><a tooltip-placement="{{placement.options[0]}}" uib-tooltip="{{refreshIconTooltip}}" class="panel-refresh" ng-click="refreshClientBillingDetail()"><span class="fa fa-refresh"></span></a></li>
+                        <li><a class="panel-add" tooltip-placement="{{placement.options[3]}}" uib-tooltip="{{addTooltipTitle}} {{screenTitleBillingDetail}}"  ng-click="addClientBillingDetail()"><span class="fa fa-plus"></span></a></li>
+                    </ul>
+                </div>
+                <div class="panel-body panel-body-table">
+                    <div class="table-responsive">
+                        <table ng-table="tableGetClientBillingDetailParams" class="table  table-bordered table-striped table-hover text-center custom-setting">
+                            <tr ng-repeat="CBDList in getClientBillingDetailList">
+                                <td title="'Item/Service'">
+                                    {{CBDList.ItemService}}
+                                </td>
+                                <td title="'Price'">
+                                    {{CBDList.Price}}
+                                </td>
+                                <td title="'Quantity'">
+                                    {{CBDList.Quantity}}
+                                </td>
+                                <td title="'Amount'" sortable="'Amount'">
+                                    {{CBDList.Amount}}
+                                </td>
+                                <td title="'Created On'" sortable="'CDT'">
+                                    {{CBDList.CDT|date:dateTimeFormat}}
+                                </td>
+                                
+                                <td title="'Action'">
+                                    <a tooltip-placement="{{placement.options[0]}}" uib-tooltip="{{editTooltipTitle}} {{screenTitleBillingDetail}}" ng-click="editClientBillingDetail(CBDList)"><i class="fa fa-pencil"></i></a>
+                                    <a tooltip-placement="{{placement.options[0]}}" uib-tooltip="{{deleteTooltipTitle}} {{screenTitleBillingDetail}}"><i class="fa fa-trash" ng-click="deleteClientBillingDetail(CBDList)"></i></a>
+                                </td>
+                            </tr>
+                            <tr ng-show="getClientBillingDetailList == 0 && isLoadingClientBillingDetail == false">
+                                <td colspan="6" class="text-center">No {{screenTitleBillingDetail}}.</td>
+                            </tr>
+                        </table>
+
+                    </div>
+                </div>
+                <div ng-show="isLoadingClientBillingDetail" class="panel-refresh-layer"><img src="/App/Assets/Theme/img/loaders/default.gif" /></div>
+            </div>
+            <!-- END BILLING DETAIL -->
+        </div>        
+
+        <div class="col-md-12">
+            <!-- PAYMENT DETAIL -->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="panel-title-box">
+                        <h3>{{screenTitlePayementDetail}}</h3>
+                        <span>Total Payment {{totalClientPayment}}</span>
+                    </div>
+                    <ul class="panel-controls" style="margin-top: 2px;">
+                        <li><a tooltip-placement="{{placement.options[0]}}" uib-tooltip="{{refreshIconTooltip}}" class="panel-refresh" ng-click="refreshClientPaymentDetail()"><span class="fa fa-refresh"></span></a></li>
+                        <li><a class="panel-add" tooltip-placement="{{placement.options[0]}}" uib-tooltip="{{addTooltipTitle}} {{screenTitlePayementDetail}}" ng-click="addPayementDetail()"><span class="fa fa-plus"></span></a></li>
+                    </ul>
+                </div>
+                <div class="panel-body panel-body-table">
+                    <div class="table-responsive">
+                        <table ng-table="tableGetClientPayementDetailParams" class="table  table-bordered table-striped table-hover text-center custom-setting">
+                            <tr ng-repeat="CPDList in getClientPayementDetailList">
+                                <td title="'Payment Type'">
+                                    {{CPDList.PTName}}
+                                </td>
+                                <td title="'Amount'">
+                                    {{CPDList.Amount}}
+                                </td>
+                                <td title="'Created On'" sortable="'CDT'">
+                                    {{CPDList.CDT|date:dateTimeFormat}}
+                                </td>
+                                <td title="'Action'">
+                                    <a tooltip-placement="{{placement.options[0]}}" uib-tooltip="{{editTooltipTitle}} {{screenTitlePayementDetail}}" ng-click="editClientPaymentDetail(CPDList)"><i class="fa fa-pencil"></i></a>
+                                    <a tooltip-placement="{{placement.options[0]}}" uib-tooltip="{{deleteTooltipTitle}} {{screenTitlePayementDetail}}"><i class="fa fa-trash" ng-click="deleteClientPaymentDetail(CPDList)"></i></a>
+                                </td>
+                            </tr>
+                            <tr ng-show="getClientPayementDetailList == 0 && isLoadingClientPayementDetail == false">
+                                <td colspan="6" class="text-center">No {{screenTitlePayementDetail}}.</td>
+                            </tr>
+                        </table>
+
+                    </div>
+                </div>
+                <div ng-show="isLoadingClientPayementDetail" class="panel-refresh-layer"><img src="/App/Assets/Theme/img/loaders/default.gif" /></div>
+            </div>
+            <!-- END PAYMENT DETAIL -->
+        </div>
+        
+    </div>
+</div>
+<!-- END PAGE CONTENT WRAPPER -->

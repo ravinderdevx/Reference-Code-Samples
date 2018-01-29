@@ -1,0 +1,203 @@
+//mixins
+
+//responsive font mixin
+html {
+  font-size: 62.5%; /* 1 */
+}
+
+@function parseInt($n) {
+  /* 2 */
+  @return $n / ($n * 0 + 1);
+}
+
+@mixin rem($property, $values) {
+  $px: (); /* 3 */
+  $rem: (); /* 3 */
+
+  @each $value in $values {
+    /* 4 */
+
+    @if $value == 0 or $value == auto {
+      /* 5 */
+      $px: append($px, $value);
+      $rem: append($rem, $value);
+    } @else {
+      $unit: unit($value); /* 6 */
+      $val: parseInt($value); /* 6 */
+
+      @if $unit == "px" {
+        /* 7 */
+        $px: append($px, $value);
+        $rem: append($rem, ($val / 10 + rem));
+      }
+
+      @if $unit == "rem" {
+        /* 7 */
+        $px: append($px, ($val * 10 + px));
+        $rem: append($rem, $value);
+      }
+    }
+  }
+
+  @if $px == $rem {
+    /* 8 */
+    #{$property}: $px; /* 9 */
+  } @else {
+    #{$property}: $px; /* 9 */
+    #{$property}: $rem; /* 9 */
+  }
+}
+
+//responsive font mixin
+
+//mixins
+@mixin transition($transitionValue) {
+  -webkit-transition: $transitionValue;
+  -moz-transition: $transitionValue;
+  -ms-transition: $transitionValue;
+  -o-transition: $transitionValue;
+  transition: $transitionValue;
+}
+
+/*transform mixin*/
+@mixin transform($transforms) {
+  -moz-transform: $transforms;
+  -o-transform: $transforms;
+  -ms-transform: $transforms;
+  -webkit-transform: $transforms;
+  transform: $transforms;
+}
+
+// rotate
+@mixin rotate($deg) {
+  @include transform(rotate(#{$deg}deg));
+}
+
+// scale
+@mixin scale($scale) {
+  @include transform(scale($scale));
+}
+
+// translate
+@mixin translate($x, $y) {
+  @include transform(translate($x, $y));
+}
+
+// skew
+@mixin skew($x, $y) {
+  @include transform(skew(#{$x}deg, #{$y}deg));
+}
+
+//transform origin
+@mixin transform-origin($x, $y) {
+  moz-transform-origin: $x $y;
+  -o-transform-origin: $x $y;
+  -ms-transform-origin: $x $y;
+  -webkit-transform-origin: $x $y;
+  transform-origin: $x $y;
+}
+
+//placeholder
+@mixin placeholder {
+  ::-webkit-input-placeholder {
+    @content;
+  }
+  :-moz-placeholder {
+    @content;
+  }
+  ::-moz-placeholder {
+    @content;
+  }
+  :-ms-input-placeholder {
+    @content;
+  }
+}
+
+//box shadow
+@mixin box-shadow($top, $left, $blur, $size, $color, $inset: false) {
+  @if $inset {
+    -webkit-box-shadow: inset $left $top $blur $size $color;
+    -moz-box-shadow: inset $left $top $blur $size $color;
+    box-shadow: inset $left $top $blur $size $color;
+  } @else {
+    -webkit-box-shadow: $left $top $blur $size $color;
+    -moz-box-shadow: $left $top $blur $size $color;
+    box-shadow: $left $top $blur $size $color;
+  }
+}
+
+@mixin cover-background($img-uri, $background-top:"center", $background-left:"center", $background-attachment:"fixed") {
+  background: url($img-uri) no-repeat unquote($background-top) unquote($background-left) unquote($background-attachment);
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+@mixin border-radius($radius) {
+  border-radius: $radius;
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  -ms-border-radius: $radius;
+  -o-border-radius: $radius;
+}
+
+$XS: 767px;
+$SM: $XS + 1px;
+$MD: 992px;
+$LG: 1200px;
+
+$maxSM: $MD - 1px;
+$maxMD: $LG - 1px;
+
+// media queries
+
+@mixin Mq($canvas) {
+  //extra small screens less than or equal 767px
+  @if $canvas == XS {
+    @media only screen and (max-width: $XS) {
+      @content;
+    }
+  }
+    //desktop screens less than or equal 991px
+  @else if $canvas == LMD {
+    @media only screen and (min-width: $SM) and (max-width: $maxSM) {
+      @content;
+    }
+  }
+  @else if $canvas == minTab {
+    @media only screen and (min-width: $SM){
+      @content;
+    }
+  }
+    //screens less than 992px
+  @else if $canvas == MMD {
+    @media only screen and (max-width: $MD - 1) {
+      @content;
+    }
+  }
+  @else if $canvas == MinDesk {
+    @media only screen and (min-width: $MD) {
+      @content;
+    }
+  }
+  //screens less than or equal 768px
+  @if $canvas == SMD {
+    @media only screen and (max-width: $SM) {
+      @content;
+    }
+  }
+
+  @if $canvas == LD {
+    @media only screen and (max-width: $LG) {
+      @content;
+    }
+  }
+}
+
+@mixin centered-element($top, $left, $x, $y) {
+  position: absolute;
+  top: $top;
+  left: $left;
+  @include transform(translate($x, $y));
+}

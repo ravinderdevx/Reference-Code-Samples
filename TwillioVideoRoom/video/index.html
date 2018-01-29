@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html ng-app="DemoVideoApp">
+<head>
+	<title>Demo Video</title>
+	<link rel="icon" href="Assert/images/favicon.png" type="images/png" sizes="16x16">
+	<link rel="stylesheet" href="Assert/css/index.css" />
+	<link rel="stylesheet" href="Assert/css/ngDialog.min.css" />
+	<link rel="stylesheet" href="Assert/css/toaster.min.css" />
+</head>
+<body ng-controller="VideoAppController" ng-cloak>
+	<h1 class="text-center mb-4"><img src="/Assert/images/logo2.png" alt="logo" height="60"></h1>
+	<div class="container" ng-show="!showLoading">
+		<div id="conversation">
+			<div id="remote" align="center">
+				<div id="remote-media"></div>
+				<p id="remote-video-label" class="video-label">Participant Video</p>
+			</div>
+			<div id="local" align="center">
+				<div id="local-media"></div>
+				<p id="local-video-label" class="video-label">Your video (<a id="button-preview" href="#">Preview</a>)</p>
+			</div>
+		</div>
+		<br style="clear:both;">
+		<div id="log" style="visibility:hidden;height:0px;width:0px;"></div>
+		<div id="call-controls">
+			<button class="hangup" id="button-leave">Hangup</button>
+		</div>
+		<div id="room-controls">
+			<input id="room-name" type="hidden">
+			<button id="button-join" style="visibility:hidden;height:0px;width:0px;">Join Room</button>
+		</div>
+	</div>
+	<h3 class="error text-center" ng-show="Message">{{Message}}</h3>
+	
+	<script src="Assert/js/jquery.js"></script>
+	<script src="index.js"></script>
+	
+	<script src="Angular/Liberaries/angular.min.js"></script>
+	<script src="Angular/Liberaries/angular-sanitize.min.js"></script>
+	<script src="Angular/Liberaries/toaster.min.js"></script>
+	<script src="Angular/Liberaries/ngDialog.min.js"></script>
+	
+	<script src="Angular/App.js"></script>
+</body>
+</html>

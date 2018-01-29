@@ -1,0 +1,169 @@
+﻿<ng2-slim-loading-bar [color]="'blue'" [height]="'6px'"></ng2-slim-loading-bar>
+<div class="container">
+  <div class="generTopSpace form-group">
+    <!--<a href="#">content</a>-->
+    <a class="btn btn-default"><i class="icon-close"></i> Close</a>
+    <div class="btn-group">
+      <a class="btn btn-primary"><i class="icon-new"></i> New</a>
+      <a class="btn btn-primary" (click)="updateAllckyba()"><i class="icon-save"></i> Save</a>
+      <a class="btn btn-warning"><i class="icon-cancel"></i> Cancel</a>
+      <a class="btn btn-danger"><i class="icon-delete"></i> Delete</a>
+    </div>
+    <a class="btn btn-info"><i class="icon-keypad"></i> Keypad</a>
+    <a class="btn btn-default"><i class="icon-image-settings"></i> Use Image Defaults</a>
+  </div>
+  <div class="panelSection">
+    <h2>Cashier Display</h2>
+    <p><strong>Note:</strong> Cashier Display 800 x 600 appears above keys 1-20 and to the left of keys 21-35.</p>
+    <p>Numeric keypad is fixed below keys 25, 30 and 35.</p>
+  </div>
+  <div class="keyboardPanel generTopSpace">
+    <ul>
+      <li *ngFor="let ckybaKey of ckybaKeys;" class="key" [dropEnabled]="ckybaKey.kybalbl.trim()===''"  [style.background]="ckybaKey.kybclr === '' ? '' : colors[ckybaKey.kybclr]" droppable (onDrop)="onKeyDrop($event,ckybaKey)">
+        <a class="Keys"  href="javascript:void(0)" draggable [dragData]="ckybaKey" (click)="keyClick(ckybaKey)">{{ckybaKey.kybalbl}}</a>
+      </li>
+    </ul>
+  </div>
+  <div class="row generBottomSpace">
+    <div class="col-md-9">
+      <div class="panelSection generTopSpace">
+        <div class="form-group">
+          <div class="inlineBlockTop gutter5">
+            <label>Key Function Group</label>
+            <div>
+              <select class="form-control">
+                <option>Some option 1</option>
+                <option>Some option 2</option>
+                <option>Some option 3</option>
+              </select>
+            </div>
+          </div>
+          <div class="inlineBlockTop gutter5">
+            <label>Key Function</label>
+            <div>
+              <select class="form-control">
+                <option>Some option 1</option>
+                <option>Some option 2</option>
+                <option>Some option 3</option>
+              </select>
+            </div>
+          </div>
+          <div class="inlineBlockTop gutter5">
+            <label>Overlay</label>
+            <div>
+              <select class="form-control" >
+                <option>Some option 1</option>
+                <option>Some option 2</option>
+                <option>Some option 3</option>
+              </select>
+            </div>
+          </div>
+          <div class="inlineBlockTop gutter5">
+            <label>Key Label</label>
+            <div>
+              <input class="form-control" type="text" [(ngModel)]="keyboardKey.keyLabel" (keyup)="changeKeyValue(keyboardKey)" />
+            </div>
+          </div>
+          <div class="inlineBlockTop gutter5">
+            <label>Key Image</label>
+            <div>
+              <select class="form-control">
+                <option>Some option 1</option>
+                <option>Some option 2</option>
+                <option>Some option 3</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="inlineBlockTop gutter5">
+            <label>Key color</label>
+            <div>
+              <select class="form-control">
+                <option>Some option 1</option>
+                <option>Some option 2</option>
+                <option>Some option 3</option>
+              </select>
+            </div>
+          </div>
+          <div class="inlineBlockTop gutter5">
+            <label>All over</label>
+            <div class="radioCheckWrap">
+              <input type="checkbox" id="allovr1" [checked]="keyboardKey.allOver === 'Y'? true : false" ([ngModel])="keyboardKey.allOver"  (change)="changeAllOver($event,keyboardKey)" />
+              <label for="allovr1"><span></span></label>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="inlineBlockTop gutter5">
+            <label>Key tt</label>
+            <div class="smallStackedInput">
+              <input class="form-control" type="number" [(ngModel)]="keyboardKey.key1" readonly />
+              <input class="form-control" type="number" ([ngModel])="keyboardKey.key2" readonly/>
+              <input class="form-control" type="number" ([ngModel])="keyboardKey.key3" readonly/>
+              <input class="form-control" type="number" ([ngModel])="keyboardKey.key4"  readonly/>
+              
+            </div>
+          </div>
+          <div class="inlineBlockTop gutter5">
+            <label>Security Reprompt</label>
+            <div class="radioCheckWrap">
+              <input type="checkbox" id="sec1" name="sec" [checked]="keyboardKey.securityPrompt === 'Y'? true : false" ([ngModel])="keyboardKey.securityPrompt"  (change)="changeSecurityReprompt($event,keyboardKey)" />
+              <label for="sec1"><span></span></label>
+            </div>
+          </div>
+          <div class="inlineBlockTop gutter5">
+            <label>Confirmation</label>
+            <div class="radioCheckWrap">
+              <input type="checkbox" id="sec2" name="sec" [checked]="keyboardKey.confirmation === 'Y'? true : false" ([ngModel])="keyboardKey.confirmation"  (change)="changeConfirmation($event,keyboardKey)" />
+              <label for="sec2"><span></span></label>
+            </div>
+          </div>
+          <div class="inlineBlockTop gutter5 smallStackedInput">
+            <label>Low Limit</label>
+            <input class="form-control" type="text" [(ngModel)]="keyboardKey.lowerLimit" (keyup)="changeKeyValue(keyboardKey)" />
+          </div>
+          <div class="inlineBlockTop gutter5 smallStackedInput">
+            <label>High Limit</label>
+            <input class="form-control" type="text" [(ngModel)]="keyboardKey.highLimit" (keyup)="changeKeyValue(keyboardKey)"/>
+          </div>
+          <div class="inlineBlockTop gutter5">
+            <label>Minimum Authorization</label>
+            <div>
+              <select class="form-control">
+                <option>Some option 1</option>
+                <option>Some option 2</option>
+                <option>Some option 3</option>
+              </select>
+            </div>
+          </div>
+          <div class="inlineBlockTop gutter5 smallStackedInput">
+            <label>Threshold</label>
+            <input class="form-control" type="text" [(ngModel)]="keyboardKey.threehold" (keyup)="changeKeyValue(keyboardKey)"   />
+          </div>
+        </div>
+        <div class="form-group gutter5">
+          <a href="javascript:" class="btn btn-default" disabled>List Key</a>
+          <div class="inlineBlockTop gutter5">
+            <div class="radioCheckWrap">
+              <input type="checkbox" id="valtxt" name="valtxt" />
+              <label for="valtxt"><span></span></label>
+            </div>
+          </div>
+          <a href="javascript:" class="btn btn-default" disabled>Validation Text</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="panelSection generTopSpace">
+        <div class="form-group">
+          <a href="javascript:" class="btn btn-default" draggable [dragData]="singleKeyDefault">Single</a>
+          <a href="javascript:" class="btn btn-default" draggable dragData="DoubleKey">Double Key</a>
+        </div>
+        <div class="form-group">
+          <a href="javascript:" class="btn btn-default" draggable dragData="Double">Double</a>
+          <a href="javascript:" class="btn btn-default" draggable dragData="Quadkey">Quad Key</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

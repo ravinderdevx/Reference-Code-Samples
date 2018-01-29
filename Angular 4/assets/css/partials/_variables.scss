@@ -1,0 +1,26 @@
+$primaryFont: 'Roboto', sans-serif;
+$secondaryFont: 'Rockwell';
+
+//font weight
+$fwLight:300;
+$fwRegular: 400;
+$semiBold: 500;
+$fwBold: 700;
+$fwExBold: 900;
+
+//color swatches
+$black: $gray-base;
+$white: #fff;
+$mineShaft: $gray-dark;
+$doveGray: $gray;
+$gallery: #ebebeb;
+$mercury: #e1e1e1;
+$alto: $table-border-color;
+$silver: #a3a3a3;
+
+$primaryColor: $brand-primary;
+$fountainBlue: $brand-info;
+$marron: $brand-danger;
+
+//transition default value
+$transitionValue: all 400ms ease-in-out;

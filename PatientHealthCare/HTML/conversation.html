@@ -1,0 +1,162 @@
+@model Intoqi.Models.BotChatModel
+@{
+    ViewBag.Title = "Save";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div ng-app="WebChatBotApp" ng-controller="BotInteractionController as vm">
+    <toaster-container toaster-options="{'time-out': 7000}"></toaster-container>
+    <div class="wrapper-md">
+        <div class="row">
+            <div class="col-md-4">
+                <iframe class="bot-frame" src='@Url.Action("ChatFrame")' width="430" height="600"></iframe>
+                @*<iframe src='https://webchat.botframework.com/embed/INTOQIBOT00?s=@Model.Secret&userid=@Model.UserId&username=@Model.UserName' width="400" height="600"></iframe>*@
+            </div>
+            <div class="col-md-4 sidebar-chat pull-right" ng-controller="ChatHistoryController">
+                <div class="panel-group" id="accordion" style="margin:0;">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse1" class="pending-messages">Pending Messages</a>
+                            </h4>
+                        </div>
+                        <div id="collapse1" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <div class="chat" ng-repeat="chat in PendingChats">
+                                    <div class="header">
+                                        <strong class="primary-font">{{chat.Name}}</strong>
+                                    </div>
+                                    <ul>
+                                        <li class="clearfix" ng-repeat="message in chat.Messages">
+                                            <div class="message-data">
+                                                <div class="media">
+                                                    <span class="media-left chat-img">
+                                                        <img src="http://placehold.it/50/55C1E7/fff&amp;text=U" alt="User Avatar" class="img-circle">
+                                                    </span>
+                                                    <div class="media-body chat-body">
+                                                        <p ng-bind="message.Message" class="message-text"></p>
+                                                    </div>
+                                                </div>
+                                                <small class="pull-left text-muted date">
+                                                    <span class="glyphicon glyphicon-time"></span>{{message.createdon | date:'MMM dd, yyyy HH:mm a'}}
+                                                </small>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="no-chat" ng-if="!showLoading && (!PendingChats || PendingChats.length==0)">
+                                    <p class="text-center">No Pending messages</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse2" class="collapsed received-messages">Received Messages</a>
+                            </h4>
+                        </div>
+                        <div id="collapse2" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <div class="chat" ng-repeat="chat in ReceivedChats">
+                                    <div class="header">
+                                        <strong class="primary-font">{{chat.Name}}</strong>
+                                    </div>
+                                    <ul>
+                                        <li class="clearfix" ng-repeat="message in chat.Messages">
+                                            <div class="message-data">
+                                                <div class="media">
+                                                    <span class="media-left chat-img">
+                                                        <img src="http://placehold.it/50/FA6F57/fff&text=ME" alt="User Avatar" class="img-circle">
+                                                    </span>
+                                                    <div class="media-body chat-body">
+                                                        <p ng-bind="message.Message" class="message-text"></p>
+                                                    </div>
+                                                </div>
+                                                <small class="pull-left text-muted date">
+                                                    <span class="glyphicon glyphicon-time"></span>{{message.createdon | date:'MMM dd, yyyy HH:mm a'}}
+                                                </small>
+                                            </div>
+                                            <div class="response-data">
+                                                <div class="media">
+                                                    <div class="media-body chat-body">
+                                                        <p ng-bind="message.Response" class="message-text"></p>
+                                                    </div>
+                                                    <span class="chat-img media-right">
+                                                        <img src="http://placehold.it/50/55C1E7/fff&amp;text=U" alt="User Avatar" class="img-circle">
+                                                    </span>
+                                                </div>
+                                                <small class="pull-right text-muted date">
+                                                    <span class="glyphicon glyphicon-time"></span>{{message.ReceivedDateTime | date:'MMM dd, yyyy HH:mm a'}}
+                                                </small>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="no-chat" ng-if="!showLoading && (!ReceivedChats || ReceivedChats.length==0)">
+                                    <p class="text-center">No Received messages</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse3" class="collapsed live-messages">Live Chat</a>
+                            </h4>
+                        </div>
+                        <div id="collapse3" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <div class="chat">
+                                    <ul>
+                                        <li class="clearfix" ng-repeat="message in ChatConversations">
+                                            <div class="message-data" ng-if="$even">
+                                                <div class="media">
+                                                    <span class="media-left chat-img">
+                                                        <img src="http://placehold.it/50/FA6F57/fff&text=ME" alt="{{message.ReceiverFullname}}" title="{{message.ReceiverFullname}}" class="img-circle">
+                                                    </span>
+                                                    <div class="media-body chat-body">
+                                                        <p ng-bind="message.Message" class="message-text"></p>
+                                                    </div>
+                                                </div>
+                                                <small class="pull-left text-muted date">
+                                                    <span class="glyphicon glyphicon-time"></span>{{message.ReceivedDate | date:'MMM dd, yyyy HH:mm a'}}
+                                                </small>
+                                            </div>
+                                            <div class="response-data" ng-if="$odd">
+                                                <div class="media">
+                                                    <div class="media-body chat-body">
+                                                        <p ng-bind="message.Message" class="message-text"></p>
+                                                    </div>
+                                                    <span class="chat-img media-right">
+                                                        <img src="http://placehold.it/50/55C1E7/fff&amp;text=U" alt="{{message.ReceiverFullname}}" title="{{message.ReceiverFullname}}" class="img-circle">
+                                                    </span>
+                                                </div>
+                                                <small class="pull-right text-muted date">
+                                                    <span class="glyphicon glyphicon-time"></span>{{message.ReceivedDate | date:'MMM dd, yyyy HH:mm a'}}
+                                                </small>
+                                            </div>
+                                        </li>
+                                        <div class="no-chat" ng-if="!showLoading && (!ChatConversations || ChatConversations.length==0)">
+                                            <p class="text-center">No Chat conversations</p>
+                                        </div>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-1">
+                <button class="btn btn-danger btn-xs" ng-click="vm.endConversation()">End Conversation</button>
+            </div>
+            <div class="col-md-2">
+                @*<button class="btn btn-danger btn-xs pull-right">End Conversation</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/AppScripts/Patient/WebChatBot.js"></script>
+<script src="~/AppScripts/Patient/ChatHistory.js"></script>
