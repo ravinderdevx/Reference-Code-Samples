@@ -1,0 +1,95 @@
+<header id="header" class="animated fadeInDown">
+
+  <div id="logo-group">
+    <span id="logo"> <img src="assets/img/logo.png" alt="CXM Dashboard"> </span>
+  </div>
+
+  <!-- <span id="extr-page-header-space"> <span class="hidden-mobile hiddex-xs">Need an account?</span> <a routerLink="/auth/register" class="btn btn-danger">Create account</a> </span> -->
+
+</header>
+<div id="main" role="main" class="animated fadeInDown">
+
+  <div id="content" class="container">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-7 col-lg-8 hidden-xs hidden-sm">
+        <h1 class="txt-color-red login-header-big">Please Login</h1>
+
+        <div class="hero">
+          <div class="pull-left login-desc-box-l">
+            <h4 class="paragraph-header">This application contains confidential information which requires an ID and password to access. Please use the form to the right to login.</h4>
+            <h4 class="paragraph-header">For other support issues, please email <a href="mailto:support@claritycxm.com">support@claritycxm.com</a>.</h4>
+          </div>
+          <!-- <img src="assets/img/demo/iphoneview.png" class="pull-right display-image" alt="" style="width:210px"> -->
+        </div>
+        
+        <app-system-info></app-system-info>        
+
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-5 col-lg-4">
+        <div class="well no-padding">
+          <form class="smart-form client-form" autocomplete="off" #form="ngForm" (ngSubmit)="form.valid && loginSubmit()" novalidate>
+            <header>
+              Sign In
+            </header>
+            <alert type="{{messageObject.type}}" dismissible="true" *ngIf="messageObject" (onClosed)="messageObject = null">
+              {{messageObject.message}}
+            </alert>
+            <fieldset>
+              <section>
+                <label class="label">E-mail</label>
+                <label class="input" [class.error]="(form.submitted || emailControl.touched) && emailControl.invalid"> <i class="icon-append fa fa-user"></i>
+                  <input type="email" name="email" [(ngModel)]="loginForm.email" #emailControl="ngModel" [disabled]="loading" email required  />
+                  <b class="tooltip tooltip-top-right">
+                    <i class="fa fa-user txt-color-teal"></i>
+                    
+                    <span class="help-block" *ngIf="!emailControl.errors">Please enter email address/username</span>
+                    <span class="help-block" *ngIf="emailControl.errors?.required">Please enter email address/username</span>
+                    <span class="help-block" *ngIf="emailControl.errors?.email">Please enter valid email</span>
+                  </b>
+                  </label>
+              </section>
+              <section>
+                <label class="label">Password</label>
+                <label class="input" [class.error]="(form.submitted || passwordControl.touched) && passwordControl.invalid"> 
+                  <i class="icon-append fa fa-lock"></i>
+                  <input type="password" name="password" [(ngModel)]="loginForm.password" #passwordControl="ngModel" [disabled]="loading" required >
+                  <b class="tooltip tooltip-top-right">
+                    <i class="fa fa-lock txt-color-teal"></i> Enter your password
+                  </b>
+                </label>
+
+                <div class="note">
+                  <a routerLink="/forgot-password">Forgot password?</a>
+                  <a routerLink="/email-confirmation" class="pull-right">Email Confirmation?</a>
+                </div>
+              </section>
+              <section>
+                <label class="checkbox">
+                  <input type="checkbox" name="remember" [(ngModel)]="loginForm.remember">
+                  <i></i>Stay signed in</label>
+              </section>
+            </fieldset>
+            <footer>
+              <button type="submit" class="btn btn-primary" [disabled]="loading">
+                
+                Sign in
+              </button>
+            </footer>
+          </form>
+        </div>
+        <!-- <h5 class="text-center"> - Or sign in using -</h5>
+        <ul class="list-inline text-center">
+          <li>
+            <a (click)="(null)" class="btn btn-primary btn-circle"><i class="fa fa-facebook"></i></a>
+          </li>
+          <li>
+            <a (click)="(null)" class="btn btn-info btn-circle"><i class="fa fa-twitter"></i></a>
+          </li>
+          <li>
+            <a (click)="(null)" class="btn btn-warning btn-circle"><i class="fa fa-linkedin"></i></a>
+          </li>
+        </ul> -->
+      </div>
+    </div>
+  </div>
+</div>

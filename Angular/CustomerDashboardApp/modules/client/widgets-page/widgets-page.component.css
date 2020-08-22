@@ -1,0 +1,21 @@
+.widget-configuration-btn {
+    position: fixed;
+    width: 52px;
+    height: 52px;
+    border-radius: 100%;
+    background: #ccc;
+    border: none;
+    color: #fff;
+    font-size: 22px;
+    padding: 0;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1;
+    background-color: #3276b1;
+    border-color: #2c699d;
+}
+
+.widget-configuration-btn[disabled] {
+    background: #ccc;
+    cursor: not-allowed;
+}

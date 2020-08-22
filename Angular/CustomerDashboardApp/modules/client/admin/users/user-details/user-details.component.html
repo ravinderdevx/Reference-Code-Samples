@@ -1,0 +1,164 @@
+<div id="content">
+  <div class="row">
+    <sa-big-breadcrumbs [items]="['User Details']" icon="users" class="col-xs-12 col-sm-7 col-md-7 col-lg-6">
+    </sa-big-breadcrumbs>
+    <div class="col-xs-12 col-sm-5 col-md-5 col-lg-6">
+      <button class="btn btn-primary pull-right mt-10" [disabled]="!registerModel._id" (click)="resetDashboardConfirmation()">Reset Dashboard</button>
+    </div>
+  </div>
+
+  <form name="registerUserform" class="smart-form" autocomplete="off"
+   (ngSubmit)="registerCompanyUser()" [saUiValidate]="validationOptions" novalidate="novalidate" *ngIf="loading == false">
+
+    <alert [type]="messageObject.type" class="mb-10" dismissible="true" *ngIf="messageObject" (onClosed)="messageObject = null">
+      <strong class="alert-heading">{{ messageObject.text }}!</strong> {{ messageObject.message }}
+    </alert> 
+
+   <fieldset>
+      <div class="row">
+        <section class="col col-6">
+          <label class="label">First name</label>
+          <label class="input"> <i class="icon-append fa fa-user"></i>
+            <input type="text" name="firstname" class="form-control" [(ngModel)]="registerModel.FirstName" />
+          </label>
+        </section>
+        <section class="col col-6">
+          <label class="label">Last name</label>
+          <label class="input"> <i class="icon-append fa fa-user"></i>
+            <input type="text" name="lastname" class="form-control" [(ngModel)]="registerModel.LastName" />
+          </label>
+        </section>
+      </div>
+
+      <div class="row">
+        <section class="col col-6">
+          <label class="label">E-Mail</label>
+          <label class="input"> <i class="icon-append fa fa-envelope-o"></i>
+            <input type="text" name="email" [(ngModel)]="registerModel.Email" #emailControl="ngModel"
+              [disabled]="registerModel._id" />
+          </label>
+        </section>
+        <section class="col col-6">
+          <label class="label">Phone</label>
+          <label class="input"> <i class="icon-append fa fa-phone"></i>
+            <input type="tel" name="phone" data-smart-masked-input="(999) 999-9999"
+              [(ngModel)]="registerModel.Phone" />
+          </label>
+        </section>
+      </div>
+
+      <div class="row">
+        <section class="col col-6">
+          <label class="label">Job Title</label>
+          <label class="input"> <i class="icon-append fa fa-user"></i>
+            <input type="text" name="jobtitle" class="form-control" [(ngModel)]="registerModel.JobTitle" />
+          </label>
+        </section>
+        <section class="col col-6" *ngIf="!registerModel._id">
+          <label class="label">Password</label>
+          <label class="input"> <i class="icon-append fa fa-lock"></i>
+            <input type="password" name="password" class="form-control" [(ngModel)]="registerModel.Password" />
+          </label>
+        </section>
+      </div>
+
+      <div class="row">
+        <section class="col col-6">
+          <label class="label"><strong>Assign Permission to a User</strong></label>
+        </section>
+        <section class="col col-6">
+          <label class="checkbox">
+            <input type="checkbox" name="companyadmin" [(ngModel)]="registerModel.CompanyAdmin" #comapanyAdmin="ngModel" (change)="!comapanyAdmin.value && checkLocationIfSelected()" />
+            <i></i> Company Admin
+          </label>
+        </section>
+      </div>
+
+      <div class="row" *ngIf="!registerModel.CompanyAdmin">
+        <section class="col col-6">
+          <label class="label">Screens & Services</label>
+          <ul class="treeview">
+            <li *ngFor="let screen of screenServices; let index = index;">
+              <label>
+                {{index + 1}}. {{screen.ScreenName}}
+              </label>
+              <ul *ngIf="screen.Services && screen.Services.length > 0">
+                <li *ngFor="let service of screen.Services; let i = index;">
+                  <label class="checkbox">
+                    <input type="checkbox" name="services"
+                      [checked]="checkIfSelected(screen._id, service._id, 'service')"
+                      (change)="onCheckboxChange(screen._id, service._id, 'service', $event)" />
+                    <i></i> {{service.ServiceName}}
+                  </label>
+                </li>
+              </ul>
+              <ul *ngIf="screen.ChildScreens && screen.ChildScreens.length > 0">
+                <li *ngFor="let cscreen of screen.ChildScreens | orderBy:'ScreenName':0; let i = index;">
+                  <label class="checkbox">
+                    <input type="checkbox" name="screens" [checked]="checkIfSelected(cscreen._id, null, 'screen')"
+                      (change)="onCheckboxChange(screen._id, cscreen._id, 'screen', $event)" />
+                    <i></i> {{cscreen.ScreenName}}
+                  </label>
+                </li>
+              </ul>
+
+              <ul *ngIf="(!screen.ChildScreens || screen.ChildScreens.length == 0) && (!screen.Services || screen.Services.length == 0)">
+                <li>
+                  <label class="checkbox">
+                    <input type="checkbox" name="screens" [checked]="checkIfSelected(screen._id, null, 'screen')"
+                      (change)="onCheckboxChange(screen._id, screen._id, 'screen', $event)" />
+                    <i></i> {{screen.ScreenName}}
+                  </label>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </section>
+
+        <section class="col col-6">
+          <label class="label">Locations</label>
+          <!-- Define the recursive template. -->
+          <ul class="locations-treeview treeview">
+            <ng-template #nodeTemplateRef let-node>
+              <li>
+                <label class="checkbox">
+                  <input type="checkbox" name="location" />
+                  <i></i> {{node.GroupName}}
+                </label>
+
+                <ul *ngIf="node.Locations && node.Locations.length > 0">
+                  <li *ngFor="let location of node.Locations; let i = index;">
+                    <label class="checkbox location_{{location._id}}">
+                      <input type="checkbox" name="location[]" [value]="location._id" />
+                      <i></i> {{location.LocationName}}
+                    </label>
+                  </li>
+                </ul>
+
+                <ul *ngIf="node.Children && node.Children.length">
+                  <!-- Invoke the recursive template. -->
+                  <ng-template ngFor [ngForOf]="node.Children" [ngForTemplate]="nodeTemplateRef">
+                    <!--
+                            NOTE: The "$implicit" property of the ngFor context is what will
+                            be made available to the template ref's implicit let-node binding.
+                        -->
+                  </ng-template>
+                </ul>
+              </li>
+            </ng-template>
+            <ng-template *ngIf="companyLocations.length > 0" [ngTemplateOutlet]="nodeTemplateRef"
+              [ngTemplateOutletContext]="{ $implicit: companyLocations[0] }">
+            </ng-template>
+          </ul>
+
+        </section>
+      </div>
+    </fieldset>
+
+    <footer>
+      <button type="submit" class="btn btn-primary" [disabled]="showLoading">Save</button>
+      <button type="button" class="btn btn-default" [disabled]="showLoading" (click)="goBack()">Cancel</button>
+    </footer>
+  </form>
+
+</div>

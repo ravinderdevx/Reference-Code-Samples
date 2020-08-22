@@ -1,0 +1,20 @@
+{
+    "id": "",
+    "name": "CXMConfiguration",
+    "value": {
+        "admin_id": "",
+        "clarityStaffMail": "",
+        "database": "",
+        "private_api_key": "",
+        "services": {
+            "audit_external": "Audits (External)",
+            "audit_internal": "Audits (Internal)",
+            "mystery_shops": "Mystery Shops",
+            "soical_media": "Social Media",
+            "survey_customer": "Surveys (Customer)",
+            "survey_employee": "Surveys (Employee)"
+        },
+        "supportMail": "ravinderwins@gmail.com"
+    },
+    "from_secret": false
+}

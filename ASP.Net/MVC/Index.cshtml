@@ -1,0 +1,306 @@
+﻿@model Pool.Website.Models.SSDI.SsdiModel
+
+@section MetaTags{
+
+    @Html.Raw(Model.MetaProperties)
+}
+@section MetaKeyWord{
+    <meta name="keywords" content="@ViewBag.MetaKeyWord" />
+}
+@section NoDiscoverSearchSection
+{}
+@{
+    bool IsAuthenticated = false;
+    Pool.Core.SharedInfo _sharedInfo = new Pool.Core.SharedInfo();
+    int iUserID = _sharedInfo.LoggedInUserInfo.User.UserId;
+    IsAuthenticated = iUserID > 0;
+}
+<link href="@Pool.Core.Configuration.NaConfig.Url.DomainUrl/Content/ssdi.css" rel="stylesheet" />
+<div class="bodyArea">   
+    <section>
+
+        <div class="row-fluid">
+            <div class="commonContainer">
+
+                <div class="shadow-box-mrgn shadow-radius-all clearfix">
+                    <div class="common-padding border black_img padding_botm_zero">
+                        <div class="rel_pos">
+                            <h1>Social Security Death Index Records </h1>
+                            
+                            <h2>Search the complete Social Security Death Index (SSDI) <br />created from the Social Security Master Death File.</h2>
+
+
+                            <div class="home-form custom_red_box">
+                                <div class="head-sec">
+                                    <div class="head-sec-inner">
+                                        Search U.S. SSDI Records
+                                    </div>
+                                </div>
+                                @using (Html.BeginForm("SSDISearch", "SSDI", FormMethod.Post, new { @id = "frmssdi" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    
+                                    if (Request.Browser.Browser == "IE" && Request.Browser.MajorVersion == 8)
+                                    {
+                                        
+                                      <div class="form-content">
+                                        <div class="padding_custom padding_botm_zero">
+                                            <p class="font_size18">Deceased Ancestor's Name</p>
+                                            <div class="span6 marng_left0">
+                                                <label>First Name</label>
+                                                @Html.TextBoxFor(m => m.FirstName, new {  @maxlength = 20 })
+                                            </div>
+                                            <div class="span6 pull-right">
+                                                <label>Last Name</label>
+                                                @Html.TextBoxFor(m => m.LastName, new {  @maxlength = 20 })
+                                                <span class="field-validation-error" id="lblLastName"></span>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                           
+                                        </div>
+                                          <div class="padding_custom padding_botm_zero" style="padding-top: 0px;">
+                                              <span class="field-validation-error" id="lblallmsg"> </span>
+                                          </div>
+                                        <div class="padding_custom padding_botm_zero">
+                                            <p class="font_size18">Date Information</p>
+                                            <div class="span6 marng_left0">
+                                                <label>Birth Year (Range)</label>
+                                                <div class="span6 marng_left0">
+                                                    @Html.TextBoxFor(m => m.BirthYearStart, new {  @class = "birthfield", @maxlength = 4 })
+
+                                                </div>
+
+                                                <div class="span6">
+                                                    @Html.TextBoxFor(m => m.BirthYearEnd, new {@class = "birthfield", @maxlength = 4 })
+                                                </div>
+                                                <span class="field-validation-error" id="lblBirthYear"></span>
+                                            </div>
+                                            <div class="span6 pull-right">
+                                                <label>Death Year (Range)</label>
+                                                <div class="span6 marng_left0">
+                                                    @Html.TextBoxFor(m => m.DeathYearStart, new {  @class = "birthfield", @maxlength = 4 })
+                                                </div>
+                                                <div class="span6">
+                                                    @Html.TextBoxFor(m => m.DeathYearEnd, new { @class = "birthfield", @maxlength = 4 })
+                                                </div>
+                                                <span class="field-validation-error" id="lblDeathYear"></span>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+                                        <div class="padding_custom padding_botm_zero">
+                                            <p class="font_size18">Social Security Number Details</p>
+
+                                            <label>Social Security Number     <img id="ssnloader" alt="loading..." src="@Pool.Core.Configuration.NaConfig.Url.CDNUrl/content/images/mysiteLoader1.gif" class="loading_img" style="padding-bottom: 259px;padding-left: 489px; display:none;" /></label>
+                                            @Html.TextBoxFor(m => m.SsnNumber, new {  @maxlength = 9 })
+                                            <span class="field-validation-error" id="lblssn">@ViewBag.error</span>
+                                            <div class="clearfix"></div>
+
+                                            <label style="margin-top:10px;">SSN States</label>                                          
+                                            <select id="SsnState" name="SsnState" disabled="disabled">
+                                                <option>State</option>
+                                            </select>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+                                        <div class="padding_custom text-center">
+                                            <button type="submit" class="btn-large green_btn btn-block" onclick="return validateSearchData()">Search Death Records</button>
+                                            <p><a href="@Pool.Core.Configuration.NaConfig.Url.DomainUrl/advancedsearch/">Go to Advanced Search</a></p>
+                                        </div>
+
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    
+                                    }
+                                    else { 
+                                    <div class="form-content">
+                                        <div class="padding_custom padding_botm_zero">
+                                            <p class="font_size18">Deceased Ancestor's Name</p>                                           
+                                          
+                                            <div class="span6 marng_left0">
+                                                <label>First Name</label>
+                                                @Html.TextBoxFor(m => m.FirstName, new { placeholder = "E.g. John", @maxlength = 20 })
+                                            </div>
+                                            <div class="span6 pull-right">
+                                                <label>Last Name</label>
+                                                @Html.TextBoxFor(m => m.LastName, new { placeholder = "E.g. Forrester", @maxlength = 20 })
+                                                <span class="field-validation-error" id="lblLastName"></span>
+                                            </div>
+
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="padding_custom padding_botm_zero" style="padding-top: 0px;">
+                                            <span class="field-validation-error" id="lblallmsg"> </span>
+                                        </div>
+                                        <div class="padding_custom padding_botm_zero">
+                                            <p class="font_size18">Date Information</p>
+                                            <div class="span6 marng_left0">
+                                                <label>Birth Year (Range)</label>
+                                                <div class="span6 marng_left0">
+                                                    @Html.TextBoxFor(m => m.BirthYearStart, new { placeholder = "From", @class = "birthfield", @maxlength = 4 })
+
+                                                </div>
+
+                                                <div class="span6">
+                                                    @Html.TextBoxFor(m => m.BirthYearEnd, new { placeholder = "To", @class = "birthfield", @maxlength = 4 })
+                                                </div>
+                                                <span class="field-validation-error" id="lblBirthYear"></span>
+                                            </div>
+                                            <div class="span6 pull-right">
+                                                <label>Death Year (Range)</label>
+                                                <div class="span6 marng_left0">
+                                                    @Html.TextBoxFor(m => m.DeathYearStart, new { placeholder = "From", @class = "birthfield", @maxlength = 4 })
+                                                  
+                                                </div>
+                                              
+                                                <div class="span6">
+                                                    @Html.TextBoxFor(m => m.DeathYearEnd, new { placeholder = "To", @class = "birthfield", @maxlength = 4 })
+                                                   
+                                                </div>                                               
+                                                <span class="field-validation-error" id="lblDeathYear"></span>
+                                            </div>
+                                            
+                                            <div class="clearfix"></div>
+
+                                        </div>
+
+                                            <div class="padding_custom padding_botm_zero">
+                                                <p class="font_size18">Social Security Number Details</p>
+
+                                                <label>Social Security Number   <img id="ssnloader" alt="loading..." src="@Pool.Core.Configuration.NaConfig.Url.CDNUrl/content/images/mysiteLoader1.gif" class="loading_img" style="padding-bottom: 259px;padding-left: 480px; display:none;" /></label>
+                                                @Html.TextBoxFor(m => m.SsnNumber, new { placeholder = "E.g. 123456789", @maxlength = 9 })
+
+                                                <span class="field-validation-error" id="lblssn">@ViewBag.error</span>
+                                                <div class="clearfix"></div>
+
+                                                <label style="margin-top:10px;">SSN States</label>                                                
+                                                <select id="SsnState" name="SsnState">
+                                                    <option>State</option>
+                                                </select>
+                                                <div class="clearfix"></div>
+
+                                            </div>
+
+                                            <div class="padding_custom text-center">
+                                                <button type="submit" class="btn-large green_btn btn-block" onclick="return validateSearchData()">Search Death Records</button>
+                                                <p><a href="@Pool.Core.Configuration.NaConfig.Url.DomainUrl/advancedsearch/">Go to Advanced Search</a></p>
+                                            </div>
+
+                                            <div class="clearfix"></div>
+                                        </div>
+                                }
+                                }
+
+                            </div>
+
+                        </div>
+
+                        <img src="@Pool.Core.Configuration.NaConfig.Url.CDNUrl2/content/images/ssdi/newpaper.png" alt="" />
+                        <div class="clearfix"></div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </section>
+</div>
+<div class="all-logos-sec">
+   
+    <ul class="all-logos">
+        <li class="first"></li>
+        <li class="second"></li>
+        <li class="third"></li>
+        <li class="fourth"></li>
+        <li class="fifth"></li>
+        <li class="sixth"></li>
+        <li class="seventh"></li>
+        <li class="eighth"></li>
+        <li class="nineth"></li>
+    </ul>
+</div>
+
+<div class="client-say clearfix">
+    <h2 style="padding-left:100px;">What Our Customers Say <span>Join More Than 200,000 Happy Subscribers!</span></h2>
+    <div class="row-fluid">
+        <div class="span6 client-saying-col">
+            <div class="client-saying">
+                <div class="client client-1"></div>
+                <p>
+                    "I love this site. It's interesting to read articles about different family members. I've found articles as well as an obituary about an uncle who passed away before I was born. It's great for helping with genealogy."
+                    <span>- Patricia T.</span>
+                </p>
+            </div>
+        </div>
+        <div class="span6 client-saying-col">
+            <div class="client-saying">
+                <div class="client client-2"></div>
+                <p>
+                    "It is amazing how easy and exciting it is to access all of this information! I
+                    found hundreds of articles about my relatives from Germany! Well worth the subscription!"
+                    <span>- Michael S.</span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="search-block">
+    <div class="search-block-col">        
+        <h3 style="font-style: normal !important; color: #b31418;">
+            United States Social Security Death Index
+        </h3>        
+        <p style="padding-top: 10px">The Social Security Death Index (SSDI) is generated from the U. S. Social Security Administration's Death Master File and it is used by the Social Security Administration for coordinating benefits. The Social Security Death Index is a perfect starting point for your family history research and a wonderful resource for genealogists because it contains information on millions of deceased individuals who had social security numbers and whose deaths were reported to the Social Security Administration. The SSDI includes entries from every state in the United States and covers deaths in the United States between 1800 and 2013. </p>
+        <p class="grey-txt">
+            The Social Security Administration does not guarantee the accuracy of the DMF file. Therefore, the absence of a particular person on the file is not proof that the individual is alive. If a person is missing from the index, it may be that the SS death was not reported to the Social Security Administration (SSA), the SS death benefit was never requested or the possibility that an error was made when entering the information into the SSDI.
+        </p>
+    </div>
+    <div class="history-info">
+        <span style="font-family: Arial,Helvetica,sans-serif !important; font-size: 18px; font-style: italic; color: #292828; padding: 0 0 15px; line-height: 28px; font-weight: 400;">Find Helpful Family History Information Including:</span>
+        <ul>
+            <li style="margin-top: 15px;">First Name</li>
+            <li>Middle Name</li>
+            <li>Last Name</li>
+            <li>Est. Age at Death</li>
+            <li>Date of Birth</li>
+            <li>Date of Death</li>
+            <li>SSN Issuer State</li>
+            <li>SSN Number</li>
+        </ul>
+    </div>
+</div>
+
+@if (IsAuthenticated == false)
+{
+
+    <div class="newLocSearchArea light_grey_box pad_all30">
+
+        <div class="span7 marng_left0" style="width:670px;">
+            <h2 class="font_size20"> Start a @System.Configuration.ConfigurationManager.AppSettings["TrialPlanLength"].ToString()-day trial membership and receive access to over two billion family history records. </h2>
+        </div>
+
+        <div class="span2" style="width:180px;">
+            <a href="@Pool.Core.Configuration.NaConfig.Url.PaymentUrl3" class="green_btn btn-block" style="font-size: 15px; padding:10px;">Start your Membership !</a>
+        </div>
+       
+    </div>
+}
+
+
+<div class="height10"></div>
+
+
+@section CustomSCRIPT{
+
+    <script type="text/javascript">
+        $(function () {
+            $("select.custom").each(function () {
+                var sb = new SelectBox({
+                    selectbox: $(this),
+                });
+            });
+            $("#SSDI").addClass("active");
+            $("#librarybanner").hide();           
+        });
+    </script>
+}

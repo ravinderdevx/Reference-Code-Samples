@@ -1,0 +1,108 @@
+<form name="widgetConfigurationForm" class="form-horizontal" autocomplete="off"
+  novalidate="novalidate" #form="ngForm" [saUiValidate]="validationOptions" *ngIf="initialLoading == false">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="close.emit(true)">
+      &times;
+    </button>
+    <h4 class="modal-title">Customize Widget</h4>
+  </div>
+  <div class="modal-body">
+    <!-- <alert [type]="messageObject.type" class="mb-10" dismissible="true" *ngIf="messageObject" (onClosed)="messageObject = null">
+      <strong class="alert-heading">{{ messageObject.text }}!</strong> {{ messageObject.message }}
+    </alert> -->
+
+    <div class="form-group">
+      <label class="col-md-4 control-label">Widget Title</label>
+      <div class="col-md-8">
+        <input type="text" name="title" class="form-control" [(ngModel)]="widgetModel.WidgetTitle" />
+      </div>
+    </div>
+    <div *ngIf="configObject.configurationMode == false">
+      <div class="form-group">
+        <!-- <label class="col-md-4 control-label">{{widgetModel.IsCustomWidgetSettings?'Use below settings':'Use global filter settings'}}</label> -->
+        <label class="col-md-4 control-label">Use Custom Settings</label>
+        <div class="col-md-8">
+            <span class="onoffswitch">
+              <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="show-tabs" [(ngModel)]="widgetModel.IsCustomWidgetSettings" >
+              <label class="onoffswitch-label" for="show-tabs">
+                  <span class="onoffswitch-inner" data-swchon-text="YES" data-swchoff-text="NO"></span>
+                  <span class="onoffswitch-switch"></span>
+              </label>
+            </span>
+        </div>
+      </div>
+      
+      <div *ngIf="widgetModel.IsCustomWidgetSettings">
+        <div class="form-group">
+          <label class="col-md-4 control-label">Date Range Type</label>
+          <div class="col-md-8">
+              <date-range-dropdown className="form-control" name="daterangetype" [(ngModel)]="widgetModel.CustomWidgetSettings.DateRangeType" (change)="dateRangeTypeChanged()" #dateRangeControl></date-range-dropdown>
+          </div>
+        </div>
+
+        <div class="" *ngIf="dateRangeControl.value == 'CUSTOM_DATE_RANGE'">
+          <div class="form-group">
+            <label class="col-md-4 control-label">Date Range</label>
+            <div class="col-md-8">
+              <!-- <div class="input-group">
+                <input type="text" name="startdate" id="startDate" placeholder="MM/DD/YYYY" class="form-control datepicker"
+                        [saUiDatepicker]="{ dateFormat: 'mm/dd/yy' }" [(ngModel)]="widgetModel.CustomWidgetSettings.StartDate" />
+                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+              </div> -->
+              <div class="input-group">
+                  <input type="text"
+                  name="daterange"
+                  placeholder="MM/DD/YYYY - MM/DD/YYYY"
+                  class="form-control"
+                  [(ngModel)]="dateRangeModel"
+                  [bsConfig]="bsConfig"
+                  (ngModelChange)="dateRangeChanged(dpr)"
+                  #dpr="bsDaterangepicker"
+                  bsDaterangepicker
+                  [disabled]="dateRangeControl.value != 'CUSTOM_DATE_RANGE'" />
+                  <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="form-group">
+            <label class="col-md-4 control-label">End Date</label>
+            <div class="col-md-8">
+              <div class="input-group">
+                <input type="text" name="enddate" placeholder="MM/DD/YYYY" class="form-control datepicker"
+                        [saUiDatepicker]="{ dateFormat: 'mm/dd/yy' }" [(ngModel)]="widgetModel.CustomWidgetSettings.EndDate" />
+                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+              </div>
+            </div>
+          </div> -->
+        </div>
+
+        <div class="form-group">
+          <label class="col-md-4 control-label">Location</label>
+          <div class="col-md-8">
+            <locations-dropdown [userId]="configObject.userId" className="form-control" name="location" [value]="widgetModel.CustomWidgetSettings.Location" [(ngModel)]="widgetModel.CustomWidgetSettings.Location"></locations-dropdown>
+          </div>
+        </div>
+
+        <div class="form-group" *ngIf="widgetModel.WidgetComponentName.indexOf('WordCloudWidgetComponent') !== -1">
+          <label class="col-md-4 control-label">Top Words</label>
+          <div class="col-md-8">
+              <select name="topwords" [(ngModel)]="widgetModel.CustomWidgetSettings.TopWords"class="form-control">
+                  <option *ngFor="let i of [10, 25, 50]" [value]="i"> 
+                    {{i}}
+                  </option>
+              </select>
+          </div>
+        </div>
+
+        
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" (click)="close.emit(true)">
+      Close
+    </button>
+    <button type="button" class="btn btn-primary" (click)="saveWidgetConfiguration()" [disabled]="loading || form.dirty == false">Save Configuration</button>
+  </div>
+</form>

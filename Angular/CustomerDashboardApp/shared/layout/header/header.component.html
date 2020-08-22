@@ -1,0 +1,116 @@
+<header id="header">
+  <div id="logo-group">
+
+    <!-- PLACE YOUR LOGO HERE -->
+    <span id="logo"> <img src="assets/img/logo.png" alt="SmartAdmin"> </span>
+    <!-- END LOGO PLACEHOLDER -->
+  </div>
+
+
+  <!-- pulled right: nav area -->
+  <div class="pull-right" *ngIf="configurationMode == false && !userId">
+    <sa-logout [username]="user.FirstName+ ' ' + user.LastName" (logout)="logout($event)"></sa-logout>
+
+    <!-- #MOBILE -->
+    <!-- Top menu profile link : this shows only when top menu is active -->
+    <ul id="mobile-profile-img" class="header-dropdown-list hidden-xs padding-5">
+      <li class="">
+        <a href="#" class="dropdown-toggle no-margin userdropdown" data-toggle="dropdown">
+          <img src="assets/img/avatars/sunny.png" alt="John Doe" class="online"/>
+        </a>
+        <ul class="dropdown-menu pull-right">
+          <li>
+            <a (click)="(null)" class="padding-10 padding-top-0 padding-bottom-0"><i
+              class="fa fa-cog"></i> Setting</a>
+          </li>
+          <li class="divider"></li>
+          <li>
+            <a routerLink="/app-views/profile" class="padding-10 padding-top-0 padding-bottom-0"> <i
+              class="fa fa-user"></i>
+              <u>P</u>rofile</a>
+          </li>
+          <li class="divider"></li>
+          <li>
+            <a (click)="(null)" class="padding-10 padding-top-0 padding-bottom-0"
+               data-action="toggleShortcut"><i class="fa fa-arrow-down"></i> <u>S</u>hortcut</a>
+          </li>
+          <li class="divider"></li>
+          <li>
+            <a (click)="(null)" class="padding-10 padding-top-0 padding-bottom-0"
+               data-action="launchFullscreen"><i class="fa fa-arrows-alt"></i> Full <u>S</u>creen</a>
+          </li>
+          <li class="divider"></li>
+          <li>
+            <a routerLink="/auth/login" class="padding-10 padding-top-5 padding-bottom-5" data-action="userLogout"><i
+              class="fa fa-sign-out fa-lg"></i> <strong><u>L</u>ogout</strong></a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+
+    <!-- logout button -->
+    <!-- end logout button -->
+
+    <!-- Help Button -->
+    <app-help></app-help>
+    <!-- End of Help Button -->
+    
+    <!-- search mobile button (this is hidden till mobile view port) -->
+    <div id="search-mobile" class="btn-header transparent pull-right">
+      <span> <a (click)="toggleSearchMobile()" title="Search"><i class="fa fa-search"></i></a> </span>
+    </div>
+    <!-- end search mobile button -->
+
+    <!-- input: search field -->
+    <!-- <form #searchForm="ngForm" (ngSubmit)="onSubmit()" class="header-search pull-right">
+      <input id="search-fld" type="text" name="param" required
+             placeholder="Find reports and more">
+      <button type="submit">
+        <i class="fa fa-search"></i>
+      </button>
+      <a id="cancel-search-js" (click)="toggleSearchMobile()" title="Cancel Search"><i class="fa fa-times"></i></a>
+    </form> -->
+    <!-- end input: search field -->
+
+    <!-- fullscreen button -->
+    <sa-full-screen></sa-full-screen>
+    <!-- end fullscreen button -->
+
+    <!-- #Voice Command: Start Speech -->
+    <!-- <sa-speech-button></sa-speech-button> -->
+    <!-- end voice command -->
+
+    <sa-collapse-menu></sa-collapse-menu>
+
+  </div>
+  <!-- end pulled right: nav area -->
+
+  <!-- pulled right: nav area -->
+  <div class="pull-right" *ngIf="configurationMode == true || userId">
+    <div id="closeWindow" class="btn-header transparent pull-right">
+        <span> <a onclick="javascript:window.close()" title="Close Window"><i class="fa fa-remove"></i></a> </span>
+    </div>
+    <div id="closeWindow" class="mt-15 mr-10 hidden-xs pull-right">
+        <strong *ngIf="configurationMode == true">Logged in as: <a>{{user.CompanyName}} Admin</a></strong>
+        <strong *ngIf="userId">Logged in as: <a>{{user.FirstName}} {{user.LastName}}</a></strong>
+    </div>
+  </div>
+  <!-- end pulled right: nav area -->
+
+</header>
+
+
+<!--Start Show Session Expire Warning Popup here -->
+<div bsModal #SessionExireWarningPopup="bs-modal" class="modal session-warning fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Session Expiration Warning</h4>
+            </div>
+            <div class="modal-body">
+                Your session will time out in <strong>{{countDown}}</strong> seconds. If you wish to extend your session, press any key or move the cursor.
+            </div>
+        </div>
+    </div>
+</div>
+<!--End Show Session Expire Warning Popup here -->

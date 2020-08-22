@@ -1,0 +1,56 @@
+<!-- MAIN CONTENT -->
+<div id="content">
+  <div class="row">
+    <sa-big-breadcrumbs [items]="[pageTitle]" icon="list-alt" class="col-xs-12 col-sm-7 col-md-7 col-lg-6"></sa-big-breadcrumbs>
+    <div class="col-xs-12 col-sm-5 col-md-5 col-lg-6">
+      <button class="btn btn-default pull-right mt-10" [routerLink]="parentScreenUrl">Back</button>
+    </div>
+  </div>
+
+  <div class="" *ngIf="!loading">
+    <section class="well mb-20">
+      <!-- row -->
+      <div class="row">
+        <ng-container *ngFor="let key of widgetDetails | keys">
+          <div class="col-sm-4 col-xs-12" *ngIf="excludeColumns.indexOf(key) == -1">
+            <div class="block" *ngIf="key == 'transDate'">
+              <strong>Trans Date</strong>
+              <p>{{widgetDetails[key] | date: 'd MMM yyyy'}}</p>
+            </div>
+            <div class="block" *ngIf="key != 'transDate'">
+              <strong>{{key}}</strong>
+              <p *ngIf="key.substr(key.length - 4).toLowerCase() != 'date'">{{widgetDetails[key]}}</p>
+              <p *ngIf="key.substr(key.length - 4).toLowerCase() == 'date'">{{widgetDetails[key]  | date: 'd MMM yyyy'}}</p>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+      <!-- end row -->
+    </section>
+
+    <section class="well mb-20" *ngIf="widgetScores">
+      <div class="row">
+        <h4 class="col-sm-12 col-xs-12 mb-20">Section Scores: </h4>
+
+        <div class="col-sm-3 col-xs-12" *ngFor="let key of widgetScores | keys">
+          <div class="block">
+            <strong>{{key}}</strong>
+            <p>{{widgetScores[key]}}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="well" *ngIf="widgetQuestions">
+      <div class="row">
+        <h4 class="col-sm-12 col-xs-12 mb-20">Questions: </h4>
+        
+        <div class="col-sm-12 col-xs-12" *ngFor="let key of widgetQuestions | keys; let i = index;">
+          <label><strong>{{i + 1}}. </strong> {{key}}</label>
+          <p><strong>Answer: </strong>{{widgetQuestions[key]}}</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+<!-- END MAIN CONTENT -->

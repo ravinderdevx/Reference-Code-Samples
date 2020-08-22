@@ -1,0 +1,90 @@
+<div id="content">
+  <div class="row">
+    <sa-big-breadcrumbs [items]="[pageTitle]" icon="users" class="col-xs-12 col-sm-7 col-md-7 col-lg-6">
+    </sa-big-breadcrumbs>
+    <div class="col-xs-12 col-sm-5 col-md-5 col-lg-6 mt-10 mb-10 header-action text-right">
+      <!-- <a class="btn btn-primary" (click)="openReportsUploadPopUp()" *ngIf="isClarityAdmin"><span class="hidden-xs">Upload Reports</span> <i class="glyphicon glyphicon-list-alt visible-xs"></i></a> -->
+      <a class="btn btn-primary" (click)="openDataExtractPopUp()" *ngIf="!isClarityAdmin"><span class="hidden-xs">Data Export</span> <i class="glyphicon glyphicon-open visible-xs"></i></a>
+      <a class="btn btn-primary" (click)="getReports()"><span class="hidden-xs">Refresh</span> <i class="glyphicon glyphicon-refresh visible-xs"></i></a>
+    </div>
+  </div>
+
+  <!-- <sa-widgets-grid> -->
+    <div class="row">
+      <article class="col-sm-12">
+        <div class="widget-body datatable-widget table-bordered table-responsive m-0 no-padding">
+            <sa-datatable
+            [options]="dataTableOptions"
+            paginationLength="true" 
+            tableClass="table table-striped table-bordered table-hover" 
+            width="100%">
+            <thead>
+              <tr>
+                  <th>File/Directory</th>
+                  <th>Last Modified</th>
+                  <th>Action</th>
+              </tr>
+            </thead>
+            <tbody [class.hide]="loading">
+
+            </tbody>
+            <tbody *ngIf="loading">
+              <tr class="odd">
+                <td valign="top" colspan="3" class="dataTables_empty">Please wait while loading files...</td>
+              </tr>
+            </tbody>
+          </sa-datatable>
+
+        </div>
+
+      </article>
+    </div>
+  <!-- </sa-widgets-grid> -->
+  </div>
+
+  <ng-template #DataExportModal>
+    <app-data-export [userId]="userId" [screenUrl]="screenUrl" (close)="closeModal()"></app-data-export>
+  </ng-template>
+
+  <ng-template #UploadFilesModal>
+    <app-upload-files [folder]="folder" (close)="closeModal()"></app-upload-files>
+  </ng-template>
+
+  <div bsModal #CreateDirectoryModal="bs-modal" class="modal fade" tabindex="-1" role="dialog">
+    <form name="directoryForm" class="form-horizontal" autocomplete="off"
+      novalidate="novalidate" autocomplete="off" #form="ngForm" (ngSubmit)="form.valid && createDirectory()">
+        
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+              (click)="createDirectoryModal.hide()">
+              &times;
+            </button>
+            <h4 class="modal-title text-capitalize">Create Directory</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="form-group" [class.error]="(form.submitted || directoryNameControl.touched) && directoryNameControl.invalid">
+                <label class="col-md-4 control-label">Directory Name</label>
+                <div class="col-md-8">
+                  <input type="text" name="directory_name" class="form-control" pattern="^[a-zA-Z0-9_-\s]+$" [(ngModel)]="createDirectoryModel.directoryName" #directoryNameControl="ngModel" [disabled]="loading" />
+                  <span class="help-block">Invalid directory name </span>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" (click)="createDirectoryModal.hide()">
+              Cancel
+            </button>
+            <button type="submit" class="btn btn-primary text-capitalize"
+              [disabled]="loading || (!directoryNameControl.value || directoryNameControl.value == '')">
+              Create
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>

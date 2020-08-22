@@ -1,0 +1,34 @@
+React code snippets contains following folders:
+- api
+- auth0
+- components
+- redux
+- routes
+
+Each folder is used to separate application code. Below is the explanation of each folder:
+
+1. api:
+All api calling related files will resides in this directory. For example, bookingApi.js file is used for written all booking api calls.
+
+2. auth0:
+Auth0 configuration related files will resides in this directory.
+
+3. components: 
+All react components will be there in this directory. All the page components, common components, layout components will be there in this directory. Currently components directory contains following directory:
+
+	- layouts: All application layouts and layout components e.g. headers, footers etc. components will be there in this directory.
+	- booking: All components related to booking page is there in this directory. There is main BookingPage component and other are parital components those are used in BookingPage component and can also used in anywhere in the application.
+	
+4. redux:
+All store related files will be there in this directory for state mangement. It will contain following folders:
+
+	- types: All action types files will be resides in this directory. 
+	- actions: All actions files will be resides in this directory.
+	- reducers: All reducers files will be resides in this directory.
+	
+5. routes:
+All application routes fils will be there is this directory.
+	
+
+
+

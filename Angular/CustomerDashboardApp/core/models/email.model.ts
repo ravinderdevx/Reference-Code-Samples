@@ -1,0 +1,3 @@
+interface EmailModel {
+    email: string;
+}

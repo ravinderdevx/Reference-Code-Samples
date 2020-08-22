@@ -1,0 +1,57 @@
+.logEntries {
+	padding: 50px 0;
+	.commonHeading {
+		margin: 0 0 20px 0;
+	}
+	.logTable {
+	    margin:0 0 30px 0;
+		 .card {
+			.card-header {
+				background-color: #00582c;
+				h1{
+				 color:#fff;
+				}
+			}
+			.card-body {
+
+			}
+		}
+	}
+	.viewBtn {
+		width: 100%;
+		text-align: center;
+	}
+}
+
+.resources {
+	background-color: #f9f9f9;
+	padding: 50px 0;
+	.commonHeading {
+		margin: 0 0 20px 0;
+	}
+    .resourceDesc {
+    margin: 0 0 10px 0;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+	  .card {
+			.card-header {
+				background-color: #00582c;
+				a {
+					color: #fff;
+				}
+			}
+			.card-body {
+				.resourceDescInner {
+					margin: 0 0 8px;
+					p{
+					 margin:0 0 15px 0;
+					}
+					.date{
+					 font-family: 'robotomedium';
+					 color:#00582c;
+					 font-size:15px;
+					}
+				}
+			}
+		}
+   }
+}

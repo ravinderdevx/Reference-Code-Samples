@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="DBEntities\BaseEntity.cs" />
+    <Compile Remove="DBEntities\Base\AnnualHolidays.cs" />
+    <Compile Remove="DBEntities\Base\ErrorLog.cs" />
+    <Compile Remove="DBEntities\Base\GlobalCodeCategories.cs" />
+    <Compile Remove="DBEntities\Base\GlobalCodes.cs" />
+    <Compile Remove="DBEntities\Base\Leaves.cs" />
+    <Compile Remove="DBEntities\Base\LeavesBalance.cs" />
+    <Compile Remove="DBEntities\Base\Permissions.cs" />
+    <Compile Remove="DBEntities\Base\RolePermissions.cs" />
+    <Compile Remove="DBEntities\Base\Roles.cs" />
+    <Compile Remove="DBEntities\Base\Screens.cs" />
+    <Compile Remove="DBEntities\Base\Template.cs" />
+    <Compile Remove="DBEntities\Base\UserRole.cs" />
+    <Compile Remove="Migrations\20200318130929_AdddingRolesAndPermissionTables.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="9.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.2.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Data\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DitsPortal.Common\DitsPortal.Common.csproj" />
+  </ItemGroup>
+
+</Project>

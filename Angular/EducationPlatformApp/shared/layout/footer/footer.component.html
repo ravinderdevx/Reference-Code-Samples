@@ -1,0 +1,88 @@
+<footer>
+   <div class="container">
+      <div class="row">
+         <div class="col-sm-12">
+            <div class="footerDesc">
+               <p>Questions? Email <a href="#">support@educationportal.co</a></p>
+            </div>
+         </div>
+      </div>
+   </div>
+</footer>
+<!--modal popup-->
+<div class="addBtn">
+<div class="moreIcons">
+   <ul>
+      <li>
+         <label>
+         <i class="fa fa-plus"></i> 
+         </label>
+         <ul class="showHide">
+            <li><i class="fa fa-file"(click)="openModal(addActivityModal)"></i></li>
+         </ul>
+      </li>
+   </ul>
+</div>
+</div>
+<ng-template #addActivityModal>
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">Add Activity</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="closeModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+         <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+             <label>Date</label>
+                     <input type="text" class="form-control" required placeholder="Date">
+                    <div class="valid-feedback">Valid.</div>
+                    <div class="invalid-feedback">Please fill out this field.</div>
+                 </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+             <label>Hours</label>
+                  <input type="text" class="form-control" placeholder="Hours"/>
+             <div class="valid-feedback">Valid.</div>
+                    <div class="invalid-feedback">Please fill out this field.</div>
+               </div>
+            </div>
+            <div class="col-sm-12">
+               <div class="form-group">
+          <label>Activity</label>
+                  <select class="form-control">
+                     <option value="0">Debate</option>
+                     <option value="0">Team Formation</option>
+                     <option value="0">Group Discussion</option>
+                  </select>
+            <div class="valid-feedback">Valid.</div>
+                    <div class="invalid-feedback">Please fill out this field.</div>
+               </div>
+            </div>
+            <div class="col-sm-12">
+                <div class="form-group">
+             <label>Comments</label>
+                  <textarea class="form-control" placeholder="Comments" rows="3"></textarea>
+             <div class="valid-feedback">Valid.</div>
+                    <div class="invalid-feedback">Please fill out this field.</div>
+               </div>
+            </div>
+            <div class="col-sm-12">
+               <div class="addActivity">
+                  <label>Choose a Competency</label>
+                  <span><a href="#" class="badge badge-primary">Critical Thinking / Problem Solving</a></span>
+                  <span><a href="#" class="badge badge-secondary">Oral / Written Communication</a></span>
+                  <span><a href="#" class="badge badge-success">Teamwork / Collaboration</a></span>
+                  <span><a href="#" class="badge badge-danger">Digital Technology</a></span>
+                  <span><a href="#" class="badge badge-warning">Leadership</a></span>
+                  <span><a href="#" class="badge badge-info">Professionalism / Work Ethic</a></span>
+                  <span><a href="#" class="badge badge-secondary">Career Management</a></span>
+                  <span><a href="#" class="badge badge-success">Global / Intercultural Fluency</a></span>
+               </div>
+            </div>
+         </div> 
+       </div>
+        
+    </ng-template>

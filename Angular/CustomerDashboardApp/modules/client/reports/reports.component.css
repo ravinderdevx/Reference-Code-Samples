@@ -1,0 +1,23 @@
+.dt-toolbar {
+  border: 1px solid #ccc;
+}
+
+.btn .glyphicon { font-size: 14px;}
+
+.loading {
+  padding: 20px;
+  background: #fafafa;
+}
+
+.header-action a {
+  margin-left: 8px;
+}
+
+:host ::ng-deep span.tab {
+  padding-left: 20px;
+}
+
+:host ::ng-deep .glyphicon-folder-open {
+  font-size: 14px;
+  margin-right: 5px;
+}

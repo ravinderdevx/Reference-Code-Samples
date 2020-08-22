@@ -1,0 +1,7 @@
+:host ::ng-deep ngx-dropzone { height: auto; color: #333; border: none; border-radius: 0; } 
+:host ::ng-deep ngx-dropzone > .dropzone{ min-height: 80px; } 
+.status .glyphicon, .status .fa { font-size: 20px }
+.table>tbody>tr>td.status { vertical-align: middle;}
+
+.table-container { max-height: 250px; overflow:hidden; overflow-y: auto; }
+

@@ -1,0 +1,129 @@
+<section class="content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group text-right">
+                <!--<a class="btn btn-primary btn-sm" ui-sref="CRM.InsertContact">+ Add Notes</a>-->
+                <a href="javascript:void(0)" class="btn btn-primary btn-sm"  ng-click="AddNotePopup()">Add Notes</a>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <!-- Profile Image -->
+            <div class="box box-primary">
+                <div class="box-body box-profile">
+                    <img class="profile-user-img img-responsive img-circle" src="Assets/img/user2-160x160.jpg" alt="User profile picture">
+
+                    <h3 class="profile-username text-center"> {{ContactDetails.first_name | capitalize}} {{ContactDetails.last_name | capitalize}}</h3>
+
+                    <ul class="list-group list-group-unbordered">
+                        <li class="list-group-item">
+                            <b>Email</b> <a class="pull-right">{{ContactDetails.email}}</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Contact</b> <a class="pull-right">{{ContactDetails.contact_number}}</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Suburb</b> <a class="pull-right">{{ContactDetails.suburb}}</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+            <!-- Companies Image -->
+            <div class="box box-primary">
+                <div class="box-body box-profile">
+                    <div class="box-header with-border">
+                        <h3 class="box-title"><i class="fa fa-building margin-r-5"></i> Companies</h3>
+                    </div>
+
+                    <ul class="list-group list-group-unbordered">
+                        <li class="list-group-item" ng-repeat="company in ContactDetails.companies track by $index">
+                            <a>{{company}}</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+            <!-- Tags Image -->
+            <div class="box box-primary">
+                <div class="box-body box-profile">
+                    <div class="box-header with-border">
+                        <h3 class="box-title"><i class="fa fa-tags margin-r-5"></i> Tags</h3>
+                    </div>
+
+                    <p>
+                        <span class="label label-danger" ng-repeat="tag in ContactDetails.tags track by $index">{{tag}}</span>
+                    </p>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+
+            <!-- About Me Box -->
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title"><i class="fa fa-address-book margin-r-5"></i>Address </h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <p class="text-muted" ng-if="ContactDetails.address_line_1">{{ContactDetails.address_line_1}}</p>
+                    <p class="text-muted" ng-if="ContactDetails.address_line_2">
+                        {{ContactDetails.address_line_2}}
+                    </p>
+                    <p class="text-muted" ng-if="ContactDetails.address_line_3">
+                        {{ContactDetails.address_line_3}}
+                    </p>
+                    <p class="text-muted"><i class="fa fa-map-marker margin-r-5"></i>{{ContactDetails.suburb}}, {{ContactDetails.state}} <strong>, {{ContactDetails.postal_code}}</strong> </p>
+
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-9">
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+
+                    <li class="active"><a href="#notes" data-toggle="tab" aria-expanded="true">Notes</a></li>
+
+                </ul>
+                <div class="tab-content">
+
+                    <!-- /.tab-pane -->
+                    <div class="tab-pane active" id="notes">
+                        <!-- The timeline -->
+                        <!-- timeline time label -->
+                        <!-- /.timeline-label -->
+                        <!-- timeline item -->
+
+                        <div class="timeline-item notes" ng-repeat="Contact in ContactDetails.notes track by $index" ng-model="Contact.description">
+                            <span class="datetime"><i class="fa fa-clock-o"></i> {{Contact.created_date | date:'dd MMM yyyy hh:mm a'}}</span>
+
+                            <h3 class="subject"><a href="#">{{Contact.subject}}</a></h3>
+
+                            <div class="timeline-body notesbody">
+                                {{Contact.description}}
+                            </div>
+                            <div class="timeline-footer notesbody">
+                                <a class="btn btn-primary btn-xs" ng-click="EditNotePopup(Contact,$index)">Edit</a>
+                                <a class="btn btn-danger btn-xs" ng-click="DeleteNote(Contact.note_id,$index)">Delete</a>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- /.tab-pane -->
+                    <!-- /.tab-pane -->
+                </div>
+                <!-- /.tab-content -->
+            </div>
+            <!-- /.nav-tabs-custom -->
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+
+</section>

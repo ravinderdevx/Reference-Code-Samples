@@ -1,0 +1,10 @@
+.panel-default {
+    border-color: #3a3633;
+    border-width: 2px;
+}
+
+.panel-default>.panel-heading {
+    color: #fff;
+    border-color: #3a3633;
+    background: linear-gradient(to right,#3a3633 93%,#2a2725 100%);
+}

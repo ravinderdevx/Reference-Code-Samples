@@ -1,0 +1,94 @@
+/* Scss Document */
+
+.loginPage {
+	background-color: #f9f9f9;
+	height: 100vh;
+	padding: 35px 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+	&:before {
+		content: "";
+		background: rgba(0, 88, 44, 0.2);
+		left: 0;
+		position: absolute;
+		top: 0;
+		height: 100%;
+		width: 35%;
+	}
+	.loginInner {
+		max-width: 900px;
+		margin: 0 auto;
+		box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+		display: flex;
+		align-items: center;
+		background-color: #fff;
+		.loginDesc {
+			background-color: #00582c;
+			padding: 30px;
+			height: 100%;
+			display: flex;
+			align-items: center;
+			flex-direction: column;
+			justify-content: center;
+			text-align: center;
+			.loginLogo {
+				margin: 0 0 25px 0;
+			}
+			p {
+				color: #fff;
+				font-size: 13px;
+				font-family: 'robotomedium';
+				letter-spacing: 1px;
+			}
+		}
+		.loginForm {
+			background-color: #fff;
+			height: 100%;
+			padding: 50px 100px;
+			h1 {
+				text-align: center;
+				margin: 0 0 50px 0;
+			}
+			.form-group {
+				position: relative;
+				margin-bottom:30px;
+				label {
+					margin: 0 0 10px 0;
+					font-size: 12px;
+					text-transform: uppercase;
+					color: #000;
+					font-family: 'robotomedium';
+					letter-spacing: 1px;
+				}
+				input {
+					border-radius: 4px;
+					background-color: transparent;
+					border-color: #ddd;
+					background-image: none;
+				}
+				.btn {
+					width: 100%;
+				}
+				.hasError
+				{
+				 position:absolute;
+				 bottom:-25px;
+				}
+			}
+			.commonHead {
+				text-align: center;
+				p {
+					color: #000;
+					font-size: 14px;
+					font-family: 'robotomedium';
+					text-transform: uppercase;
+					a {
+						color: #00582c;
+					}
+				}
+			}
+		}
+	}
+}

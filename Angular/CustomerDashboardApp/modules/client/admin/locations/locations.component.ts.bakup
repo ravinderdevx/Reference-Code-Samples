@@ -1,0 +1,534 @@
+import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef } from "@angular/core";
+import { Router, ActivatedRoute } from "@angular/router";
+import {
+  MessageService,
+  ResponseService,
+  AuthService,
+  ModalService,
+  NotificationService,
+  LocalStorageService
+} from "@app/core/services";
+import { errorMessages, successMessages } from "@app/config/messages.config";
+
+import $ from 'jquery';
+import { ModalDirective } from "ngx-bootstrap";
+
+interface GroupModel {
+  _id: any;
+  GroupName: string;
+  ParentGroupId: any;
+  PreviousGroupId: string;
+  CurrentGroupId: string;
+  LocationId: string;
+  tempIndex: number;
+  action: string
+}
+
+interface LocationModel {
+  IsNewLocation: boolean;
+  LocationName: string;
+  ContactName: string;
+  Email: string;
+  Phone: string;
+  Address: string;
+  Locations: any[];
+  action: string;
+}
+
+@Component({
+  selector: 'sa-client-locations',
+  templateUrl: './locations.component.html',
+  styleUrls: ['./locations.component.css']
+})
+export class LocationsComponent implements OnInit {
+  @ViewChild('GroupPopup') groupPopup: ModalDirective;
+  @ViewChild('LocationPopup') locationPopup: ModalDirective;
+  
+  loading: boolean = false;
+  isClarityAdmin: boolean = false;
+
+  pageTitle: string;
+  screenUrl: string;
+  companyId: string;
+  selectedUser: any;
+  columnsList: any = [];
+
+  clarityLocations: any = [];
+  companyLocations: any = [];
+  //companyLocationIds: any = [];
+
+  groupModel: GroupModel;
+  locationModel: LocationModel;
+
+  tempLocation: any;
+  isFound: boolean = false;
+  messageObject: any;
+
+
+  public validationOptions = {
+    rules : {
+      locations: {
+        required: true
+      },
+      location_name : {
+        required : true
+      },
+      contact_name : {
+        required : true
+      },
+      email : {
+        required : true,
+        email : true
+      },
+      phone: {
+        required: true,
+        number: true
+      }
+    },
+
+    // Messages for form validation
+    messages: {
+      locations: {
+        required: 'Please select locations'
+      },
+      location_name: {
+        required: 'Please enter location name'
+      },
+      contact_name: {
+        required: 'Please enter contact name'
+      },
+      email: {
+        required: 'Please enter email address',
+        email: 'Please enter a VALID email address'
+      },
+      phone: {
+        required: 'Please enter phone',
+        number: 'Phone number should contain only numbers.'
+      }
+    }
+  };
+
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private messageService: MessageService,
+    private responseService: ResponseService,
+    private authService: AuthService,
+    private notificationService: NotificationService,
+    private localStorageService: LocalStorageService, 
+    private changeDetectionRef: ChangeDetectorRef
+  ) {
+    this.screenUrl = this.router.url;
+    route.data.subscribe(data => {
+      this.pageTitle = data.pageTitle;
+    });
+
+    this.route.queryParamMap.subscribe(queryParams => {
+      this.companyId = queryParams.get("companyId");
+    });
+  }
+
+  ngOnInit() {
+    this.isClarityAdmin = this.localStorageService.isClarityAdmin();
+    this.initializeGroupModel();
+    this.initializeLocationModel();
+    this.initializeLoopVars();
+    this.getCompanyLocations();
+
+    if(this.isClarityAdmin) this.getClarityLocations();
+  }
+  
+  getClarityLocations() {
+    let request: any = {};
+    request.companyId = this.companyId;
+    this.authService.executeStitchFunction("getClarityLocations", [request]).then(
+      response => {
+        if (response.success == true) {
+          this.clarityLocations = response.data;
+        }
+      },
+      error => {
+        console.log(error);
+      });
+  }
+
+  initializeGroupModel() {
+    this.groupModel = {
+      _id: null,
+      GroupName: null,
+      ParentGroupId: null,
+      PreviousGroupId: null,
+      CurrentGroupId: null,
+      LocationId: null,
+      tempIndex: null,
+      action: null
+    };
+  }
+
+  initializeLocationModel() {
+    this.locationModel = {
+      IsNewLocation: false,
+      LocationName: null,
+      ContactName: null,
+      Email: null,
+      Phone: null,
+      Address: null,
+      Locations: [],
+      action: 'ADD_LOCATION'
+    };
+  }
+
+  initializeLoopVars() {
+    this.isFound = false;
+    this.tempLocation = null;
+  }
+
+  getCompanyLocations() {
+    this.loading = true;
+    let request: any = {};
+    request.companyId = this.companyId;
+    request.screenUrl = this.screenUrl;
+
+    this.authService.executeStitchFunction("getCompanyLocations", [request]).then(
+      response => {
+        this.loading = false;
+
+        if (response.success == true) {
+          //this.companyLocationIds = response.LocationIds;
+          this.companyLocations = this.getNestedChildren(response.data, null);
+          this.applySortable();
+          // this.config.rootTitle = data[0].name;
+          // this.companyLocations = data[0].childrens;
+        }
+      },
+      error => {this.loading = false;
+        
+        const message = this.responseService.handleError(
+          error,
+          errorMessages.DATA_FETCH_FAILURE
+        );
+        this.messageObject = this.messageService.errorMessageObject(message);
+      }
+    );
+  }
+
+  getNestedChildren(arr, parent) {
+    var out = []
+    for(var i in arr) {
+        if(String(arr[i].ParentGroupId) == String(parent)) {
+          var children = this.getNestedChildren(arr, arr[i]._id)
+
+          //if(children.length) {
+              arr[i].Children = children
+          //}
+          out.push(arr[i]);
+        }
+    }
+    return out;
+  }
+
+  applySortable() {
+    const locationGroupSelector = '.location-group';
+
+    setTimeout(() => {
+      $(`${locationGroupSelector}:not(.ui-sortable)`).sortable({
+        connectWith: locationGroupSelector, 
+        start: (event, ui) => {
+          let $element = $(ui.item);
+          let $parentElement = $element.parent();
+
+          $element.attr('data-groupid', $parentElement.attr('data-groupid'));
+        },
+        update: (event, ui) => {
+          if (!ui.sender) {
+            // is when we want the callback to happen.
+            
+            let $element = $(ui.item);
+            let $parentElement = $element.parent();
+
+            let previousGroupId = $element.attr('data-groupid');
+            let currentGroupId = $parentElement.attr('data-groupid');
+
+            $element.removeAttr('data-groupid');
+
+            if(previousGroupId != currentGroupId) {
+              this.groupModel = {
+                _id: null,
+                GroupName: null,
+                ParentGroupId: null,
+                PreviousGroupId: previousGroupId,
+                CurrentGroupId: currentGroupId,
+                LocationId: $element.attr('data-locationid'),
+                tempIndex: $(ui.item).index(),
+                action: 'CHANGE_POSITION'
+              };
+
+              let request = Object.assign({}, this.groupModel);
+              this.performAction(request);
+            }
+          }
+        }
+      }).disableSelection();
+    }, 2000);
+  }
+  
+  openGroupPopup(action: string, _id: any, groupName: string) {
+    this.initializeGroupModel();
+    
+    this.groupModel.action = action;
+
+    switch(action) {
+      case 'CREATE_GROUP':
+        this.groupModel.ParentGroupId = _id;
+      break;
+
+      case 'RENAME_GROUP':
+        this.groupModel._id = _id;
+        this.groupModel.GroupName = groupName;
+      break;
+
+      default:
+        return;
+    }
+    
+    this.groupPopup.show();
+  }
+
+  openAddLocationPopup() {
+    this.initializeLocationModel();
+    this.locationPopup.show();
+  }
+
+  closeModal(templateName: string) {
+    this[templateName].hide()
+  }
+
+  // checkIfLocationSelected(id) {
+  //   return this.companyLocationIds.indexOf(String(id)) !== -1;
+  // }
+
+  performActionOnGroup() {
+    let request = Object.assign({}, this.groupModel);
+    this.performAction(request);
+  }
+
+  addLocation() {
+    if(!$("form[name='locationForm']").valid()) return false;
+
+    let request = Object.assign({}, this.locationModel);
+    this.performAction(request);
+  }
+
+  removeLocation(locationId, parentGroupId, locationName) {
+    this.notificationService.smartMessageBox(
+      {
+        title: `<i class='fa fa-trash txt-color-orangeDark'></i> Remove Location <span class='txt-color-orangeDark'><strong>${locationName}</strong></span>?`,
+        content: "Are you sure you want to remove location?",
+        buttons: "[No][Yes]"
+      },
+      ButtonPressed => {
+        if (ButtonPressed == "Yes") {
+          
+          this.loading = true;
+          let request: any = {};
+          request.LocationId = locationId;
+          request.GroupId = parentGroupId;
+          request.companyId = this.companyId;
+          request.action = 'REMOVE_LOCATION';
+
+          this.performAction(request);
+        }
+      }
+    );
+  }
+
+  performAction(request) {
+    this.loading = true;
+    //let request: any = Object.assign({}, this.groupModel);
+    request.companyId = this.companyId;
+    request.screenUrl = this.screenUrl;
+
+    this.authService.executeStitchFunction("performLocationAction", [request]).then(
+      response => {
+        this.loading = false;
+
+        if (response.success == true) {
+          
+          this.initializeLoopVars();
+
+          switch(request.action) {
+            case 'CREATE_GROUP':
+              this.companyLocations = this.pushGroup(this.companyLocations, request.ParentGroupId, response.data);
+              this.messageObject = this.messageService.successMessageObject(successMessages.GROUP_CREATION_SUCCESS);
+              this.applySortable();
+            break;
+
+            case 'RENAME_GROUP':
+              this.companyLocations = this.modifyGroup(this.companyLocations, request._id, request.GroupName);
+              this.messageObject = this.messageService.successMessageObject(successMessages.GROUP_UPDATION_SUCCESS);
+            break;
+
+            case 'REMOVE_GROUP':
+              this.companyLocations = this.popGroup(this.companyLocations, request._id);
+              break;
+
+            case 'CHANGE_POSITION':
+              // const locations = this.pushLocation(this.companyLocations, request.PreviousGroupId, request.LocationId);
+
+              // this.isFound = false;
+              // this.companyLocations = this.pushLocation(locations, request.CurrentGroupId, request.tempIndex);
+              this.companyLocations = this.pushPopLocation(this.companyLocations, request.PreviousGroupId, request.CurrentGroupId, request.LocationId, request.tempIndex);
+              this.messageObject = this.messageService.successMessageObject(successMessages.GROUP_UPDATION_SUCCESS);
+
+              this.changeDetectionRef.detectChanges();
+            break;
+
+            case 'ADD_LOCATION':
+              if(this.companyLocations.length > 0) {
+                let locations = response.data;
+                this.companyLocations[0].Locations = this.companyLocations[0].Locations.concat(locations);
+
+                locations.forEach(location => {
+                  let index = this.clarityLocations.findIndex(x => x._id == location._id);
+                  this.clarityLocations.splice(index, 1);
+                });
+
+                //this.companyLocationIds = this.companyLocationIds.concat(locationIds);
+              }
+              this.messageObject = this.messageService.successMessageObject(successMessages.LOCATION_ADDED_SUCCESS);
+            break;
+
+            case 'REMOVE_LOCATION':
+              this.popLocation(this.companyLocations, request.GroupId, request.LocationId);
+              this.clarityLocations.push(this.tempLocation);
+              this.messageObject = this.messageService.successMessageObject(successMessages.LOCATION_REMOVED_SUCCESS);
+            break;
+          }
+
+          setTimeout(() => {
+            this.messageObject = null;
+            this.groupPopup.hide();
+            this.locationPopup.hide();
+          }, 1000)
+        } 
+      },
+      error => {this.loading = false;
+        
+        const message = this.responseService.handleError(
+          error,
+          errorMessages.DATA_FETCH_FAILURE
+        );
+        this.messageObject = this.messageService.errorMessageObject(message);
+      }
+    );
+  }
+
+  removeGroup(groupId: any, groupName: string) {
+    this.notificationService.smartMessageBox(
+      {
+        title: `<i class='fa fa-trash txt-color-orangeDark'></i> Remove Group <span class='txt-color-orangeDark'><strong>${groupName}</strong></span>?`,
+        content: "Are you sure you want to remove group?",
+        buttons: "[No][Yes]"
+      },
+      ButtonPressed => {
+        if (ButtonPressed == "Yes") {
+          this.initializeGroupModel();
+          this.groupModel._id = groupId;
+          this.groupModel.action = 'REMOVE_GROUP';
+
+          let request = Object.assign({}, this.groupModel);
+          this.performAction(request);
+        }
+      }
+    );
+  }
+
+  /* For Add Group */
+  pushGroup(locations, parentGroupId, data) {
+    locations.forEach(location => {
+      if(this.isFound) return;
+      if(String(location._id) ==  String(parentGroupId)) {
+        location.Children.push(data);
+        this.isFound = true;
+      } else if(location.Children && location.Children.length > 0){
+        location.Children = this.pushGroup(location.Children, parentGroupId, data);
+      }
+    });
+
+    return locations;
+  }
+
+  /* For Remove Group */
+  popGroup(locations, groupId) {
+    locations.forEach((location, index, object) => {
+      if(this.isFound) return;
+      if(String(location._id) ==  String(groupId)) {
+        object.splice(index, 1);
+        this.isFound = true;
+      } else if(location.Children && location.Children.length > 0){
+        location.Children = this.popGroup(location.Children, groupId);
+      }
+    });
+
+    return locations;
+  }
+
+  /* For Rename Group */
+  modifyGroup(locations, groupId, groupName) {
+    locations.forEach(location => {
+      if(this.isFound) return;
+      if(String(location._id) ==  String(groupId)) {
+        location.GroupName = groupName;
+        this.isFound = true;
+      } else if(location.Children && location.Children.length > 0){
+        location.Children = this.modifyGroup(location.Children, groupId, groupName);
+      }
+    });
+
+    return locations;
+  }
+  
+  /* For Positioning Group */
+
+  pushPopLocation(locations, prevGroupId, currGroupId, locationId, index) {
+    let templocations = this.popLocation(locations, prevGroupId, locationId);
+
+    this.isFound = false;
+
+    templocations = this.pushLocation(templocations, currGroupId, index);
+    return templocations;
+  }
+
+  popLocation(locations, prevGroupId, locationId) {
+    locations.forEach(location => {
+      if(this.isFound) return;
+      if(String(location._id) ==  String(prevGroupId)) {
+        let index = location.Locations.findIndex(x => String(x._id) == String(locationId));
+
+        if(index !== -1) {
+          this.tempLocation = location.Locations[index];
+          location.Locations.splice(index, 1);
+        }
+        this.isFound = true;
+      } else if(location.Children && location.Children.length > 0){
+        location.Children = this.popLocation(location.Children, prevGroupId, locationId);
+      }
+    });
+
+    return locations;
+  }
+
+  pushLocation(locations, currGroupId, index) {
+    locations.forEach(location => {
+      if(this.isFound) return;
+      if(String(location._id) ==  String(currGroupId)) {
+        location.Locations.splice(index, 0, this.tempLocation);
+        this.isFound = true;
+      } else if(location.Children && location.Children.length > 0){
+        location.Children = this.pushLocation(location.Children, currGroupId, index);
+      }
+    });
+
+    return locations;
+  }
+}

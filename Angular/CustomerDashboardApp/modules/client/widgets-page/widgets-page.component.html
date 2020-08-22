@@ -1,0 +1,33 @@
+<!-- MAIN CONTENT -->
+<div id="content">
+  <div class="row">
+    <sa-big-breadcrumbs [items]="[pageTitle]" icon="list-alt" class="col-xs-12 col-sm-7 col-md-7 col-lg-6"></sa-big-breadcrumbs>
+    <div class="col-xs-12 col-sm-5 col-md-5 col-lg-6">
+        <button (click)="print()" class="btn btn-primary print_btn pull-right mt-10">Print</button>       
+      <button class="widget-configuration-btn" (click)="changeWidgetSorting()" *ngIf="sortingChanged" [disabled]="loading"><i class="glyphicon glyphicon-check"></i></button>
+    </div>
+  </div>
+<global-filter [userId]="userId" *ngIf="configObject.configurationMode == false"></global-filter>
+<section id="widgets-grid">
+  <!-- row -->
+  <div class="row">
+    <!-- NEW WIDGET START -->
+    <article id="sortable-grid">
+        <ng-template #viewContainerRef></ng-template>
+    </article>
+    <!-- WIDGET END -->
+  </div>
+  <!-- end row -->
+</section>
+  <!-- <sa-widget-show-case-component [widgets]="widgets" [screenUrl]="screenUrl" *ngIf="widgets.length > 0"></sa-widget-show-case-component> -->
+  
+  <div class="add_widget text-center">
+    <a (click)="openAddWidgetModal()">Add Widgets to this screen</a>
+  </div>
+</div>
+<!-- END MAIN CONTENT -->
+
+<ng-template #AddWidgetModal>
+  <add-widget [screenWidgets]="screenWidgets" [configObject]="configObject" (onAdd)="addNewComponent($event)" (close)="closeModal()"></add-widget>
+</ng-template>
+  

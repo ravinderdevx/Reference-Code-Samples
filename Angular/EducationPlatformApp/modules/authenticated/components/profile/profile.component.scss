@@ -1,0 +1,47 @@
+.profile
+{
+padding:50px 0;	
+  .profileSection
+	{
+		
+	  .card {
+			.card-header {
+				background-color: #00582c;
+				h1{
+				color: #fff;
+				}
+			}
+			.card-body {
+				    h2
+				     {
+					    text-transform: capitalize;
+						font-size: 20px;
+						margin: 0 0 14px 0;
+						border-bottom: 1px solid #eee;
+						padding: 0 0 5px 0;
+				     }
+					.form-group {
+						position: relative;
+						label {
+							margin: 0 0 10px 0;
+							font-size: 12px;
+							text-transform: uppercase;
+							color: #000;
+							font-family: 'robotomedium';
+							letter-spacing: 1px;
+						}
+						select {
+							border-radius: 4px;
+							background-color: transparent;
+						}
+						input {
+							border-radius: 4px;
+							background-color: transparent;
+						}
+						
+		        	}
+			}
+		}
+	}
+}
+

@@ -1,0 +1,67 @@
+<aside id="left-panel">
+
+  <!-- User info -->
+  <!-- <sa-login-info></sa-login-info> -->
+  <div class="login-info" >
+    <span>
+      <a href="javascript:void(0)">
+        <img alt="{{user.FirstName + ' ' + user.LastName}}" class="online" src="assets/img/avatars/sunny.png"/><span >{{user.FirstName}} {{user.LastName}}</span>
+      </a>
+    </span>
+  </div>
+    
+  <!-- end user info -->
+
+  <nav *ngIf="user.ClaritySuperAdmin == true || user.ClarityAdmin == true">
+    <!-- NOTE: Notice the gaps after each icon usage <i></i>..
+    Please note that these links work a bit different than
+    traditional href="" links. See documentation for details.
+    -->
+
+    <ul saSmartMenu>
+      <li routerLinkActive="active">
+        <a routerLink="/admin/dashboard" title="Home">
+          <i class="fa fa-lg fa-fw fa-home"></i>
+          <span class="menu-item-parent">Home</span>
+        </a>
+      </li>
+
+      <li routerLinkActive="active" *ngIf="user.ClaritySuperAdmin == true">
+        <a routerLink="/admin/users" title="Manage Users">
+          <i class="fa fa-lg fa-fw fa-users"></i>
+          <span class="menu-item-parent">Manage Users</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <nav *ngIf="!(user.ClaritySuperAdmin == true || user.ClarityAdmin == true)">
+    <ul saSmartMenu>
+      <ng-template #nodeTemplateRef let-node>
+        <li *ngIf="node.ChildScreens && node.ChildScreens.length > 0">
+            <a [title]="node.ScreenTitle">
+              <i class="fa fa-lg fa-fw {{node.MenuIcon}}"></i> 
+              <span class="menu-item-parent">{{node.ScreenTitle}}</span>
+            </a>
+            <ul>
+              <li routerLinkActive="active" *ngFor="let chidlScreen of node.ChildScreens | orderBy:'ScreenTitle':0">
+                <a [routerLink]="chidlScreen.ScreenUrl" [queryParams]="{ userId: userId }">{{chidlScreen.ScreenTitle}}</a>
+              </li>
+            </ul>
+        </li>
+        <li routerLinkActive="active" *ngIf="!node.ChildScreens || node.ChildScreens.length == 0">
+          <a [routerLink]="node.ScreenUrl" [queryParams]="{ userId: userId }" [title]="node.ScreenTitle">
+            <i class="fa fa-lg fa-fw {{node.MenuIcon}}"></i>
+            <span class="menu-item-parent">{{node.ScreenTitle}}</span>
+          </a>
+        </li>
+      </ng-template>
+      <ng-template *ngFor="let screen of user.Screens" [ngTemplateOutlet]="nodeTemplateRef"
+        [ngTemplateOutletContext]="{ $implicit: screen }">
+      </ng-template>
+    </ul>
+  </nav>
+
+  <!-- <sa-minify-menu></sa-minify-menu> -->
+
+</aside>

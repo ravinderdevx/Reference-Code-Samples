@@ -1,0 +1,21 @@
+<!-- Widget ID (each widget will need unique ID)-->
+<div sa-widget [widget]="data" [configObject]="configObject" [loading]="loading" (performAction)="actionOnWidget($event)">
+ <!-- widget content -->
+ <div class="widget-body" *ngIf="!loading">
+    <angular-tag-cloud
+      [data]="cloudData"
+      [width]="cloudOptions.width"
+      [height]="cloudOptions.height"
+      [overflow]="cloudOptions.overflow" 
+      [zoomOnHover]="zoomOnHoverOptions"
+      [randomizeAngle]="cloudOptions.randomizeAngle"
+      (clicked)="removeTag($event)"
+      >
+    </angular-tag-cloud>
+    <div class="no-data-block" *ngIf="cloudData && cloudData.length == 0">
+      <div class="no-data">No Data</div>
+    </div>
+  </div>
+  <!-- end widget content -->
+</div>
+<!-- end widget -->

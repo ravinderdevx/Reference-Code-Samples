@@ -1,0 +1,22 @@
+{
+    "id": "5ca367971a22e3c21a7fbdd2",
+    "name": "Messages",
+    "value": {
+        "error": {
+            "ADD_WIDGET_ERROR": "Error while adding widget",
+            "COMPANY_CREATION_ERROR": "Error while creating client",
+            "COMPANY_NOT_FOUND": "Company not found",
+            "DATA_NOT_FOUND": "Data not found",
+            "EMAIL_ALREADY_EXIST": "Email already exist",
+            "EMAIL_ALREADY_EXIST_BUT_INACTIVE": "Email already exist but inactive",
+            "INVALID_REQUEST": "Invalid request",
+            "NOT_A_COMPANY_USER": "Not a company user",
+            "USER_HAS_NO_PERMISSION": "User has no permission",
+            "USER_NOT_FOUND": "User not found"
+        },
+        "success": {
+            "DASHBOARD_RESET_SUCCESS": "User dashboard reset successfully"
+        }
+    },
+    "from_secret": false
+}

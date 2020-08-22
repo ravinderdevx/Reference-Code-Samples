@@ -1,0 +1,52 @@
+<section class="well mb-20">
+    <form id="globalFilters">
+      <div class="row">
+        <div class="col-sm-4 form-group">
+          <date-range-dropdown className="form-control" name="daterangetype" [(ngModel)]="globalFilterSettings.DateRangeType" (change)="dateRangeTypeChanged()" #dateRangeControl></date-range-dropdown>
+        </div>
+        <div class="col-sm-4 form-group ">
+          <div class="input-group">
+              <input type="text"
+              name="daterange"
+              placeholder="MM/DD/YYYY - MM/DD/YYYY"
+              class="form-control"
+              [(ngModel)]="dateRangeModel"
+              [bsConfig]="bsConfig"
+              (ngModelChange)="dateRangeChanged(dpr)"
+              #dpr="bsDaterangepicker"
+              bsDaterangepicker
+              [disabled]="dateRangeControl.value != 'CUSTOM_DATE_RANGE'" />
+              <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+          </div>
+          
+          <!-- <div class="input-group">
+            <input type="text" name="startdate" id="startDate" placeholder="MM/DD/YYYY" class="form-control datepicker"
+                    [saUiDatepicker]="{ dateFormat: 'mm/dd/yy' }" [(ngModel)]="globalFilterSettings.StartDate" (change)="filterChange()" [disabled]="dateRangeControl.value != 'CUSTOM_DATE_RANGE'" />
+            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+          </div> -->
+        </div>
+        <!-- <div class="col-sm-3 form-group ">
+          <div class="input-group">
+            <input type="text" name="enddate" placeholder="MM/DD/YYYY" class="form-control datepicker"
+                    [saUiDatepicker]="{ dateFormat: 'mm/dd/yy' }" [(ngModel)]="globalFilterSettings.EndDate" (change)="filterChange()" [disabled]="dateRangeControl.value != 'CUSTOM_DATE_RANGE'"  />
+            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+          </div>
+        </div> -->
+        <div class="col-sm-4 form-group ">
+            <locations-dropdown [userId]="userId" className="form-control" name="location" [value]="globalFilterSettings.Location" [(ngModel)]="globalFilterSettings.Location"  (change)="filterChange()"></locations-dropdown>
+        </div>
+        <!-- <div class="col-sm-3 form-group mb-0">
+          <span style="vertical-align: middle;">
+            Sync Charts on Data Select
+          </span>
+          <span class="onoffswitch pull-right">
+            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="data-sync" [(ngModel)]="globalFilterSettings.DataSync" />
+            <label class="onoffswitch-label" for="data-sync"> 
+              <span class="onoffswitch-inner" data-swchon-text="Yes" data-swchoff-text="No"></span> 
+              <span class="onoffswitch-switch"></span> 
+            </label> 
+          </span>
+        </div> -->
+      </div>
+    </form>
+  </section>

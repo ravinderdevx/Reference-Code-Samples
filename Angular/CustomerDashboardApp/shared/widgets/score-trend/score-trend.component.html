@@ -1,0 +1,9 @@
+<!-- Widget ID (each widget will need unique ID)-->
+<div sa-widget [widget]="data" [configObject]="configObject" [loading]="loading" (performAction)="actionOnWidget($event)">
+  <!-- widget content -->
+  <div class="widget-body" *ngIf="!loading">
+    <google-chart [data]="chartData" (chartError)="error($event)" *ngIf="!loading"></google-chart>
+  </div>
+  <!-- end widget content -->
+</div>
+<!-- end widget -->

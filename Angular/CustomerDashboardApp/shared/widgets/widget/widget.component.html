@@ -1,0 +1,43 @@
+<div [attr.id]="isFullscreenMode ? 'jarviswidget-fullscreen-mode' : null">
+    <div [class]="widgetClassName">
+        <header>
+            <div class="jarviswidget-ctrls" role="menu">
+                <a href="javascript:void(0);" class="button-icon jarviswidget-print-btn" rel="tooltip" title="Print"
+                    data-placement="bottom" (click)="printClickHander()" *ngIf="isFullscreenMode">
+                    <i class="fa fa-print"></i>
+                </a>
+
+                <a href="javascript:void(0);" class="button-icon jarviswidget-edit-btn" rel="tooltip" title="Edit"
+                    data-placement="bottom" (click)="settingClickHander()" *ngIf="settingbutton">
+                    <i class="fa fa-cog "></i>
+                </a>
+                <a href="javascript:void(0);" class="button-icon jarviswidget-refresh-btn" rel="tooltip" title="Refresh"
+                    data-placement="bottom" (click)="refreshClickHander()" *ngIf="refreshbutton">
+                    <i class="fa fa-refresh "></i>
+                </a>
+                <a href="javascript:void(0);" class="button-icon jarviswidget-fullscreen-btn" rel="tooltip"
+                    title="Fullscreen" data-placement="bottom" (click)="fullscreenClickHander()"
+                    *ngIf="fullscreenbutton">
+                    <i class="fa fa-expand" [ngClass]="isFullscreenMode?'fa-compress':'fa-expand'"></i>
+                </a>
+                <a href="javascript:void(0);" class="button-icon jarviswidget-delete-btn" rel="tooltip" title="Delete"
+                    data-placement="bottom" (click)="deleteClickHander()" *ngIf="deletebutton">
+                    <i class="fa fa-times"></i>
+                </a>
+            </div>
+            <h2><strong>{{widget.WidgetTitle}}</strong></h2>
+        </header>
+        <!-- widget div-->
+        <div>
+            <ng-content></ng-content>
+            <a class="widget-loader" *ngIf="loading">
+                <i class="fa fa-gear fa-4x fa-spin"></i>
+            </a>
+        </div>
+        <!-- end widget div -->
+    </div>
+</div>
+
+<ng-template #WidgetSettingModal>
+    <widget-setting [widget]="widget" [configObject]="configObject" (onChange)="refreshWidgetData($event)" (close)="closeModal()"></widget-setting>
+</ng-template>

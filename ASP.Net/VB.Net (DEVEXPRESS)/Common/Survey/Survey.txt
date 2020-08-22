@@ -1,0 +1,79 @@
+Public Class SaveSurveyRequest
+    Public Property SurveyId As String
+    Public Property SurveyName As String
+    Public Property TypeOfSurvey As String
+    Public Property IsActive As Boolean
+    Public Property MaxTimeAllowed As String
+    Public Property CreatedBy As String
+End Class
+
+Public Class CreateQuestion
+    Public Property SurveyId As String
+    Public Property QuestionId As String
+    Public Property QuestionText As String
+    Public Property OptionId As Integer
+    Public Property OptionText As String
+    Public Property IsCorrect As Boolean
+End Class
+
+Public Class SaveQuestionRequest
+    Public Property question_id As String
+    Public Property question_text As String
+    Public Property Options As List(Of AnswerOption)
+End Class
+Public Class AnswerOption
+    Public Property option_id As Integer?
+    Public Property option_text As String
+    Public Property is_correct As Boolean
+End Class
+
+Public Class Surveys
+        Public Property Surveys As List(Of SaveSurveyRequest)
+    End Class
+
+
+    Public Class SaveSurveyResponse
+        Inherits BaseResponse
+        Public Property SurveyId As String
+        Public Property IsRedirect As Boolean
+    End Class
+
+    Public Class SurveyDetailsResponse
+        Inherits BaseResponse
+        Public Property GetSelectedSurveyResponse As DataTable
+    End Class
+
+    Public Class SurveyQuestions
+        Public Property survey_id As String
+        Public Property question_id As String
+        Public Property question_text As String
+        Public Property Options As List(Of SurveyOptions)
+    End Class
+
+
+    Public Class SurveyOptions
+        Public Property survey_id As String
+        Public Property question_id As String
+        Public Property option_id As Integer
+        Public Property option_text As String
+        Public Property is_correct As Boolean
+    End Class
+
+    Public Class SurveyQuestionsList
+        Public Property QuestionsList As List(Of SurveyQuestions)
+    End Class
+    Public Class GetAllQuestionsResponse
+        Inherits BaseResponse
+        Public Property QuestionsList As List(Of SurveyQuestions)
+    End Class
+
+    Public Class GetSelectedQuestionResponse
+        Inherits BaseResponse
+        Public Property SurveyQuestions As SurveyQuestions
+    End Class
+
+    Public Class SaveEditQuestionRequest
+        Public Property Question As String
+        Public Property QuestionId As String
+        Public Property Options As List(Of AnswerOption)
+    End Class

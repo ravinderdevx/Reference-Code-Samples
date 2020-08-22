@@ -1,0 +1,66 @@
+.widget-data {
+    /* min-height: 300px !important; */
+}
+
+:host ::ng-deep .jarviswidget>header>h2 {
+    max-width: 42% !important;
+}
+
+:host ::ng-deep .jarviswidget>div {
+    padding-bottom: 13px;
+}
+.nps-score {
+    font-size: 75px;
+    font-weight: bold;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    top: calc(50% - 80px);
+    margin: 0;
+}
+.nps-row {
+    position: absolute;
+    bottom: 30px;
+    width: 100%;
+}
+.nps-row label {
+    font-size: 12px;
+    text-align: center;
+    width: 100%;
+    color: #999;
+}
+.nps-row .count {
+    font-size:36px;
+}
+
+:host ::ng-deep #jarviswidget-fullscreen-mode .jarviswidget div .fullheight {
+    height: 100%;
+}
+:host ::ng-deep #jarviswidget-fullscreen-mode .nps-score {
+    font-size: 150px;
+    top: 12%;
+}
+:host ::ng-deep #jarviswidget-fullscreen-mode .nps-row {
+    position: absolute;bottom:60px; width: 100%;
+}
+:host ::ng-deep #jarviswidget-fullscreen-mode .nps-row label {
+  font-size: 26px;text-align: center;width: 100%;
+}
+:host ::ng-deep #jarviswidget-fullscreen-mode .nps-row .count {
+ font-size:70px;
+}
+:host ::ng-deep #jarviswidget-fullscreen-mode .jarviswidget .widget-content {
+    height: 100%;
+}
+.promoters
+{
+color:#109618;
+}
+.passive
+{
+color: #3366cc;
+}
+.detractors
+{
+color:#dc3912;
+}

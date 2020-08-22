@@ -1,0 +1,148 @@
+<div class="row">
+  <div class="col-lg-12 col-sm-12 col-xs-12 title mb-20">
+    <h3>{{title}}</h3>
+  </div>
+  <div class="col-lg-12 col-sm-12 col-xs-12">
+    <div [ngClass]="alert.alertClass" *ngIf="alert.alertMessage != null && alert.alertMessage != ''">{{alert.alertMessage}}</div>
+    <form [formGroup]="MedicationForm">
+      <div class="row">
+        <div class="form-group col-md-4" [ngClass]="displayFieldCss('Name')">
+          <label for="inputName">Name</label>
+          <!-- <input auto-complete type="text" class="form-control" id="inputName" formControlName="Name" [source]="mySource" /> -->
+          <input ng2-auto-complete formControlName="Name" [source]="SEARCH_MEDICATION_API" [list-formatter]="autocompleListFormatter"
+            path-to-data="SearchMedicationList" value-property-name="id" display-property-name="name" max-num-list="5" min-chars="1"
+            placeholder="Name" class="form-control" id="inputName">
+          <app-field-error-display [displayError]="isFieldValid('Name')" errorMsg="Please Enter Name">
+          </app-field-error-display>
+        </div>
+
+        <div class="form-group col-md-4" [ngClass]="displayFieldCss('Quantity')">
+          <label for="inputQuantity">Quantity</label>
+          <input type="number" class="form-control" id="inputQuantity" min="1" formControlName="Quantity">
+          <app-field-error-display [displayError]="isFieldValid('Quantity')" errorMsg="Please Enter Quantity">
+          </app-field-error-display>
+        </div>
+
+        <div class="form-group col-md-4" [ngClass]="displayFieldCss('Dosage')">
+          <label for="inputDosage">Dosage</label>
+          <input type="number" class="form-control" id="inputDosage" min="1" formControlName="Dosage">
+          <app-field-error-display [displayError]="isFieldValid('Dosage')" errorMsg="Please Select Dosage">
+          </app-field-error-display>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="form-group col-md-4" [ngClass]="displayFieldCss('Unit')">
+          <label for="inputUnit">Unit</label>
+          <select class="form-control" id="inputUnit" formControlName="Unit">
+              <option value="undefined" disabled selected></option>
+            <option *ngFor="let option of UnitDropdown" value="{{option}}">
+              {{option}}
+            </option>
+          </select>
+          <app-field-error-display [displayError]="isFieldValid('Unit')" errorMsg="Please Select Unit">
+          </app-field-error-display>
+        </div>
+        <div class="form-group col-md-4" [ngClass]="displayFieldCss('Form')">
+          <label for="inputForm">Form</label>
+          <!-- <input type="text" class="form-control" id="inputDosage" formControlName="Dosage" > -->
+          <select class="form-control" id="inputForm" formControlName="Form">
+            
+            <option *ngFor="let option of FormDropdown" value="{{option}}">
+              {{option}}
+            </option>
+          </select>
+          <app-field-error-display [displayError]="isFieldValid('Form')" errorMsg="Please Select Form">
+          </app-field-error-display>
+        </div>
+        <div class="form-group col-md-4" [ngClass]="displayFieldCss('Method')">
+          <label for="inputMethod">Route/Method</label>
+          <select class="form-control" id="inputMethod" formControlName="Method">
+           
+            <option *ngFor="let option of MethodDropdown" value="{{option}}">
+              {{option}}
+            </option>
+          </select>
+          <app-field-error-display [displayError]="isFieldValid('Method')" errorMsg="Please Select Method">
+          </app-field-error-display>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-md-4">
+          <label for="inputIndication">Indication</label>
+          <input type="text" class="form-control" id="inputIndication" formControlName="Indication">
+        </div>
+
+        <div class="form-group col-md-4" [ngClass]="displayFieldCss('Frequency')">
+          <label for="inputFrequency">Frequency</label>
+          <input type="text" class="form-control" id="inputFrequency" formControlName="Frequency">
+          <app-field-error-display [displayError]="isFieldValid('Frequency')" errorMsg="Please Enter Frequency">
+          </app-field-error-display>
+        </div>
+        <div class="form-group col-md-4" [ngClass]="displayFieldCss('Duration')">
+          <label for="inputDuration">Duration</label>
+          <input type="text" class="form-control" id="inputDuration" formControlName="Duration">
+          <app-field-error-display [displayError]="isFieldValid('Duration')" errorMsg="Please Enter Duration">
+          </app-field-error-display>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-8 padding-none">
+          <div class="row">
+            <div class="form-group col-md-6" [ngClass]="displayFieldCss('RxNumber')">
+              <label for="inputRxnumber">RX Number</label>
+              <input type="text" class="form-control" id="inputRxnumber" placeholder="" formControlName="RxNumber">
+              <app-field-error-display [displayError]="isFieldValid('RxNumber')" errorMsg="Please Enter RX Number">
+              </app-field-error-display>
+            </div>
+            <div class="form-group col-md-6" [ngClass]="displayFieldCss('Prescriber')">
+              <label for="inputPrescriber">Prescriber</label>
+              <input type="text" class="form-control" id="inputPrescriber" placeholder="" formControlName="Prescriber">
+              <app-field-error-display [displayError]="isFieldValid('Prescriber')" errorMsg="Please Enter Prescriber">
+              </app-field-error-display>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-md-6" [ngClass]="displayFieldCss('StartDate')">
+              <label for="inputStartDate">Start Date</label>
+              <input type="date" class="form-control" id="inputStartDate" placeholder="mm/dd/yyyy" formControlName="StartDate">
+              <app-field-error-display [displayError]="isFieldValid('StartDate')" errorMsg="Please Enter Start Date">
+              </app-field-error-display>
+            </div>
+
+            <div class="form-group col-md-6" [ngClass]="displayFieldCss('EndDate')">
+              <label for="inputEndDate">End Date</label>
+              <input type="date" class="form-control" id="inputEndDate" placeholder="mm/dd/yyyy" formControlName="EndDate">
+              <app-field-error-display [displayError]="isFieldValid('EndDate')" errorMsg="Please Enter End Date">
+              </app-field-error-display>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 padding-none">
+          <div class="row">
+            <div class="form-group col-md-12">
+              <label for="inputNotes">Notes</label>
+              <textarea rows="5" class="form-control" id="inputNotes" placeholder="" formControlName="Notes"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-md-12">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="ActiveCheck" formControlName="Active">
+            <label class="form-check-label" for="ActiveCheck">
+              I am currently taking this medication
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-md-12">
+          <button type="button" class="btn btn-primary" (click)="onSubmit()">Save</button>
+          <button type="button" class="btn btn-default" (click)="reset()">Reset</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

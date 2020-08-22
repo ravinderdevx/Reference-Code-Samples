@@ -1,0 +1,23 @@
+<!-- Widget ID (each widget will need unique ID)-->
+<div sa-widget [widget]="data" [configObject]="configObject" [loading]="loading" (performAction)="actionOnWidget($event)">
+  <!-- widget content -->
+  <div class="widget-body datatable-widget no-padding" *ngIf="!loading">
+      <sa-datatable
+      [options]="dataTableOptions"
+      paginationLength="true" tableClass="table table-striped table-bordered table-hover" width="100%">
+      <thead>
+        <tr>
+            <th data-hide="phone" nowrap>Sr. No.</th>
+            <th data-hide="phone,tablet" nowrap>Audit Date</th>
+            <th data-class="expand" nowrap>Start Time</th>
+            <th data-hide="phone" nowrap>End Time</th>
+            <th data-hide="phone" nowrap>Location</th>
+            <th nowrap align="center">Total Score</th>
+            <th nowrap align="center">View Details</th>
+        </tr>
+      </thead>
+    </sa-datatable>
+  </div>
+  <!-- end widget content -->
+</div>
+<!-- end widget -->

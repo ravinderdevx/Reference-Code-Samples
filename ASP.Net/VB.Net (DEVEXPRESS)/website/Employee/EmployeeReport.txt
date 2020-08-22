@@ -1,0 +1,197 @@
+<%@ Page Title="" Language="vb" AutoEventWireup="false" MasterPageFile="~/employeenotes/Employee.Master" CodeBehind="reviewreports.aspx.vb" Inherits="abc.Website.reports1" %>
+<%@ Register Assembly="DevExpress.Web.v15.1, Version=15.1.6.0, Culture=neutral"
+    Namespace="DevExpress.Web" TagPrefix="dx" %>
+<%@ Register Src="~/Widgets/wid_datetime.ascx" TagName="DateTime" TagPrefix="widget" %>
+<%@ Register Src="~/Widgets/CallsForToday.ascx" TagName="CallsForToday" TagPrefix="widget" %>
+
+<%@ Register Assembly="DevExpress.Dashboard.v15.1.Web, Version=15.1.6.0, Culture=neutral, Namespace="DevExpress.DashboardWeb" TagPrefix="dx" %>
+
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+    <script type="text/javascript" src="../js/Collections/contactinvestigation.js"></script>
+    <script type="text/javascript" src="../js/General/application.js"></script>
+
+    <style type="text/css">
+        .mainContainer {
+            padding: 15px 20px;
+        }
+
+        .mb-20 {
+            margin-bottom: 20px;
+        }
+        .ellipsis
+        {
+                text-overflow: ellipsis;
+              overflow: hidden;
+              max-width: 100px !important;
+        }
+        .mr-20{
+            margin-right :20px;
+        }
+        .mt-20 {
+            margin-top: 20px;
+        }
+        .text-transform-capitalize{
+            text-transform :capitalize
+        }
+    </style>
+    <script type="text/javascript">
+        function onEnd(s, e) {
+            lp.Hide();
+        }
+
+         function opt1_changed(s, e) {
+            e.processOnServer = false;
+
+            document.getElementById('<%=hdWhichButton.ClientID%>').value = "opt1_changed";
+
+            cab.PerformCallback();
+         }
+
+         function opt2_changed(s, e) {
+            e.processOnServer = false;
+
+            document.getElementById('<%=hdWhichButton.ClientID%>').value = "opt2_changed";
+
+            cab.PerformCallback();
+         } 
+
+        function Run(s, e) {
+            e.processOnServer = false;
+
+            document.getElementById('<%=hdWhichButton.ClientID%>').value = "Run";
+
+            cab.PerformCallback();
+         }
+    </script>
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="SideHolder" runat="server">
+    <table>
+        <tr>
+            <td>
+                <dx:ASPxDockPanel runat="server" ID="ASPxDockPanel1" PanelUID="DateTime" HeaderText="Date & Time"
+                    Height="95px" ClientInstanceName="dateTimePanel" Width="230px" OwnerZoneUID="zone1">
+                    <ContentCollection>
+                        <dx:PopupControlContentControl ID="PopupControlContentControl1" runat="server" SupportsDisabledAttribute="True">
+                            <widget:DateTime ID="xDTWid" runat="server" />
+                        </dx:PopupControlContentControl>
+                    </ContentCollection>
+                </dx:ASPxDockPanel>
+
+            </td>
+        </tr>
+    </table>
+    <dx:ASPxDockZone ID="ASPxDockZone1" runat="server" Width="229px" ZoneUID="zone1"
+        PanelSpacing="3px" ClientInstanceName="splitter" Height="400px">
+    </dx:ASPxDockZone>
+</asp:Content>
+
+<asp:Content ID="Content3" ContentPlaceHolderID="MainHolder" runat="server">
+
+    <dx:ASPxCallbackPanel ID="ASPxCallbackPanel1" runat="server" Width="100%" ClientInstanceName="cab"
+        OnCallback="ASPxCallback1_Callback"
+        ShowLoadingPanel="False" Height="354px">
+        <SettingsLoadingPanel Enabled="False"></SettingsLoadingPanel>
+
+        <ClientSideEvents EndCallback="onEnd"></ClientSideEvents>
+        <PanelCollection>
+            <dx:PanelContent ID="PanelContent3" runat="server">
+                <dx:ASPxLoadingPanel ID="ASPxLoadingPanel1" runat="server" Modal="true" ContainerElementID=""
+                    ClientInstanceName="lp">
+                </dx:ASPxLoadingPanel>
+                <div class="mainContainer">
+                    <dx:ASPxRoundPanel ID="ASPxRoundPanel1" runat="server" Width="100%"
+                        HeaderText="Employee Review Summary" CssClass="mb-20">
+                        <PanelCollection>
+                            <dx:PanelContent ID="PanelContent1" runat="server" SupportsDisabledAttribute="True">
+                                <table>
+                                  
+                                    <tr>
+                                        <td>
+                                              <dx:ASPxRadioButton ID="opt1" runat="server" GroupName="Radio">
+                                                   <ClientSideEvents CheckedChanged="opt1_changed" />
+                                              </dx:ASPxRadioButton>
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>
+                                            <dx:ASPxLabel ID="lblFromDate" runat="server" Text="From Date:" Width="120px">
+                                            </dx:ASPxLabel>
+                                        </td>
+                                        <td>
+                                            <dx:ASPxDateEdit ID="txtFromDate" runat="server" Font-Bold="True" Width="250px" DisplayFormatString="yyyy-MM-dd" EditFormat="Custom" EditFormatString="yyyy-MM-dd" UseMaskBehavior="True">
+                                            </dx:ASPxDateEdit>
+                                        </td>
+                                        <td>&nbsp;</td>
+                                        <td>
+                                            <dx:ASPxLabel ID="lblToDate" runat="server" Text="To Date:" Width="90px">
+                                            </dx:ASPxLabel>
+                                        </td>
+                                        <td>
+                                            <dx:ASPxDateEdit ID="txtToDate" runat="server" Font-Bold="True" Width="250px"
+                                                DisplayFormatString="yyyy-MM-dd" EditFormat="Custom" EditFormatString="yyyy-MM-dd">
+                                            </dx:ASPxDateEdit>
+                                        </td>
+                                        <td></td>
+                                         
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                         <dx:ASPxRadioButton ID="opt2" GroupName="Radio" runat="server">
+                                             <ClientSideEvents CheckedChanged="opt2_changed" />
+                                         </dx:ASPxRadioButton>
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>
+                                            <dx:ASPxLabel ID="lblEmployeeName" runat="server" Text="Employee Name:" Width="120px">
+                                            </dx:ASPxLabel>
+                                        </td>
+                                        <td>
+                                            <dx:ASPxTextBox ID="txtEmployeeName" runat="server" Width="250px"></dx:ASPxTextBox>
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>
+                                            <dx:ASPxButton ID="cmdRun" Style="float: right; margin-left: 0px;" runat="server" Text="Run">
+                                                <ClientSideEvents Click ="Run" />
+                                            </dx:ASPxButton>
+                                        </td>
+
+                                    </tr>
+                                </table>
+                            </dx:PanelContent>
+                        </PanelCollection>
+                    </dx:ASPxRoundPanel>
+                    <dx:ASPxGridView ID="gvReview" runat="server" AutoGenerateColumns="False"  Width="100%" OnDataBinding ="gvReview_DataBinding"
+                        EnableTheming="True">
+
+                        <Columns>
+
+                            <dx:GridViewDataTextColumn Caption="Name" FieldName="name" VisibleIndex="0">
+                            </dx:GridViewDataTextColumn>
+                            <dx:GridViewDataTextColumn Caption="Employee Number" CellStyle-CssClass="ellipsis" FieldName="employee_number" VisibleIndex="1">
+                            </dx:GridViewDataTextColumn>
+                            <dx:GridViewDataTextColumn Caption="Type Of Review" FieldName="type_of_comment" VisibleIndex="2">
+                            </dx:GridViewDataTextColumn>
+                            <dx:GridViewDataTextColumn Caption="Rating" FieldName="rating" VisibleIndex="3">
+                            </dx:GridViewDataTextColumn>
+                            <dx:GridViewDataTextColumn Caption="Type Of Warning" FieldName="type_of_warning" VisibleIndex="4">
+                            </dx:GridViewDataTextColumn>
+                            <dx:GridViewDataTextColumn Caption="Comment" CellStyle-CssClass="ellipsis" FieldName="comment" VisibleIndex="5">
+                            </dx:GridViewDataTextColumn>
+                            <dx:GridViewDataTextColumn Caption="Date" FieldName="time_stamp" VisibleIndex="6">
+                            </dx:GridViewDataTextColumn>
+                      
+                        </Columns>                       
+                        <SettingsPager PageSize="20">
+                        </SettingsPager>
+                        <Settings ShowFooter="True" />
+                    </dx:ASPxGridView>
+                </div>
+                <asp:HiddenField ID="hdWhichButton" runat="server" />
+            </dx:PanelContent>
+        </PanelCollection>
+    </dx:ASPxCallbackPanel>
+
+</asp:Content>

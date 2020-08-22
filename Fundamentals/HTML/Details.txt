@@ -1,0 +1,123 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="alert" ng-class="Message.Class" ng-bind="Message.Text" ng-show="Message"></div>
+            <div class="card">
+                <div class="card-header">
+                    <i class="icon-user"></i> Referrer Details
+                    <a ui-sref="Admin.CouponManagement.Referrer" class="pull-right"><button type="button" class="btn btn-link btn-sm pull-right">Back</button></a>
+                </div>
+                <div class="card-body">
+                    <ul class="edusec-pf-border">
+                        <li class="w-100">
+                            <label class="edusec-profile-label w-25 edusecArLangCss">First Name</label>
+                            <div class="edusec-profile-text w-25">{{RefferalAgent.firstname}}</div>
+                            <label class="edusec-profile-label w-25 edusecArLangCss">Last Name</label>
+                            <div class="edusec-profile-text w-25">{{RefferalAgent.lastname}}</div>
+                        </li>
+                        <li class="w-100">
+                            <label class="edusec-profile-label w-25 edusecArLangCss">Email</label>
+                            <div class="edusec-profile-text w-25">{{RefferalAgent.email}}</div>
+                            <label class="edusec-profile-label w-25 edusecArLangCss">Coupon Code</label>
+                            <div class="edusec-profile-text w-25">{{RefferalAgent.couponcode}}</div>
+                        </li>
+                        <li class="w-100">
+                            <label class="edusec-profile-label w-25 edusecArLangCss">Discount %</label>
+                            <div class="edusec-profile-text w-25">{{RefferalAgent.discount | SuffixWithPercentage}}</div>
+                            <label class="edusec-profile-label w-25 edusecArLangCss">Profit %</label>
+                            <div class="edusec-profile-text w-25">{{RefferalAgent.profitpercentage | SuffixWithPercentage}}</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <i class="icon-people"></i> Referenced Users Details  
+                    <button type="button" class="btn btn-link btn-sm pull-right" ng-if="TotalItems>1">{{TotalItems}} {{TotalItems>1?'References':'Reference'}}</button>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th ng-click="changeSorting('id')"><span class="sortable" ng-class="sort.column=='id'?sort.className:''">User Id</span></th>
+                                <th ng-click="changeSorting('FirstName')"><span class="sortable" ng-class="sort.column=='FirstName'?sort.className:''">First Name</span></th>
+                                <th ng-click="changeSorting('LastName')"><span class="sortable" ng-class="sort.column=='LastName'?sort.className:''">Last Name</span></th>
+                                <th ng-click="changeSorting('Type')"><span class="sortable" ng-class="sort.column=='Type'?sort.className:''">Type</span></th>
+                                <th ng-click="changeSorting('TotalOrder')"><span class="sortable" ng-class="sort.column=='Active'?sort.className:''">Total Order</span></th>
+                                <th><span>Paid</span></th>
+                                <th><span>Action</span></th>
+                            </tr>
+                        </thead>
+                        <tbody ng-show="!showLoading">
+                            <tr>
+                                <td><input type="text" class="form-control" size="6" placeholder="User ID" ng-model="FilterByUserId" ng-model-options="{ debounce: 1000 }" ng-change="ApplyFilter()" /></td>
+                                <td><input type="text" class="form-control" size="6" placeholder="First Name" ng-model="FilterByFirstName" ng-model-options="{ debounce: 1000 }" ng-change="ApplyFilter()" /></td>
+                                <td><input type="text" class="form-control" size="6" placeholder="Last Name" ng-model="FilterByLastName" ng-model-options="{ debounce: 1000 }" ng-change="ApplyFilter()" /></td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <!--<select class="form-control" ng-model="FilterByStatus">
+                                        <option value="">- Select -</option>
+                                        <option value="Y">Yes</option>
+                                        <option value="N">No</option>
+                                    </select>-->
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr ng-repeat="ReferralUser in ReferralUserList track by $index" ng-show="!showLoading && ReferralUserList.length>0">
+                                <td>{{ReferralUser.id}}</td>
+                                <td class="ellipse" title="{{ReferralUser.FirstName}}">{{ReferralUser.FirstName}}</td>
+                                <td class="ellipse" title="{{ReferralUser.LastName}}">{{ReferralUser.LastName}}</td>
+                                <td class="ellipse" title="{{ReferralUser.Type}}">{{ReferralUser.Type}}</td>
+                                <td class="ellipse" title="{{ReferralUser.TotalOrder}}">{{ReferralUser.TotalOrder  | currency : "$ "}} USD</td>
+                                <td class="ellipse" align="center">{{ReferralUser.is_cleared == 'Y'?'Y':'N'}}</td>
+                                <td align="center" class="action ellipse">
+                                    <i class="fa face-box" ng-class="ReferralUser.is_cleared=='Y'?'fa-toggle-on':'fa-toggle-off'" ng-click="ToggleActivation(ReferralUser, $index)"></i>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tbody ng-show="showLoading || (!ReferralUserList || ReferralUserList.length == 0)">
+                            <tr>
+                                <td colspan="7" ng-if="!showLoading || data.length == 0"><center>No referenced user found.</center></td>
+                                <td colspan="7" ng-if="showLoading"><center>Please Wait While Data is Loading...</center></td>
+                            </tr>
+                        </tbody>
+                        <tfoot ng-show="!showLoading &&  TotalItems > PageSize">
+                            <tr>
+                                <td colspan="7">
+                                    <div class="row">
+                                        <div class="col-md-4 mt-1">
+                                            <span class="page-number-info"><strong>Page : </strong> {{PageNo}}/{{TotalPage}}</span>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <ul class="pagination-sm pull-right m-0" uib-pagination total-items="TotalItems" ng-model="PageNo" ng-change="PageChanged()" max-size="maxSize" items-per-page="PageSize"></ul>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-4 col-xm-12 pull-right" ng-show="!showLoading && ReferralUserList.length>0">
+                <table class="table">
+                    <tr class="bg-white">
+                        <td class="border-0"><strong>Total Amount</strong></td>
+                        <td class="border-0" align="right">{{AmountList.total_order_cost  | currency : "$ "}} USD</td>
+                    </tr>
+                    <tr class="bg-white border-0">
+                        <td class="border-0"><strong>Profit %</strong></td>
+                        <td class="border-0" align="right">{{RefferalAgent.profitpercentage | SuffixWithPercentage}}</td>
+                    </tr>
+                    <tr class="bg-info">
+                        <td><strong>Total Earnings</strong></td>
+                        <td align="right">{{AmountList.profit_earned  | currency : "$ "}} USD</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <!--/.col-->
+    </div>
+    <!--/.row-->
+</div>

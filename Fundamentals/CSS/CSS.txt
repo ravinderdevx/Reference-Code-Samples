@@ -1,0 +1,344 @@
+body {
+    padding: 20px;
+    background: #fafafa;
+}
+
+.mb-20 {
+    margin-bottom: 20px;
+}
+
+.panel-title .glyphicon {
+    margin-right: 10px;
+}
+
+.panel-body {
+    padding: 0px;
+}
+
+.panel-body table tr td {
+    padding-left: 15px;
+}
+
+.panel-body .table {
+    margin-bottom: 0px;
+    user-select: none;
+}
+
+/** Form Builder CSS **/
+
+
+.drag-drop-area {
+    min-height: 500px;
+    position: relative;
+    transition: background-color .5s ease-in-out;
+}
+
+.drag-drop-area:empty {
+    border: 2px dashed #ddd;
+}
+
+.drop-item.row div[class*='col-']:empty, .drop-item.row table tr td:empty {
+    border: 1px dashed #ddd;
+}
+
+.drag-drop-area:empty, .drop-item.row div[class*='col-']:empty, .drop-item.row table tr td:empty {
+    color: #888;
+    background: rgba(255, 255, 255, 0.27);
+}
+
+
+.drag-drop-area:empty:before {
+    content: attr(data-content);
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    margin-top: -1em;
+    font-size: 18px;
+}
+
+.drag-drop-area.drag-hover,  .drag-hover, .ui-sortable-helper {
+    border: 1px dashed #428bca !important;
+    color: #428bca !important;
+    background: #d9edf7 !important;
+}
+
+.drag-drop-area.drag-hover:before, .drop-item.row > div[class*='col-'].drag-hover:empty:before, .drop-item.row table tr td.drag-hover:empty:before {
+    content:none;
+}
+
+.drag-drop-area > .drop-item {
+    position: relative;
+    padding: 6px;
+    clear: both;
+    margin: 0 0 10px;
+    background-color: #ffffff;
+    transition: background-color .25s ease-in-out,margin-top .4s;
+    border: 1px solid #ddd;
+}
+
+.drag-drop-area > .drop-item:first-child {
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+}
+
+.drag-drop-area .drop-item {
+    padding: 40px 10px 10px;
+    position:relative;
+    margin-bottom: 15px;
+}
+
+.drag-drop-area .drop-item:hover, .drag-drop-area .drop-item.active {
+    -webkit-box-shadow: 0 3px 3px rgba(0,0,0,0.05);
+    box-shadow: 0 3px 3px rgba(0,0,0,0.05);
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.drop-item.row table tr td:empty {
+    height: 50px;
+    /* border-right: none; */
+    position:relative;
+}
+
+.drop-item.row > div[class*='col-']:empty {
+    min-height: 100px;
+    /* border-right: none; */
+}
+
+.drop-item.row > div[class*='col-']:empty:last-child, .drop-item.row table tr td:empty:last-child {
+    /* border-right: 1px dashed #ddd; */
+}
+/*.drop-item.row > div[class*='col-'] + div[class*='col-']:empty {
+    border-right: 1px dashed #ddd;
+}*/
+
+.drop-item.row > div[class*='col-']:empty:before, .drop-item.row table tr td:empty:before {
+    content: 'Drag form controls here';
+    text-align: center;
+    position: absolute;
+    top: 40%;
+    left: 0;
+    width: 100%;
+    margin-top: -1em;
+    font-size: 14px;
+    padding: 10px;
+}
+.drop-item .drop-item{border:1px solid transparent;}
+.drop-item .drop-item:hover, .drop-item .drop-item:active {
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+/** Action buttons **/
+
+.drag-drop-area .drop-item .field-actions {
+    position: absolute;
+    top: 0;
+    right: 0;
+    opacity: 0;
+}
+
+.drag-drop-area .drop-item.active>.field-actions {
+    opacity: 1;
+}
+
+
+.drag-drop-area > .drop-item:hover > .field-actions, .drop-item .drop-item:hover > .field-actions {
+    opacity: 1;
+}
+
+.drag-drop-area .drop-item .field-actions .btn .glyphicon {
+    margin-right: 0;
+    top: 8px;
+}
+
+.drag-drop-area .drop-item .field-actions .btn {
+    float: left;
+    width: 32px;
+    height: 32px;
+    padding: 0 6px;
+    border-radius: 0;
+    background-color: #fff;
+    color: #c5c5c5;
+    line-height: 32px;
+    font-size: 16px;
+    user-select: none;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    font-weight: 400;
+    border: none;
+    border-radius: 0;
+}
+
+.drag-drop-area .drop-item .field-actions .btn:first-child {
+    border-bottom-left-radius: 5px;
+}
+
+.drag-drop-area .drop-item:first-child .field-actions .btn:last-child {
+    border-radius: 0 5px 0 0;
+}
+
+.drag-drop-area .drop-item .field-actions .del-button:hover,  .drag-drop-area .drop-item.active .field-actions .del-button {
+    background-color: #c66865;
+    color: #fff;
+}
+
+.drag-drop-area .drop-item .field-actions .edit-button:hover,  .drag-drop-area .drop-item.active .field-actions .edit-button {
+    background-color: #65aac6;
+    color: #fff;
+}
+
+.drag-drop-area .drop-item .field-actions .copy-button:hover,  .drag-drop-area .drop-item.active .field-actions .copy-button {
+    background-color: #6fc665;
+    color: #fff;
+}
+
+.drag-drop-area .drop-item.delete {
+    background-color: #fdd;
+}
+
+.drag-drop-area .drop-item.copy {
+    /*background-color: #cbffc5;*/
+}
+
+/*.drag-drop-area .drop-item:hover {
+                    background: #fafafa;
+                }*/
+
+
+.drop-item[data-control-type='label'] {
+    width: 100%;
+}
+
+.drop-item.active[data-control-type='hiddeninput']:before, .drop-item[data-control-type='hiddeninput']:hover:before {
+    border-color:transparent;
+}
+.drop-item[data-control-type='hiddeninput']:before {
+    content: 'Hidden Input';
+    text-align: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    font-size: 14px;
+    padding: 10px;
+    color: #888;
+    height: 100%;
+    top: 0;
+    padding-top: 12px;
+    border: 1px dashed #ccc;
+}
+
+.mh-60 {min-height:60px;}
+
+
+/** Properties sidebar **/
+
+.property-display {
+    display: contents;
+}
+
+#field-property-table .row {
+    margin: 0;
+}
+
+#field-property-table .row:before, #field-property-table .row:after {
+    content: none;
+}
+
+#field-property-container .panel .panel-title {
+    text-transform: capitalize;
+}
+
+
+.table-properties .property-label {
+    width: 40%;
+    background: #fafafa;
+    vertical-align: middle !important;
+    font-weight: bold;
+    border-right: 1px solid #ddd;
+    font-size: 12px;
+}
+
+.table-properties .property-input {
+    width: 60%;
+}
+
+.table-properties .form-control {
+    display: block;
+    width: 100%;
+    padding: 6px;
+    font-size: 12px;
+    line-height: 1.428571429;
+    color: #555;
+    vertical-align: middle;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+    -webkit-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    height:30px;
+}
+
+.table-properties .form-control.opt-default {
+    height: auto;
+}
+
+
+.table-properties tr.label {
+    padding: 0;
+    font-size: initial;
+    color: initial;
+    font-weight: initial;
+    line-height: initial;
+    text-align: initial;
+    white-space: initial;
+    vertical-align: initial;
+    border-radius: initial;
+    display: table-row;
+}
+
+.table-properties .options-list .opt-remove {
+    color: #c33329;
+}
+.table-properties .options-list .opt-remove, .table-properties .options-list .opt-selection {
+    padding: 6px 7px;
+    width: 30px;
+}
+.table-properties .options-list .opt-remove, .table-properties .options-list .opt-selection {
+    padding: 6px 7px;
+    width: 30px;
+}
+
+.table-properties .options-list .opt-single:first-child .opt-remove i {
+    display: none;
+}
+
+
+/** controls-sidebar **/
+.controls-sidebar .panel-body table tr td{
+    padding:0;
+}
+
+.controls-sidebar .panel-body table tr td a{
+    padding:8px 8px 8px 15px;
+    display:inline-block;
+    width:100%;
+    cursor:move;
+}
+
+.ui-draggable-dragging {
+    z-index: 1;
+    padding: 8px 8px 8px 15px;
+    background: #fff;
+    border: 1px solid #ddd;
+    font-size: 16px;
+    opacity: 0.6;
+    cursor:move;
+}

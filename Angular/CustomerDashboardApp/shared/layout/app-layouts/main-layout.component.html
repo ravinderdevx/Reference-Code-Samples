@@ -1,0 +1,24 @@
+<sa-header [configurationMode]="configurationMode" [userId]="userId"></sa-header>
+<div *ngIf="configurationMode == false">
+
+  <sa-navigation [userId]="userId"></sa-navigation>
+
+  <div id="main" role="main" [@routerTransition]="getState(o)">
+
+    <!-- <sa-layout-switcher></sa-layout-switcher> -->
+
+    <sa-ribbon></sa-ribbon>
+
+    <router-outlet #o="outlet"></router-outlet>
+  </div>
+
+  <sa-footer></sa-footer>
+</div>
+
+<div *ngIf="configurationMode == true">
+  <!-- <configuration-header></configuration-header> -->
+  <router-outlet #o="outlet"></router-outlet>
+</div>
+
+<app-loader></app-loader>
+

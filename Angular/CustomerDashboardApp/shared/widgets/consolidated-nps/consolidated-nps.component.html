@@ -1,0 +1,25 @@
+<!-- Widget ID (each widget will need unique ID)-->
+<div sa-widget [widget]="data" [configObject]="configObject" [loading]="loading" (performAction)="actionOnWidget($event)">
+    <!-- widget content -->
+    <div class="widget-body text-center" [class.widget-data]="!loading" *ngIf="!loading">
+      <div class="widget-" *ngIf="widgetData">
+        <h1 class="nps-score {{widgetData.className}}">{{widgetData.npsScore}}</h1>
+        <div class="nps-row">
+          <div class="col-xs-4 col-sm-4 p-0">
+            <div class="count promoters">{{widgetData.promotersCount}}</div>
+            <label>Promoters</label>
+          </div>
+          <div class="col-xs-4 col-sm-4 p-0">
+            <div class="count passive">{{widgetData.passiveCount}}</div>
+            <label>Passive</label>
+          </div>
+          <div class="col-xs-4 col-sm-4 p-0">
+            <div class="count detractors">{{widgetData.detractorsCount}}</div>
+            <label>Detractors</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end widget content -->
+</div>
+<!-- end widget -->

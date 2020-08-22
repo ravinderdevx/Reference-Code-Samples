@@ -1,0 +1,47 @@
+<div id="content">
+    <div class="row">
+      <sa-big-breadcrumbs [items]="['Clients']" icon="users"
+                          class="col-xs-12 col-sm-7 col-md-7 col-lg-6"></sa-big-breadcrumbs>
+      <div class="col-xs-12 col-sm-5 col-md-5 col-lg-6">
+        <a class="btn btn-primary pull-right mt-10" (click)="addOpenClientPopUp()">Add</a>
+      </div>
+    </div>
+
+    <div class="row">
+      <article class="col-sm-12">
+        <div class="jarviswidget">
+          <header>
+            <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+            <h2>List of Clients</h2>
+          </header>
+          <div>
+            <div class="widget-body datatable-widget no-padding">
+                <sa-custom-datatable [columnsList]="columnsList" orderBy="CompanyName" (changeTable)="filterGrid($event)">
+                  <tr *ngFor="let row of dataList">
+                    <td class="ellipse" [title]="row.CompanyName">{{row.CompanyName}}</td>
+                    <td class="ellipse" [title]="row.ContactName">{{row.ContactName}}</td>
+                    <td class="ellipse" [title]="row.Email">{{row.Email}}</td>
+                    <td class="ellipse" [title]="row.Phone">{{row.Phone}}</td>
+                    <td align="center" class="action ellipse">
+                      <a href="javascript:void(0)" placement="top" tooltip="EDIT CLIENT" (click)="addOpenClientPopUp(row)"><i class="glyphicon glyphicon-edit"></i></a>
+                      <a placement="top" tooltip="MANAGE USERS" routerLink="/client/admin/users" [queryParams]="{ companyId: row._id }"><i class="glyphicon glyphicon-user"></i></a>
+                      <a placement="top" tooltip="MANAGE LOCATIONS" routerLink="/client/admin/locations" [queryParams]="{ companyId: row._id }"><i class="glyphicon glyphicon-map-marker"></i></a>
+                      <a placement="top" tooltip="UPLOAD DATA" (click)="openImportPopUp(row)"><i class="glyphicon glyphicon-cloud-upload"></i></a>
+                      <a placement="top" tooltip="MANAGE REPORTS" routerLink="/client/reports" [queryParams]="{ companyId: row._id }"><i class="glyphicon glyphicon-list-alt"></i></a>
+                    </td>
+                </tr>
+                </sa-custom-datatable>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <ng-template #ClientRegisterModal>
+    <app-client-register [client]="selectedClient" [clarityServices]="services" (onSave)="reloadTable()" (close)="closeModal()"></app-client-register>
+  </ng-template>
+
+  <ng-template #DataImportModal>
+    <app-data-import [client]="selectedClient" [clarityServices]="services" (close)="closeModal()"></app-data-import>
+  </ng-template>

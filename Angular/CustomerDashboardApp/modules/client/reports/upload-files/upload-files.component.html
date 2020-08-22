@@ -1,0 +1,56 @@
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="close.emit(true)">
+      &times;
+    </button>
+    <h4 class="modal-title">Upload Reports</h4>
+  </div>
+  <alert [type]="messageObject.type" class="mb-10" dismissible="true" *ngIf="messageObject" (onClosed)="messageObject = null">
+    <strong class="alert-heading">{{ messageObject.text }}!</strong> {{ messageObject.message }}
+  </alert>
+  <div class="modal-body">
+    <ngx-dropzone [preserveFiles]="false" [accept]="allowedFileFormats" (filesAdded)="onFilesAdded($event)"></ngx-dropzone>
+    
+    <div class="table-container mt-20">
+      <table class="table table-bordered text-center">
+        <thead>
+            <tr>
+                <th width="50%">Name</th>
+                <th width="30%" class="text-center">Status</th>
+                <th width="20%" class="text-center">Action</th>
+            </tr>
+        </thead>
+        <tbody  *ngIf="files.length > 0">
+          <tr *ngFor="let file of files; let i = index;">
+            <td class="text-left">{{file.name}}</td>
+            <td class="status">
+              <span class="fa fa-circle-o-notch fa-spin text-primary" *ngIf="file.isProgress"></span>
+              <span class="glyphicon glyphicon glyphicon-ok-circle text-success" *ngIf="file.isCompleted"></span>
+              <span class="glyphicon glyphicon-remove-circle text-danger" *ngIf="file.isError"></span>
+            </td>
+            <td>
+              <button class="btn btn-danger btn-xs" type="button" (click)="removeFile(i)" [disabled]="loading">
+                  <span class="glyphicon glyphicon-trash"></span><span class="hidden-xs"> Clear</span>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+        <tbody *ngIf="files.length == 0">
+          <tr>
+            <td colspan="3">No files selected</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+  <div class="modal-footer">
+    <div class="pull-left">
+
+      <button type="button" class="btn btn-danger" (click)="removeAll()" [disabled]="loading">Clear All</button>
+      <button type="button" class="btn btn-primary" (click)="uploadAll()" [disabled]="loading">Upload All</button>
+    </div>
+    <button type="button" class="btn btn-default" (click)="close.emit(true)">
+        Close
+      </button>
+  </div>

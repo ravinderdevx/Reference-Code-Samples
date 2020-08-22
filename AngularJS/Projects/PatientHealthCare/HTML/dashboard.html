@@ -1,0 +1,470 @@
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="
+			app.settings.asideFolded = false;
+			app.settings.asideDock = false;
+			" ng-controller="DashBoardCtrl" ng-cloak>
+	<!-- main -->
+	<div class="col">
+		<!-- / main header -->
+		<div class="wrapper-md" ng-if="!showLoading">
+			<div class="row">
+				<div class="col-md-9">
+					<div class="col-xs-2 text-center">      
+						<a href="/Patient/Index/e" target="_blank">
+							<div ui-options="{{EngagedPatientGraph}}" class="inline m-t" apply-easy-pie-chart>
+								<div>
+									<span class="text-primary h4">{{DashboardGraph.EngagedPatients}}%</span>
+								</div>
+							</div>
+						</a>
+						<div class="text-muted font-bold text-xs m-t m-b">Engaged Patients</div>
+					</div>
+					<div class="col-xs-2 text-center">       
+						<a href="/Patient/Index/es" target="_blank">
+							<div ui-options="{{EscalatedPatientGraph}}" class="inline m-t" apply-easy-pie-chart>
+								<div>
+									<span class="text-info h4">35%</span>
+								</div>
+							</div>
+						</a>
+						<div class="text-muted font-bold text-xs m-t m-b">Patients Escalated</div>
+					</div>
+					<div class="col-xs-2 text-center">
+						<a href="/Patient/Index/p" target="_blank">
+							<div ui-options="{{PriorityPatientGraph}}" class="inline m-t" apply-easy-pie-chart>
+								<div>
+									<span class="text-darkyellow h4">{{DashboardGraph.PriorityPatients}}%</span>
+								</div>
+							</div>
+						</a>
+						<div class="text-muted font-bold text-xs m-t m-b">Priority Patient</div>
+					</div>
+					<div class="col-xs-2 text-center">
+						<a href="/Patient/Index/n" target="_blank">
+							<div ui-options="{{NewPatientGraph}}" class="inline m-t" apply-easy-pie-chart>
+								<div>
+									<span class="text-clor01 h4">{{DashboardGraph.NewPatients}}%</span>
+								</div>
+							</div>
+						</a>
+						<div class="text-muted font-bold text-xs m-t m-b">New Patients</div>
+					</div>
+					<div class="col-xs-2 text-center">
+						<a href="/Patient/Index/nc" target="_blank">
+							<div ui-options="{{NoComplicationPatientGraph}}" class="inline m-t" apply-easy-pie-chart>
+								<div>
+									<span class="text-green h4">{{DashboardGraph.NoComplicationPatients}}%</span>
+								</div>
+							</div>
+						</a>
+						<div class="text-muted font-bold text-xs m-t m-b">No complications</div>
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="col-md-6 col-sm-6 text-center">
+						<div class="status-block status-blue-bg">
+							<h5 class="heading-md">New</h5>
+							<p>5</p>                        
+						</div>
+					</div>
+					<div class="col-md-6 col-sm-6 text-center">
+						<div class="status-block status-black-bg">
+							<h5 class="heading-md">Future Discharges</h5>
+							<p>45</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row dashboard m-t">
+					<div class="col-md-12 b-r b-light no-border-xs">
+						<div class="panel panel-default">
+							<div class="panel-heading priority-patient-bg">
+								<a href="/Patient/Index/p" class="heading-link">PRIORITY PATIENTS</a>
+							</div>
+							<div class="table-responsive">
+								<table class="table table-striped b-t b-light">
+									<thead>
+										<tr>
+											<th>&nbsp;</th>
+											<th>Name</th>
+											<th>Notifications</th>
+											<th>EF</th>
+											<th class="table-ellipse">Living Sit.</th>
+											<th>Caretaker</th>
+											<th>Discharge</th>
+											<th>Weight ( Dry | Latest )</th>
+											<th>CR</th>
+											<th>K</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="patient in PriorityPatientsList.slice(((priorityPatientsPage-1)*limit), ((priorityPatientsPage)*limit))">
+											<td align="center" style="padding: 8px;">
+												<div class="dropdown pull-left">
+													<i class="glyphicon glyphicon-menu-hamburger action-btn link" data-toggle="dropdown"></i>
+													<ul class="dropdown-menu">
+														<li>
+															<span class="link" ng-click="OpenPatientVitals(patient.ID, patient.Fullname)">Vitals</span>
+															<span class="text-info add pull-right" ng-click="AddVitals(patient.ID, patient.Fullname)"><i class="fa fa-plus"></i></span>
+														</li>
+														<li>
+															<span class="link" ng-click="OpenPatientNote(patient.ID, patient.Fullname)">Notes</span>
+															<span class="text-info add pull-right" ng-click="AddNote(patient.ID, patient.Fullname)"><i class="fa fa-plus"></i></span>
+														</li>
+														<li>
+															<span class="link" ng-click="OpenPatientAppointment(patient.ID, patient.Fullname)">Appointment</span>
+															<span class="text-info add pull-right" ng-click="AddAppointment(patient.ID, patient.Fullname)"><i class="fa fa-plus"></i></span>
+														</li>
+														<li>
+															<span class="link" ng-click="OpenPatientAlert(patient.ID, patient.Fullname)">Alerts</span>
+															<span class="text-info add pull-right" ng-click="AddAlert(patient.ID, patient.Fullname)"><i class="fa fa-plus"></i></span>
+														</li>
+													</ul>
+												</div>
+												<i class="fa fa-circle" title="{{patient.StatusName}}" ng-class="AddStatusClass(patient.Status)" ng-if="patient.Status!=null"></i>
+												<span class="engagement-value pull-right" ng-class="AddColorClass(patient.Engagement)" ng-if="patient.Engagement != null" ng-bind="patient.Engagement"></span>
+											</td>
+											<td class="table-ellipse"><a class="text-info" href="/Patient/Save?id={{patient.ID}}" title="{{patient.Fullname}}" ng-bind="patient.Fullname"></a></td>
+											<td>
+												<a href="/Patient/Save?id={{patient.ID}}#notes" class="pull-left"><i class="glyphicon glyphicon-list-alt margin-both margin-both" title="Note" ng-if="patient.Note>0"></i></a>
+												<a href="/Patient/Save?id={{patient.ID}}#appointments" class="pull-right"><i class="glyphicon glyphicon-calendar margin-both margin-both" title="Appointment" ng-if="patient.Appointment>0"></i></a>
+												<a href="/Patient/Save?id={{patient.ID}}#alerts"><i class="glyphicon glyphicon-bell margin-both margin-both" title="Note" ng-if="patient.Alert>0"></i></a>
+											</td>
+											<td align="center" ng-bind="patient.EF==null?'':patient.EF"></td>
+											<td class="table-ellipse" ng-bind="patient.Livingsituation"></td>
+											<td ng-bind="patient.CareGiver"></td>
+											<td align="center" class="table-ellipse" ng-bind="CalculateDays(patient.DischargeDate)"></td>
+											<td align="center" class="table-ellipse" ng-bind="BindWeight(patient.Weightinpounds, patient.Responseweight)"></td>
+											<td align="center" ng-bind="patient.Creatinine==null?'':patient.Creatinine"></td>
+											<td align="center" ng-bind="patient.Potassium==null?'':patient.Potassium"></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<footer class="panel-footer">
+								<div class="row">
+									<div class="col-sm-3">
+										<small class="text-muted inline m-b-sm" style="margin-top:5px;"><strong>Page :</strong> {{priorityPatientsPage}} / {{PriorityTotalPage}}</small>
+									</div>
+									<div class="col-sm-6 hidden-xs"></div>
+									<div class="col-sm-3 text-right text-center-xs">
+										<ul class="pagination-sm m-t-none m-b-none custom-pagination" uib-pagination total-items="PriorityPatientsTotal" ng-model="priorityPatientsPage" ng-change="changePatientsList('PRIORITY')" max-size="0" items-per-page="limit" previous-text="&#xf048;" next-text="&#xf051;"></ul>
+									</div>
+								</div>
+							</footer>
+						</div>
+						<div class="panel panel-default">
+							<div class="panel-heading new-patient-bg">
+								<a href="/Patient/Index/n" class="heading-link">NEW PATIENTS</a>
+							</div>
+							<div class="table-responsive">
+								<table class="table table-striped b-t b-light">
+									<thead>
+										<tr>
+											<th>&nbsp;</th>
+											<th>Name</th>
+											<th>Notifications</th>
+											<th>EF</th>
+											<th class="table-ellipse">Living Sit.</th>
+											<th>Caretaker</th>
+											<th>Discharge</th>
+											<th>Weight ( Dry | Latest )</th>
+											<th>CR</th>
+											<th>K</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="patient in NewPatientsList.slice(((newPatientsPage-1)*limit), ((newPatientsPage)*limit))">
+											<td align="center" style="padding: 8px;">
+												<div class="dropdown pull-left">
+													<i class="glyphicon glyphicon-menu-hamburger action-btn link" data-toggle="dropdown"></i>
+													<ul class="dropdown-menu">
+														<li>
+															<span class="link" ng-click="OpenPatientVitals(patient.ID, patient.Fullname)">Vitals</span>
+															<span class="text-info add pull-right" ng-click="AddVitals(patient.ID, patient.Fullname)"><i class="fa fa-plus"></i></span>
+														</li>
+														<li>
+															<span class="link" ng-click="OpenPatientNote(patient.ID, patient.Fullname)">Notes</span>
+															<span class="text-info add pull-right" ng-click="AddNote(patient.ID, patient.Fullname)"><i class="fa fa-plus"></i></span>
+														</li>
+														<li>
+															<span class="link" ng-click="OpenPatientAppointment(patient.ID, patient.Fullname)">Appointment</span>
+															<span class="text-info add pull-right" ng-click="AddAppointment(patient.ID, patient.Fullname)"><i class="fa fa-plus"></i></span>
+														</li>
+														<li>
+															<span class="link" ng-click="OpenPatientAlert(patient.ID, patient.Fullname)">Alerts</span>
+															<span class="text-info add pull-right" ng-click="AddAlert(patient.ID, patient.Fullname)"><i class="fa fa-plus"></i></span>
+														</li>
+													</ul>
+												</div>
+												<i class="fa fa-circle" title="{{patient.StatusName}}" ng-class="AddStatusClass(patient.Status)" ng-if="patient.Status!=null"></i>
+												<span class="engagement-value pull-right" ng-class="AddColorClass(patient.Engagement)" ng-if="patient.Engagement != null" ng-bind="patient.Engagement"></span>
+											</td>
+											<td class="table-ellipse"><a class="text-info" href="/Patient/Save?id={{patient.ID}}" title="{{patient.Fullname}}" ng-bind="patient.Fullname"></a></td>
+											<td>
+												<a href="/Patient/Save?id={{patient.ID}}#notes" class="pull-left"><i class="glyphicon glyphicon-list-alt margin-both margin-both" title="Note" ng-if="patient.Note>0"></i></a>
+												<a href="/Patient/Save?id={{patient.ID}}#appointments" class="pull-right"><i class="glyphicon glyphicon-calendar margin-both margin-both" title="Appointment" ng-if="patient.Appointment>0"></i></a>
+												<a href="/Patient/Save?id={{patient.ID}}#alerts"><i class="glyphicon glyphicon-bell margin-both margin-both" title="Note" ng-if="patient.Alert>0"></i></a>
+											</td>
+											<td align="center" ng-bind="patient.EF==null?'':patient.EF"></td>
+											<td class="table-ellipse" ng-bind="patient.Livingsituation"></td>
+											<td ng-bind="patient.CareGiver"></td>
+											<td align="center" class="table-ellipse" ng-bind="CalculateDays(patient.DischargeDate)"></td>
+											<td align="center" class="table-ellipse" ng-bind="BindWeight(patient.Weightinpounds, patient.Responseweight)"></td>
+											<td align="center" ng-bind="patient.Creatinine==null?'':patient.Creatinine"></td>
+											<td align="center" ng-bind="patient.Potassium==null?'':patient.Potassium"></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<footer class="panel-footer">
+								<div class="row">
+									<div class="col-sm-3">
+										<small class="text-muted inline m-b-sm" style="margin-top:5px;"><strong>Page :</strong> {{newPatientsPage}} / {{NewTotalPage}}</small>
+									</div>
+									<div class="col-sm-6 hidden-xs"></div>
+									<div class="col-sm-3 text-right text-center-xs">
+										<ul class="pagination-sm m-t-none m-b-none custom-pagination" uib-pagination total-items="NewPatientsTotal" ng-model="newPatientsPage" ng-change="changePatientsList('NEW')" max-size="0" items-per-page="limit" previous-text="&#xf048;" next-text="&#xf051;"></ul>
+									</div>
+								</div>
+							</footer>
+						</div>
+						<div class="panel panel-default">
+							<div class="panel-heading engaged-patient-bg">
+								<a href="/Patient/Index/e" class="heading-link">ENGAGED PATIENTS</a>
+							</div>
+							<div class="table-responsive">
+								<table class="table table-striped b-t b-light">
+									<thead>
+										<tr>
+											<th>&nbsp;</th>
+											<th>Name</th>
+											<th>Notifications</th>
+											<th>EF</th>
+											<th class="table-ellipse">Living Sit.</th>
+											<th>Caretaker</th>
+											<th>Discharge</th>
+											<th>Weight ( Dry | Latest )</th>
+											<th>CR</th>
+											<th>K</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="patient in EngagedPatientsList.slice(((engagedPatientsPage-1)*limit), ((engagedPatientsPage)*limit))">
+											<td align="center" style="padding: 8px;">
+												<div class="dropdown pull-left">
+													<i class="glyphicon glyphicon-menu-hamburger action-btn link" data-toggle="dropdown"></i>
+													<ul class="dropdown-menu">
+														<li>
+															<span class="link" ng-click="OpenPatientVitals(patient.ID, patient.Fullname)">Vitals</span>
+															<span class="text-info add pull-right" ng-click="AddVitals(patient.ID, patient.Fullname)"><i class="fa fa-plus"></i></span>
+														</li>
+														<li>
+															<span class="link" ng-click="OpenPatientNote(patient.ID, patient.Fullname)">Notes</span>
+															<span class="text-info add pull-right" ng-click="AddNote(patient.ID)"><i class="fa fa-plus"></i></span>
+														</li>
+														<li>
+															<span class="link" ng-click="OpenPatientAppointment(patient.ID, patient.Fullname)">Appointment</span>
+															<span class="text-info add pull-right" ng-click="AddAppointment(patient.ID, patient.Fullname)"><i class="fa fa-plus"></i></span>
+														</li>
+														<li>
+															<span class="link" ng-click="OpenPatientAlert(patient.ID)">Alerts</span>
+															<span class="text-info add pull-right" ng-click="AddAlert(patient.ID, patient.Fullname)"><i class="fa fa-plus"></i></span>
+														</li>
+													</ul>
+												</div>
+												<i class="fa fa-circle" title="{{patient.StatusName}}" ng-class="AddStatusClass(patient.Status)" ng-if="patient.Status!=null"></i>
+												<span class="engagement-value pull-right" ng-class="AddColorClass(patient.Engagement)" ng-if="patient.Engagement != null" ng-bind="patient.Engagement"></span>
+											</td>
+											<td class="table-ellipse"><a class="text-info" href="/Patient/Save?id={{patient.ID}}" title="{{patient.Fullname}}" ng-bind="patient.Fullname"></a></td>
+											<td>
+												<a href="/Patient/Save?id={{patient.ID}}#notes" class="pull-left"><i class="glyphicon glyphicon-list-alt margin-both margin-both" title="Note" ng-if="patient.Note>0"></i></a>
+												<a href="/Patient/Save?id={{patient.ID}}#appointments" class="pull-right"><i class="glyphicon glyphicon-calendar margin-both margin-both" title="Appointment" ng-if="patient.Appointment>0"></i></a>
+												<a href="/Patient/Save?id={{patient.ID}}#alerts"><i class="glyphicon glyphicon-bell margin-both margin-both" title="Note" ng-if="patient.Alert>0"></i></a>
+											</td>
+											<td align="center" ng-bind="patient.EF==null?'':patient.EF"></td>
+											<td class="table-ellipse" ng-bind="patient.Livingsituation"></td>
+											<td ng-bind="patient.CareGiver"></td>
+											<td align="center" class="table-ellipse" ng-bind="CalculateDays(patient.DischargeDate)"></td>
+											<td align="center" class="table-ellipse" ng-bind="BindWeight(patient.Weightinpounds, patient.Responseweight)"></td>
+											<td align="center" align="center" ng-bind="patient.Creatinine==null?'':patient.Creatinine"></td>
+											<td align="center" align="center" ng-bind="patient.Potassium==null?'':patient.Potassium"></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<footer class="panel-footer">
+								<div class="row">
+									<div class="col-sm-3">
+										<small class="text-muted inline m-b-sm" style="margin-top:5px;"><strong>Page :</strong> {{engagedPatientsPage}} / {{EngagedTotalPage}}</small>
+									</div>
+									<div class="col-sm-6 hidden-xs"></div>
+									<div class="col-sm-3 text-right text-center-xs">
+										<ul class="pagination-sm m-t-none m-b-none custom-pagination" uib-pagination total-items="EngagedPatientsTotal" ng-model="engagedPatientsPage" ng-change="changePatientsList('ENGAGED')" max-size="0" items-per-page="limit" previous-text="&#xf048;" next-text="&#xf051;"></ul>
+									</div>
+								</div>
+							</footer>
+						</div>
+					</div>
+				</div>
+				<ng-include src="'/Templates/Patient/popups_template.html'"></ng-include>
+			
+		</div>
+	</div>
+	<!-- / main -->
+	<!-- right col -->
+	<div class="col w-md bg-white-only b-l bg-auto no-border-xs" ng-controller="DashBoardSidbarCtrl">
+		<div class="nav-tabs-alt">
+			<ul class="nav nav-tabs" role="tablist">
+				<li class="active">
+					<a data-target="#tab-1" role="tab" data-toggle="tab">
+						<i class="glyphicon glyphicon-comment text-md text-muted wrapper-sm"></i>
+					</a>
+				</li>
+				<li>
+					<a data-target="#tab-2" role="tab" data-toggle="tab" ng-click="getChatWithPatient()">
+						<i class="glyphicon glyphicon-user text-md text-muted wrapper-sm"></i>
+					</a>
+				</li>
+				<li>
+					<a data-target="#tab-3" role="tab" data-toggle="tab">
+						<i class="glyphicon glyphicon-phone-alt text-md text-muted wrapper-sm"></i>
+					</a>
+				</li>
+			</ul>
+		</div>
+		<div class="tab-content">
+			<div role="tabpanel" class="tab-pane active" id="tab-1">
+				<div class="padder-md recent-messages">
+					<!-- streamline -->
+					<div class="m-b text-md">Recent Activity</div>
+					<div class="streamline b-l" ng-if="RecentActivites.length>0">
+						<div class="sl-item" ng-repeat="activity in RecentActivites">
+							<div class="m-l">
+								<div class="text-muted">{{activity.ActivityDate | date:'MMM dd, yyyy HH:mm a'}}</div>
+								<div><a href="" class="text-info">{{activity.PatientName}}</a></div>
+								<p ng-bind="activity.Activity"></p>
+							</div>
+						</div>
+					</div>
+					<div class="no-activity" ng-if="!RecentActivites || RecentActivites.length==0">
+						<p class="text-center">No Recent Activities</p>
+					</div>
+					<!-- / streamline -->
+				</div>
+			</div>
+			<div role="tabpanel" class="tab-pane tab-2" id="tab-2">
+				<div class="wrapper-md">
+					<div class="m-b-sm text-md">Chat</div>
+					<ul class="list-group no-borders pull-in auto">
+						<li class="list-group-item" ng-repeat="chat in ChatWithPatient">
+							<a href="#" class="text-muted" ui-toggle-class="show" target=".app-aside-right" ng-click="getChatDetails(chat.PatientId)">
+								<i class="fa fa-comment-o pull-right m-t-sm text-sm"></i>
+							</a>
+							<div class="clear">
+								<div><a href="">{{chat.FullName}}</a></div>
+								<small class="text-muted">{{chat.ReceivedDate | date:'MMM dd, yyyy HH:mm a'}}</small>
+							</div>
+						</li>
+						<li class="list-group-item" ng-if="!ChatWithPatient || ChatWithPatient.length==0">
+							<p class="text-center">No Chat conversations</p>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div role="tabpanel" class="tab-pane tab-3" id="tab-3">
+				<div class="wrapper-md">
+					<div class="m-b-sm text-md">Transaction</div>
+					<ul class="list-group list-group-sm list-group-sp list-group-alt auto m-t">
+						<li class="list-group-item">
+							<span class="text-muted">Transfer to Jacob at 3:00 pm</span>
+							<span class="block text-md text-info">B 15,000.00</span>
+						</li>
+						<li class="list-group-item">
+							<span class="text-muted">Got from Mike at 1:00 pm</span>
+							<span class="block text-md text-primary">B 23,000.00</span>
+						</li>
+						<li class="list-group-item">
+							<span class="text-muted">Sponsored ORG at 9:00 am</span>
+							<span class="block text-md text-warning">B 3,000.00</span>
+						</li>
+						<li class="list-group-item">
+							<span class="text-muted">Send to Jacob at 8:00 am</span>
+							<span class="block text-md">B 11,000.00</span>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div>
+
+			<!-- aside right -->
+			<div class="app-aside-right pos-fix no-padder w-md w-auto-xs bg-white b-l animated fadeInRight hide">
+				<div class="vbox">
+					<div class="wrapper b-b b-t b-light m-b">
+						<a href class="pull-right text-muted text-md" ui-toggle-class="show" target=".app-aside-right"><i class="icon-close"></i></a>
+						Chat
+					</div>
+					<div class="row-row" ng-if="!showChatLoading">
+						<div class="cell">
+							<div class="cell-inner padder">
+								<!-- chat list -->
+								<div ng-repeat="message in PatientConversation">
+									<div class="m-b" ng-if="$even">
+										<a href class="pull-left thumb-xs avatar">
+											<img src="http://placehold.it/50/FA6F57/fff&text=ME" alt="{{message.SenderFullname}}" title="{{message.SenderFullname}}">
+										</a>
+										<div class="clear">
+											<div class="pos-rlt wrapper-sm b b-light r m-l-sm">
+												<span class="arrow left pull-up"></span>
+												<p class="m-b-none">{{message.Message}}</p>
+											</div>
+											<small class="text-muted m-l-sm">
+												<i class="fa fa-ok text-success"></i> {{message.ReceivedDate | date:'MMM dd, yyyy HH:mm a'}}
+											</small>
+										</div>
+									</div>
+									<div class="m-b" ng-if="$odd">
+										<a href class="pull-right thumb-xs avatar">
+											<img src="http://placehold.it/50/55C1E7/fff&amp;text=U" alt="{{message.SenderFullname}}" title="{{message.SenderFullname}}">
+										</a>
+										<div class="clear">
+											<div class="pos-rlt wrapper-sm bg-light r m-r-sm">
+												<span class="arrow right pull-up arrow-light"></span>
+												<p class="m-b-none">{{message.Message}}</p>
+											</div>
+											<small class="text-muted m-l-sm">
+												<i class="fa fa-ok text-success"></i> {{message.ReceivedDate | date:'MMM dd, yyyy HH:mm a'}}
+											</small>
+										</div>
+									</div>
+								</div>
+								<div class="no-chat" ng-if="!showChatLoading && (!PatientConversation || PatientConversation.length==0)">
+									<p class="text-center">No Chat conversations</p>
+								</div>
+								<!-- / chat list -->
+							</div>
+						</div>
+					</div>
+					<div class="wrapper m-t b-t b-light">
+						<form class="m-b-none">
+							<div class="input-group">
+								<input type="text" class="form-control" placeholder="Say something">
+								<span class="input-group-btn">
+									<button class="btn btn-default" type="button">SEND</button>
+								</span>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<!-- / aside right -->
+
+		</div>
+	</div>
+	<!-- / right col -->
+</div>

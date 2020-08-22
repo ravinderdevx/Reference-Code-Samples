@@ -1,0 +1,21 @@
+<!-- Widget ID (each widget will need unique ID)-->
+<div sa-widget [widget]="data" [configObject]="configObject" [loading]="loading"
+  (performAction)="actionOnWidget($event)">
+  <!-- widget content -->
+  <div class="widget-body" *ngIf="!loading">
+    <!-- <section class="smart-form chart-radio-filter text-center">
+      <div class="inline-group d-inline-block v-align-middle">
+        <label class="radio">
+          <input type="radio" name="radio-inline" value="0" [(ngModel)]="isStacked" (change)="changeView()" />
+          <i></i>Columns</label>
+        <label class="radio">
+          <input type="radio" name="radio-inline" value="1" [(ngModel)]="isStacked" (change)="changeView()" />
+          <i></i>Stacked</label>
+      </div>
+
+    </section> -->
+    <google-chart [data]="chartData" (chartError)="error($event)" *ngIf="!loading"></google-chart>
+  </div>
+  <!-- end widget content -->
+</div>
+<!-- end widget -->

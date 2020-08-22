@@ -1,0 +1,182 @@
+@model Pool.Website.Models.Register.RegisterModel
+@{   
+    Layout = "~/Views/Shared/_LayoutMaster.cshtml";  
+}
+
+
+@section BodyClass{
+
+custom-background-inner body-wrapper
+        }
+
+@section CustomSCRIPT{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#SelectPlanName').change(function () { var selectedText1 = $(this).val(); var selectedText2 = $('option:selected', $(this)).text(); $("#PlanId").val(selectedText1); $("#plantype").html(selectedText2); });
+            $('#btnBeginMembership').click(function () { if (!$('#terms').is(':checked')) { window.alert('You must read and accept the Terms and Conditions to continue.'); return false; } else { return true; } });
+            $('#btn7DayTrial').click(function () { if (!$('#terms').is(':checked')) { window.alert('You must read and accept the Terms and Conditions to continue.'); return false; } else { return true; } });
+        });
+        function CheckChange(dvid, ckbid, isc) {
+            var dvchk = $('#' + dvid);
+            if ($('#' + ckbid).is(':checked')) { $('#' + ckbid).click(); dvchk.removeClass("tick_n1"); dvchk.addClass("tick_n"); }
+            else { dvchk.removeClass("tick_n"); dvchk.addClass("tick_n1"); $('#' + ckbid).click(); }
+        }
+    </script>
+}
+<!--customWrapper start -->
+<div class="customWrapper">
+    <!--header start -->
+    <header>
+        <!--topPanel start -->
+        <div class="row-fluid topPanel">
+            <div id="divLogo" class="span6">
+                <img id="logoImg" class="logo" src="@Pool.Core.Configuration.NaConfig.Url.CDNUrl2/content/images/logonav2.png" alt="Archive" title="Archive.com" />
+            </div>
+            <div class="span6 topContacts">
+                @if (DateTime.Now.DayOfWeek == DayOfWeek.Sunday || DateTime.Now.ToString("MM-dd") == "12-24" || DateTime.Now.ToString("MM-dd") == "12-25" || DateTime.Now.ToString("MM-dd") == "01-01")
+                { }
+                else
+                {
+                    <p>
+                        Call Now! <strong>887</strong>
+                        <span>Hablamos Espa&ntilde;ol</span>
+                    </p>
+                }
+            </div>
+        </div>
+        <!--topPanel end -->
+    </header>
+    <!--header end -->
+    <!--body start -->
+    <!--text content starts-->
+    <div class="bodyShadowBottom">
+        <section>
+            <div class="bodyBox millionArticle padd30 noBottomMargin pubContainerBox">
+                @if (Model.PlanId != 841 && Model.PlanId != 851 && Model.PlanId != 853 && Model.PlanId != 857)
+                {                        
+                    <div class="bodyBoxTop trialPageHdr">
+                        <h2>Become a Member
+							<span>to get Instant Access to this page and @Pool.Core.Configuration.NaConfig.Url.TotalNumberOfImageInDegitalArchive+ billion more!</span></h2>
+                    </div>
+                }
+                else
+                {
+                    <div class="bodyBoxTop trialPageHdr">
+                        <h2>Start a @System.Configuration.ConfigurationManager.AppSettings["TrialPlanLength"].ToString()-day Trial Membership
+							<span>to get Instant Access to this page and @Pool.Core.Configuration.NaConfig.Url.TotalNumberOfImageInDegitalArchive+ billion more!</span></h2>
+                    </div>
+                }
+                <div class="bodyBoxBottom trialPageContainer">
+                    <p>With access to more than @Pool.Core.Configuration.NaConfig.Url.TotalNumberOfImageInDegitalArchive+ million historical newspaper articles, including rare content from small towns, finding information that's important to you is easy! Just search with a name or keyword.</p>
+                    <div class="trialPageContainerInner">
+                        @if (Model.PlanId != 841 && Model.PlanId != 851 && Model.PlanId != 853 && Model.PlanId != 857)
+                        {
+                            <h3>Begin your Membership &amp; Enjoy:</h3>
+                        }
+                        else
+                        {
+                            <h3>Begin your @System.Configuration.ConfigurationManager.AppSettings["TrialPlanLength"].ToString()-day Trial Membership &amp; Enjoy:</h3>
+                        }
+                        <ul>
+                            <li>Over @Pool.Core.Configuration.NaConfig.Url.TotalNumberOfImageInDegitalArchive+ billion Newspaper Articles</li>
+                            <li>Articles Featuring Thousands of People
+									<span>Find births, deaths, news &amp; more</span></li>
+                            <li>Powerful Search Tools
+									<span>To find exactly who or what you are looking for</span></li>
+                            <li>Ability to View, Save, and Print
+									<span>To easily organize your research</span></li>
+                            <li>The Weekly Perspective &reg;
+							        <span>Our weekly electronic publication that connects today's headlines in history to articles from the past</span></li>
+                            <li>With more than 2.5 million pages added monthly</li>
+                        </ul>
+                    </div>
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()                            
+                        <!--form starts-->
+                        <div class="trialPageFormContainer">
+                            <img src="@Pool.Core.Configuration.NaConfig.Url.CDNUrl/content/images/trial-form-pic.png" alt="Archive" width="150" height="340" class="trialFormPic" />
+                            <h3>Fill in your details below
+								<span>&amp; get started within minutes!</span></h3>
+                            @if (!String.IsNullOrWhiteSpace(Model.errorMessage))
+                            {
+                                <div class="alert alert-error existingEmalErr pagination-centered margin_20">
+                                    <strong>@Model.errorMessage</strong>
+                                </div>
+                            }
+                            <div class="fieldsArea">
+                                <label>First Name</label>
+                                <div class="inputArea">
+                                    @Html.TextBoxFor(m => m.FirstName, new { @placeholder = "Please enter your first name" })<br />
+                                    @Html.ValidationMessageFor(m => m.FirstName)
+                                </div>
+                            </div>
+                            <div class="fieldsArea">
+                                <label>Last Name</label>
+                                <div class="inputArea">
+                                    @Html.TextBoxFor(m => m.Lastname, new { @placeholder = "Please enter your last name" })
+                                    @Html.ValidationMessageFor(m => m.Lastname)
+                                </div>
+                            </div>
+                            <div class="fieldsArea">
+                                <label>Email Address</label>
+                                <div class="inputArea">
+                                    @if (Model.IsReadOnly)
+                                    {
+                                        @Html.TextBoxFor(m => m.EmailAddress, new { @readonly = "true", @placeholder = "e.g.: yourname@mail.com" })
+                                    }
+                                    else
+                                    {
+                                        @Html.TextBoxFor(m => m.EmailAddress, new { @placeholder = "e.g.: yourname@mail.com" })
+                                    }
+                                    @Html.ValidationMessageFor(m => m.EmailAddress)
+                                </div>
+                            </div>
+                            <div class="fieldsArea">
+                                <label>Password</label>
+                                <div class="inputArea">
+                                    @Html.PasswordFor(m => m.Password, new { @placeholder = "Password" })
+                                    @Html.ValidationMessageFor(m => m.Password)
+                                </div>
+                            </div>
+                            <div class="fieldsArea">
+                                <label>Confirm Password</label>
+                                <div class="inputArea">
+                                    @Html.PasswordFor(m => m.ConfirmPassword, new { @placeholder = "Password" })
+                                    @Html.ValidationMessageFor(m => m.ConfirmPassword)
+                                </div>
+                            </div>
+                            <div class="agreeBox">
+                                <p>
+                                    Yes, I agree to the <a title="Terms & Conditions" href="javascript:opentermscondition();">Terms of Use</a>
+                                    <input type="checkbox" id="terms" />
+                                </p>
+                            </div>
+                            @Html.HiddenFor(m => m.PlanId)
+                            @if (Model.PlanId != 841 && Model.PlanId != 851 && Model.PlanId != 853 && Model.PlanId != 857)
+                            {
+                                <button class="btn btn-warning" type="submit" id="btnBeginMembership">Begin Your Membership</button>
+                            }
+                            else
+                            {
+                                <button class="btn btn-warning" type="submit" id="btn7DayTrial">Begin Your @System.Configuration.ConfigurationManager.AppSettings["TrialPlanLength"].ToString()-day Trial Membership</button>
+                            }
+                        </div>
+                        <!--form ends-->
+                    }
+                </div>
+            </div>
+        </section>
+    </div>
+    <!--text content ends-->
+    <div class="bodyShadowBottom">
+        <section>
+            <div class="bodyBox millionArticle padd30 noBottomMargin trialPageBot">
+                <h6>Your Information is safe, read our <a href="javascript:openprivacypolicy();">Privacy Policy</a></h6>
+                </div>
+        </section>
+    </div>
+
+</div>
+<!--customWrapper ends -->
+

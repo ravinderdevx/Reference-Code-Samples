@@ -1,0 +1,96 @@
+<section class="content">
+    <div class="row">
+        <div class="alert" ng-class="Message.Class" ng-bind="Message.Text" ng-show="Message"></div>
+        <div class="form-group text-right">
+            <a class="btn btn-primary btn-sm" ui-sref="CRM.InsertContact">+ Add Contact</a>
+            <a class="btn btn-default btn-sm" export-to-csv>Export As CSV</a>
+            <a class="btn btn-danger btn-sm" ng-disabled="noSelectedItems==0" title="{{noSelectedItems==0?'Select one or more contacts':'Delete Contacts'}}" ng-click="DeleteMultipleContacts()">Delete</a>
+        </div>
+        <div class="box">
+            <!-- /.box-header -->
+            <div id="myContacts" class="box-body table-responsive no-padding">
+                <table class="table table-striped" id="ContentTable">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th class="sorting" ng-click="changeSorting('contact_id')"><span class="sortable" ng-class="sort.column=='contact_id'?sort.className:''">ID</span></th>
+                            <th class="sorting_desc" ng-click="changeSorting('first_name')"><span class="sortable" ng-class="sort.column=='first_name'?sort.className:''">FirstName</span></th>
+                            <th class="sorting_desc" ng-click="changeSorting('last_name')"><span class="sortable" ng-class="sort.column=='last_name'?sort.className:''">LastName</span></th>
+                            <th class="sorting_desc" ng-click="changeSorting('email')"><span class="sortable" ng-class="sort.column=='email'?sort.className:''">Email</span></th>
+                            <th class="sorting_desc" ng-click="changeSorting('created_date')"><span class="sortable" ng-class="sort.column=='created_date'?sort.className:''">Created Date</span></th>
+                            <th><span>Action</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <input type="checkbox"  ng-model="isAllSelected" ng-click="toggleAll()" />
+                            </td>
+                            <td><input type="text" class="form-control" size="6" placeholder="ID" ng-model="FilterBycontact_id" ng-model-options="{ debounce: 1000 }" ng-change="ApplyFilter()" /></td>
+                            <td><input type="text" class="form-control" size="6" placeholder="Name" ng-model="FilterByfirst_name" ng-model-options="{ debounce: 1000 }" ng-change="ApplyFilter()" /></td>
+                            <td><input type="text" class="form-control" size="6" placeholder="Name" ng-model="FilterBylast_name" ng-model-options="{ debounce: 1000 }" ng-change="ApplyFilter()" /></td>
+                            <td><input type="text" class="form-control" size="6" placeholder="Email" ng-model="FilterByemail" ng-model-options="{ debounce: 1000 }" ng-change="ApplyFilter()" /></td>
+
+                            <td class="calendar-ellipse">
+                                <!--<input type="datetime" class="form-control" size="20" ng-model="" ng-model-options="{ debounce: 1000 }" ng-change="ApplyFilter()"/>-->
+                                <div class="input-group ui-datepicker">
+                                    <input type="text" class="form-control" uib-datepicker-popup="{{format}}"
+                                           ng-model="FilterBycreated_date" is-open="opened"
+                                           datepicker-options="dateOptions"
+                                           close-text="Close"
+                                           ng-click="open($event)" ng-change="ApplyFilter()" />
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </span>
+                                </div>
+
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr ng-repeat="Contacts in ContactListing track by $index" ng-show="!showLoading && ContactListing.length>0">
+                            <td>
+                                <input  id="checkFollower" type="checkbox" ng-checked="leader" ng-model="Contacts.selected"  aria-label="Follower input" />
+                            </td>
+                            <td class="ellipse">{{Contacts.contact_id}}</td>
+                            <td class="ellipse" title="{{Contacts.first_name }}">{{Contacts.first_name | capitalize}}</td>
+                            <td class="ellipse" title="{{Contacts.last_name }}">{{Contacts.last_name | capitalize}}</td>
+                            <td class="ellipse" title="{{Contacts.email}}">{{Contacts.email}}</td>
+                            <td class="max-calendar-width" title="{{Contacts.created_date | date:'dd MMM yyyy hh:mm a'}}" align="center">{{Contacts.created_date | date:'dd MMM yyyy hh:mm a'}}</td>
+                            <td align="center" class="action ellipse">
+                                <div class="dropdown">
+                                    <a class="dropdown-toggle" type="button" data-toggle="dropdown"><span class="glyphicon glyphicon-option-vertical"></span></a>
+                                    <ul class="dropdown-menu action-dropdown">
+                                        <!--<li><a href="javascript:void(0)" ng-click="AddNotePopup(Contacts,$index)"><i class="fa fa-plus" title="AddNotes"></i>Add Notes</a></li>-->
+                                        <li><a ui-sref="CRM.UpdateContact({ contact_id: Contacts.contact_id })"><i class="fa fa-pencil" title="Edit"></i>Edit Contact</a></li>
+                                        <li><a ui-sref="CRM.ViewContact({ contact_id: Contacts.contact_id })"><i class="fa fa-list" title="View"></i>View Contact</a></li>
+                                        <!--<li><a href="javascript:void(0)" ng-click="DeleteContact(Contacts.contact_id,$index)"><i class="fa fa-trash text-danger" title="Delete"></i>Delete Contact</a></li>-->
+                                    </ul>
+                                </div>
+   
+                            </td>
+                        </tr>
+                        <tr ng-show="showLoading || (!ContactListing || ContactListing.length == 0)">
+                            <td colspan="8" ng-if="!showLoading || data.length == 0"><center>No data found.</center></td>
+                            <td colspan="8" ng-if="showLoading"><center>Please Wait While Data is Loading...</center></td>
+                        </tr>
+                    </tbody>
+                    <tfoot ng-show="!showLoading &&  TotalItems > PageSize">
+                        <tr>
+                            <td colspan="8">
+                                <div class="">
+                                    <div class="pull-left mt-25">
+                                        <span class="page-number-info"><strong>Page : </strong> {{PageNo}}/{{TotalPage}}</span>
+                                    </div>
+                                    <div class="pull-right">
+                                        <ul class="pagination-sm pull-right m-0" uib-pagination total-items="TotalItems" ng-model="PageNo" ng-change="PageChanged()" max-size="maxSize" items-per-page="PageSize"></ul>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <!-- /.box-body -->
+        </div>
+    </div>
+</section>

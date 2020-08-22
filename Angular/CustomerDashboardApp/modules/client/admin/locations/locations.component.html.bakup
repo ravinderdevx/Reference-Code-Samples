@@ -1,0 +1,197 @@
+<div id="content">
+  <div class="row">
+    <sa-big-breadcrumbs [items]="[pageTitle]" icon="users" class="col-xs-12 col-sm-7 col-md-7 col-lg-6">
+    </sa-big-breadcrumbs>
+
+    <div class="col-xs-12 col-sm-5 col-md-5 col-lg-6" *ngIf="isClarityAdmin">
+      <a class="btn btn-primary pull-right mt-10" (click)="openAddLocationPopup()">Add Locations</a>
+    </div>
+  </div>
+
+  <!-- <sa-widgets-grid> -->
+  <div class="row">
+    <section class="col offset-md-3 col-lg-12">
+      <div class="locations-treeview treeview">
+        <!-- Define the recursive template. -->
+        <ul class="">
+          <ng-template #nodeTemplateRef let-node>
+            <li>
+              <span>
+                <i class="fa fa-lg fa-folder-open"></i>
+                <label>{{node.GroupName}}</label>
+
+
+                <a (click)="openGroupPopup('CREATE_GROUP', node._id)" *ngIf="!node.ParentGroupId">
+                  <i class="fa fa-lg fa-plus-circle"></i>
+                </a>
+
+                <a (click)="removeGroup(node._id, node.GroupName)" *ngIf="node.ParentGroupId && (!node.Children || node.Children.length == 0) && (!node.Locations || node.Locations.length == 0)">
+                  <i class="fa fa-lg fa-trash"></i>
+                </a>
+
+                <a (click)="openGroupPopup('RENAME_GROUP', node._id, node.GroupName)"><i class="fa fa-lg fa-pencil"
+                    *ngIf="node.ParentGroupId"></i></a>
+              </span>
+
+              <ul class="location-group" [attr.data-groupid]="node._id">
+                <li class="location" *ngFor="let location of node.Locations; let i = index;"
+                  [attr.data-locationid]="location._id">
+                  <span class="location_{{location._id}}">
+                    <label>{{location.LocationName}}</label>
+                    <a (click)="removeLocation(location._id, node._id, location.LocationName)" *ngIf="isClarityAdmin">
+                      <i class="fa fa-lg fa-trash"></i>
+                    </a>
+                  </span>
+                </li>
+              </ul>
+
+              <ul *ngIf="node.Children && node.Children.length">
+                <!-- Invoke the recursive template. -->
+                <ng-template ngFor [ngForOf]="node.Children" [ngForTemplate]="nodeTemplateRef">
+                  <!--
+                          NOTE: The "$implicit" property of the ngFor context is what will
+                          be made available to the template ref's implicit let-node binding.
+                      -->
+                </ng-template>
+              </ul>
+            </li>
+          </ng-template>
+
+          <ng-template *ngIf="companyLocations.length > 0" [ngTemplateOutlet]="nodeTemplateRef"
+            [ngTemplateOutletContext]="{ $implicit: companyLocations[0] }">
+          </ng-template>
+        </ul>
+      </div>
+    </section>
+
+    <!-- <section class="col col-sm-6">
+      <pre>{{companyLocations | json}}</pre>
+    </section> -->
+    <!-- </sa-widgets-grid> -->
+  </div>
+
+  <div bsModal #GroupPopup="bs-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+            (click)="closeModal('groupPopup')">
+            &times;
+          </button>
+          <h4 class="modal-title text-capitalize">{{groupModel.action?.toLowerCase()}} Group</h4>
+        </div>
+        <alert [type]="messageObject.type" class="mb-10" dismissible="true" *ngIf="messageObject"
+          (onClosed)="messageObject = null">
+          <strong class="alert-heading">{{ messageObject.text }}!</strong> {{ messageObject.message }}
+        </alert>
+        <div class="modal-body">
+          <div class="row">
+            <div class="form-group">
+              <label class="col-md-4 control-label">Group Name</label>
+              <div class="col-md-8">
+                <input type="text" name="group_name" class="form-control" [(ngModel)]="groupModel.GroupName"
+                  #groupNameControl="ngModel" [disabled]="loading" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" (click)="closeModal('groupPopup')">
+            Cancel
+          </button>
+          <button type="button" class="btn btn-primary text-capitalize" (click)="performActionOnGroup()"
+            [disabled]="loading || (!groupNameControl.value || groupNameControl.value == '')">{{groupModel.action?.toLowerCase()}}
+            Group</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div bsModal #LocationPopup="bs-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+            (click)="closeModal('locationPopup')">
+            &times;
+          </button>
+          <h4 class="modal-title text-capitalize">Add Location</h4>
+        </div>
+        <alert [type]="messageObject.type" class="mb-10" dismissible="true" *ngIf="messageObject"
+          (onClosed)="messageObject = null">
+          <strong class="alert-heading">{{ messageObject.text }}!</strong> {{ messageObject.message }}
+        </alert>
+
+        <form name="locationForm" class="smart-form" autocomplete="off" novalidate="novalidate" [saUiValidate]="validationOptions">
+          <div class="modal-body">
+            <section *ngIf="!addNewLocationControl.value">
+              <label class="label">Select Locations</label>
+              <label class="select select-multiple">
+                <select name="locations" multiple class="custom-scroll" [(ngModel)]="locationModel.Locations">
+                  <option [ngValue]="location" *ngFor="let location of clarityLocations">{{location.LocationName}}</option>
+                </select> 
+              </label>
+            </section>
+            
+            <div *ngIf="addNewLocationControl.value">
+              <div class="row">
+                <section class="col col-6">
+                  <label class="label">Location Name</label>
+                  <label class="input">
+                    <i class="icon-append fa fa-map-marker"></i>
+                    <input type="text" name="location_name" [(ngModel)]="locationModel.LocationName" />
+                  </label>
+                </section>
+                <section class="col col-6">
+                  <label class="label">Contact Name</label>
+                  <label class="input">
+                    <i class="icon-append fa fa-user"></i>
+                    <input type="text" name="contact_name" [(ngModel)]="locationModel.ContactName" />
+                  </label>
+                </section>
+              </div>
+
+              <div class="row">
+                <section class="col col-6">
+                  <label class="label">E-mail</label>
+                  <label class="input">
+                    <i class="icon-append fa fa-envelope-o"></i>
+                    <input type="email" name="email" [(ngModel)]="locationModel.Email" />
+                  </label>
+                </section>
+                <section class="col col-6">
+                  <label class="label">Phone</label>
+                  <label class="input">
+                    <i class="icon-append fa fa-phone"></i>
+                    <input type="text" name="phone" [(ngModel)]="locationModel.Phone" />
+                  </label>
+                </section>
+              </div>
+
+              <section>
+                <label class="label">Address</label>
+                <label class="input">
+                  <i class="icon-append fa fa-building"></i>
+                  <input type="text" name="address" [(ngModel)]="locationModel.Address" />
+                </label>
+              </section>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <label class="checkbox pull-left">
+              <input type="checkbox" name="add_new" [(ngModel)]="locationModel.IsNewLocation" #addNewLocationControl="ngModel" /><i></i>
+              Add New Location
+            </label>
+            <button type="button" class="btn btn-default" (click)="closeModal('locationPopup')">
+              Cancel
+            </button>
+            <button type="button" class="btn btn-primary text-capitalize" (click)="addLocation()"
+              [disabled]="loading">Add</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>

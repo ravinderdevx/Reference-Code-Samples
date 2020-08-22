@@ -1,0 +1,49 @@
+<div id="content">
+  <div class="row">
+    <sa-big-breadcrumbs [items]="['Users']" icon="users" class="col-xs-12 col-sm-7 col-md-7 col-lg-6">
+    </sa-big-breadcrumbs>
+    <div class="col-xs-12 col-sm-5 col-md-5 col-lg-6">
+      <a class="btn btn-primary pull-right mt-10" (click)="addOpenClarityUserPopUp()">Add</a>
+    </div>
+  </div>
+
+  <!-- <sa-widgets-grid> -->
+    <div class="row">
+      <article class="col-sm-12">
+        <div class="jarviswidget">
+          <header><span class="widget-icon"> <i class="fa fa-table"></i> </span>
+            <h2>List of Users</h2>
+          </header>
+          <div>
+            <div class="widget-body datatable-widget no-padding">
+              <sa-custom-datatable [columnsList]="columnsList" orderBy="FirstName" (changeTable)="filterGrid($event)">
+                <tr *ngFor="let row of dataList; let i = index;">
+                  <td class="ellipse" [title]="row.FirstName">{{row.FirstName}}</td>
+                  <td class="ellipse" [title]="row.LastName">{{row.LastName}}</td>
+                  <td class="ellipse" [title]="row.Email">{{row.Email}}</td>
+                  <td class="text-center" [title]="row.Active?'Active':'In Active'">
+                    <span class="onoffswitch small" (click)="changeStatus(row, i)">
+                      <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" [checked]="row.Active" />
+                      <label class="onoffswitch-label">
+                          <span class="onoffswitch-inner"></span>
+                          <span class="onoffswitch-switch"></span>
+                      </label>
+                    </span>
+                  </td>
+                  <td class="action text-center">
+                    <a placement="top" tooltip="EDIT USER" (click)="addOpenClarityUserPopUp(row)"><i class="glyphicon glyphicon-edit"></i></a>
+                    <!-- <i class="fa fa-trash"></i> -->
+                  </td>
+                </tr>
+              </sa-custom-datatable>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  <!-- </sa-widgets-grid> -->
+
+</div>
+<ng-template #UserRegisterModal>
+  <app-user-register [user]="selectedUser" (onSave)="reloadTable()" (close)="closeModal()"></app-user-register>
+</ng-template>

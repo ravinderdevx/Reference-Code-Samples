@@ -1,0 +1,21 @@
+ <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 sign_outer">
+        <div class="container"><h1>Sign up</h1></div>
+    </div>
+    <div class="signup_inner">
+        <div class="container">
+            <div class="row">
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 acc_outer">
+					<ul>
+						<li><a ng-class="{active_circle: ('signup.AccountDetails' | includedByState)}">Account Details</a></li>
+						<li ng-if="SelectedPackType == 'FACE_RECOGNITION'"><a ng-class="{active_circle: ('signup.IDPhoto' | includedByState)}">ID Photo</a></li>
+						<li ng-if="SelectedPackType == 'DMCA_REMOVAL_NOTICE'"><a ng-class="{active_circle: ('signup.LinkRemoval' | includedByState)}">Enter Link</a></li>
+						<li><a ng-class="{active_circle: ('signup.Checkout' | includedByState)}">Checkout</a></li>
+						<li><a ng-class="{active_circle: ('signup.Completion' | includedByState)}">Done</a></li>
+					</ul>
+				</div>
+			</div>
+			<div id="signup-form">
+				<div ui-view="SignUpStep" id="form-views"></div>
+			</div>
+        </div>
+    </div>

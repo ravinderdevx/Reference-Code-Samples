@@ -1,0 +1,104 @@
+body {
+    padding: 20px;
+    background: #fafafa;
+}
+.m-0 {
+    margin: 0;
+}
+
+.mt-30 {
+    margin: 30px;
+}
+.text-bold{font-weight:bold;}
+
+.isrequired {
+    color: #ff0000;
+}
+
+.help-icon {
+    color: #673AB7;
+}
+
+.form-inline .help-icon {
+    margin-top: 5px;
+}
+
+#danger-alert, #success-alert{display:none;}
+.loader {
+    position: absolute;
+    top: 10px;
+    right: 40px;
+}
+
+/* Modal CSS */
+
+.custom-bootstrap-modal {
+    font-size: 16px;
+}
+
+.custom-bootstrap-modal .modal-content {
+    border-radius:0;
+}
+
+.custom-bootstrap-modal .modal-header .header-icon {
+    position: relative;
+    top: 2px;
+    margin-right: 5px;
+}
+
+.custom-bootstrap-modal.warning-popup .modal-header, .custom-bootstrap-modal.warning-popup .modal-footer {
+    background-color: #f39c12;
+    color: #fff;
+    border-color: #c27d0e;
+}
+
+.custom-bootstrap-modal.success-popup .modal-header, .custom-bootstrap-modal.success-popup .modal-footer {
+    background-color: #00a65a;
+    border-color: #008548;
+    color: #fff;
+}
+
+.custom-bootstrap-modal.error-popup .modal-header, .custom-bootstrap-modal.error-popup .modal-footer {
+    background-color: #dd4b39;
+    color: #fff;
+    border-color: #b13c2e;
+}
+
+.custom-bootstrap-modal.info-popup .modal-header, .custom-bootstrap-modal.info-popup .modal-footer {
+    background-color: #00c0ef;
+    color: #fff;
+    border-color: #007b99;
+}
+
+.custom-bootstrap-modal.confirmation-popup .modal-header, .custom-bootstrap-modal.confirmation-popup .modal-footer {
+    background-color: #3c8dbc;
+    color: #fff;
+    border-color: #307196;
+}
+
+.custom-bootstrap-modal[class*='popup'] .close {
+    color: #fff;
+    opacity: 1;
+    font-size: 26px;
+}
+
+/* Modal middle CSS */
+
+.modal.modal-middle {
+    text-align: center;
+    padding: 0 !important;
+}
+
+.modal.modal-middle:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    margin-right: -4px;
+}
+
+.modal-middle .modal-dialog {
+    display: inline-block;
+    text-align: left;
+    vertical-align: middle;
+}

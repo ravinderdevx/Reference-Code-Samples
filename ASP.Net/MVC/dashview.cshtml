@@ -1,0 +1,321 @@
+﻿<div ng-controller="DataseBordController">
+    <img src="../Images/spinning-wheel-ios.gif" ng-show="start" />
+    <div class="panel panel-primary" ng-show="true">
+        <div class="panel-heading">
+            <h4>DashBoard</h4>
+        </div>
+        <div class="panel-body">
+            <uib-tabset>
+                <uib-tab heading="Final Result" ng-click="finally()">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    @*public int UserID { get; set; }
+                                        public int TotalMarks { get; set; }
+                                        public string Resultget { get; set; }*@
+                                    <td colspan="2"><input type="text" tooltip-placement="left" uib-tooltip="Serarch UserName" placeholder="UserName" ng-model="search.UserName" class="form-control" /></td>
+                                    <td colspan="2"></td>
+                                    <td colspan="2">
+                                        No. of Rows
+                                        <select ng-model="pageSize">
+                                            <option>5</option>
+                                            <option>10</option>
+                                            <option>15</option>
+                                            <option>20</option>
+                                            <option>25</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <a href="">S.no</a>
+                                    </th>
+                                    @*<th>
+                                        <a href="" ng-click="order('ID')">Person ID</a>
+                                        <span class="sortorder" ng-show="predicate === 'ID'" ng-class="{reverse:reverse}"></span>
+                                    </th>*@
+                                    <th>
+                                        <a href="" ng-click="order('UserName')">Person Name</a>
+                                        <span class="sortorder" ng-show="predicate === 'UserName'" ng-class="{reverse:reverse}"></span>
+                                    </th>
+                                    <th>
+                                        <a href="" ng-click="order('TotalMarks')">Total Marks</a>
+                                        <span class="sortorder" ng-show="predicate === 'TotalMarks'" ng-class="{reverse:reverse}"></span>
+                                    </th>
+                                    <th>
+                                        <a href="" ng-click="order('Resultget')">Position</a>
+                                        <span class="sortorder" ng-show="predicate === 'Resultget'" ng-class="{reverse:reverse}"></span>
+                                    </th>
+                                    @*<th class="text-primary">
+                                            Edit
+                                        </th>*@
+                                    <th class="text-primary">
+                                        Delete
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr dir-paginate="ResultTable in FinalResultTable|orderBy:predicate:reverse|filter:search|itemsPerPage: pageSize">
+                                    <td>{{$index+1}}</td>
+                                    @*<td>{{ResultTable.ID}}</td>*@
+                                    <td>{{ResultTable.UserName}}</td>
+                                    <td>{{ResultTable.TotalMarks}}</td>
+                                    <td>{{ResultTable.Resultget}}</td>
+                                    @*<td><span data-toggle="modal" data-target="#myModal" ng-click="editEmployee(Family)" class="pointer"><img src='../fonts/Edit 2.ico' title='Edit' /></span></td>*@
+                                    <td><span ng-click="deleteResultTable(ResultTable)" class="pointer"><img src="~/Images/del.png" /></span></td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="8">
+                                        <dir-pagination-controls on-page-change="pageChangeHandler(newPageNumber)"
+                                                                 direction-links="true"
+                                                                 boundary-links="true">
+                                        </dir-pagination-controls>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                </uib-tab>
+                <uib-tab heading="History Result" ng-click="HistoryTableList()">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    @*public int UserID { get; set; }
+                                        public int TotalMarks { get; set; }
+                                        public string Resultget { get; set; }*@
+                                    <td colspan="2"><input type="text" tooltip-placement="left" uib-tooltip="Serarch UserName" placeholder="UserName" ng-model="search.UserName" class="form-control" /></td>
+                                    <td colspan="2">
+                                        No. of Rows
+                                        <select ng-model="pageSize">
+                                            <option>5</option>
+                                            <option>10</option>
+                                            <option>15</option>
+                                            <option>20</option>
+                                            <option>25</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <a href="">S.no</a>
+                                    </th>
+                                    @*<th>
+                                        <a href="" ng-click="order('ID')">ID</a>
+                                        <span class="sortorder" ng-show="predicate === 'ID'" ng-class="{reverse:reverse}"></span>
+                                    </th>*@
+                                    <th>
+                                        <a href="" ng-click="order('UserName')">UserName</a>
+                                        <span class="sortorder" ng-show="predicate === 'UserName'" ng-class="{reverse:reverse}"></span>
+                                    </th>
+                                    <th>
+                                        <a href="" ng-click="order('question')">Question</a>
+                                        <span class="sortorder" ng-show="predicate === 'question'" ng-class="{reverse:reverse}"></span>
+                                    </th>
+                                    <th>
+                                        <a href="" ng-click="order('OptionSelected')">OptionSelected</a>
+                                        <span class="sortorder" ng-show="predicate === 'OptionSelected'" ng-class="{reverse:reverse}"></span>
+                                    </th>
+                                    <th>
+                                        <a href="" ng-click="order('TotalMarks')">MarksGet</a>
+                                        <span class="sortorder" ng-show="predicate === 'TotalMarks'" ng-class="{reverse:reverse}"></span>
+                                    </th>
+                                    
+                                    @*<th class="text-primary">
+                                            Edit
+                                        </th>*@
+                                    @*<th class="text-primary">
+                                            Delete
+                                        </th>*@
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr dir-paginate="ResultTable in HistoryTableRecords|orderBy:predicate:reverse|filter:search|itemsPerPage: pageSize">
+                                    <td>{{$index+1}}</td>
+                                    @*<td>{{ResultTable.ID}}</td>*@
+                                    <td>{{ResultTable.UserName}}</td>
+                                    <td>{{ResultTable.question.ActualQuestion}}</td>
+                                    <td>{{ResultTable.OptionSelected}}</td>
+                                    <td>{{ResultTable.MarksGet}}</td>
+                                    @*<td>{{ResultTable.Resultget}}</td>*@
+                                    @*<td><span data-toggle="modal" data-target="#myModal" ng-click="editEmployee(Family)" class="pointer"><img src='../fonts/Edit 2.ico' title='Edit' /></span></td>*@
+                                    @*<td><span ng-click="deleteResultTable(ResultTable)" class="pointer"><img src="~/Images/del.png" /></span></td>*@
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="8">
+                                        <dir-pagination-controls on-page-change="pageChangeHandler(newPageNumber)"
+                                                                 direction-links="true"
+                                                                 boundary-links="true">
+                                        </dir-pagination-controls>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </uib-tab>
+                <uib-tab heading="Conditon Table" ng-click="conditionTable()">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    @*public int UserID { get; set; }
+                            public int TotalMarks { get; set; }
+                            public string Resultget { get; set; }*@
+                                    <td colspan="2"><input type="text" tooltip-placement="left" uib-tooltip="Serarch Reult" placeholder="Result" ng-model="search.Result" class="form-control" /></td>
+                                    <td colspan="3">
+                                        No. of Rows
+                                        <select ng-model="pageSize">
+                                            <option>5</option>
+                                            <option>10</option>
+                                            <option>15</option>
+                                            <option>20</option>
+                                            <option>25</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <a href="">S.no</a>
+                                    </th>
+                                    @*<th>
+                                        <a href="" ng-click="order('ID')">ID</a>
+                                        <span class="sortorder" ng-show="predicate === 'ID'" ng-class="{reverse:reverse}"></span>
+                                    </th>*@
+                                    <th>
+                                        <a href="" ng-click="order('Min')">Minimum</a>
+                                        <span class="sortorder" ng-show="predicate === 'Min'" ng-class="{reverse:reverse}"></span>
+                                    </th>
+                                    <th>
+                                        <a href="" ng-click="order('Max')">Maximum</a>
+                                        <span class="sortorder" ng-show="predicate === 'Max'" ng-class="{reverse:reverse}"></span>
+                                    </th>
+                                    <th>
+                                        <a href="" ng-click="order('Result')">Result</a>
+                                        <span class="sortorder" ng-show="predicate === 'Result'" ng-class="{reverse:reverse}"></span>
+                                    </th>
+                                    @*<th>
+                                <a href="" ng-click="order('Resultget')">Position</a>
+                                <span class="sortorder" ng-show="predicate === 'Resultget'" ng-class="{reverse:reverse}"></span>
+                            </th>*@
+                                    @*<th class="text-primary">
+                                Edit
+                            </th>*@
+                                    @*<th class="text-primary">
+                                Delete
+                            </th>*@
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr dir-paginate="ResultTable in conditionTableList|orderBy:predicate:reverse|filter:search|itemsPerPage: pageSize">
+                                    <td>{{$index+1}}</td>
+                                    @*<td>{{ResultTable.ID}}</td>*@
+                                    <td>{{ResultTable.Min}}</td>
+                                    <td>{{ResultTable.Max}}</td>
+                                    <td>{{ResultTable.Result}}</td>
+                                    @*<td>{{ResultTable.Resultget}}</td>*@
+                                    @*<td><span data-toggle="modal" data-target="#myModal" ng-click="editEmployee(Family)" class="pointer"><img src='../fonts/Edit 2.ico' title='Edit' /></span></td>*@
+                                    @*<td><span ng-click="deleteResultTable(ResultTable)" class="pointer"><img src="~/Images/del.png" /></span></td>*@
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="8">
+                                        <dir-pagination-controls on-page-change="pageChangeHandler(newPageNumber)"
+                                                                 direction-links="true"
+                                                                 boundary-links="true">
+                                        </dir-pagination-controls>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </uib-tab>
+                <uib-tab heading="QuestionAnswer Table" ng-click="QuestionListResults()">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    @*public int UserID { get; set; }Q.QuestionID, O.Answer, O.AnswerWeightage, O.AnswerID, question = db.QuestionTables.Where(x => x.QuestionID == Q.QuestionID).Select(x=>x.ActualQuestion).FirstOrDefault()
+    public int TotalMarks { get; set; }
+    public string Resultget { get; set; }*@
+                                    <td colspan="2"><input type="text" tooltip-placement="left" uib-tooltip="Serarch Question" placeholder="Question" ng-model="search.question" class="form-control" /></td>
+                                    <td colspan="3">
+                                        No. of Rows
+                                        <select ng-model="pageSize">
+                                            <option>5</option>
+                                            <option>10</option>
+                                            <option>15</option>
+                                            <option>20</option>
+                                            <option>25</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <a href="">S.no</a>
+                                    </th>
+                                    @*<th>
+                                <a href="" ng-click="order('ID')">ID</a>
+                                <span class="sortorder" ng-show="predicate === 'ID'" ng-class="{reverse:reverse}"></span>
+                            </th>*@
+                                    <th>
+                                        <a href="" ng-click="order('question')">Question</a>
+                                        <span class="sortorder" ng-show="predicate === 'question'" ng-class="{reverse:reverse}"></span>
+                                    </th>
+                                    <th>
+                                        <a href="" ng-click="order('Answer')">Answer</a>
+                                        <span class="sortorder" ng-show="predicate === 'Answer'" ng-class="{reverse:reverse}"></span>
+                                    </th>
+                                    <th>
+                                        <a href="" ng-click="order('AnswerWeightage')">AnswerWeightage</a>
+                                        <span class="sortorder" ng-show="predicate === 'AnswerWeightage'" ng-class="{reverse:reverse}"></span>
+                                    </th>
+                                    @*<th>
+                                <a href="" ng-click="order('Resultget')">Position</a>
+                                <span class="sortorder" ng-show="predicate === 'Resultget'" ng-class="{reverse:reverse}"></span>
+                            </th>*@
+                                    @*<th class="text-primary">
+                                Edit
+                            </th>*@
+                                    @*<th class="text-primary">
+                                Delete
+                            </th>*@
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr dir-paginate="ResultTable in QuestionListRecord|orderBy:predicate:reverse|filter:search|itemsPerPage: pageSize">
+                                    <td>{{$index+1}}</td>
+                                    @*<td>{{ResultTable.ID}}</td>*@
+                                    <td>{{ResultTable.question}}</td>
+                                    <td>{{ResultTable.Answer}}</td>
+                                    <td>{{ResultTable.AnswerWeightage}}</td>
+                                    @*<td>{{ResultTable.Resultget}}</td>*@
+                                    @*<td><span data-toggle="modal" data-target="#myModal" ng-click="editEmployee(Family)" class="pointer"><img src='../fonts/Edit 2.ico' title='Edit' /></span></td>*@
+                                    @*<td><span ng-click="deleteResultTable(ResultTable)" class="pointer"><img src="~/Images/del.png" /></span></td>*@
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="8">
+                                        <dir-pagination-controls on-page-change="pageChangeHandler(newPageNumber)"
+                                                                 direction-links="true"
+                                                                 boundary-links="true">
+                                        </dir-pagination-controls>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </uib-tab>
+            </uib-tabset>
+        </div>
+    </div>
+</div>
+
+

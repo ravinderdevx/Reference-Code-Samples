@@ -1,0 +1,33 @@
+<div id="content">
+  <div class="row">
+    <sa-big-breadcrumbs [items]="[pageTitle]" icon="users" class="col-xs-12 col-sm-7 col-md-7 col-lg-6">
+    </sa-big-breadcrumbs>
+    <!-- <div class="col-xs-12 col-sm-5 col-md-5 col-lg-6">
+      <a class="btn btn-primary pull-right mt-10" (click)="openDataExtractPopUp()">Data Export</a>
+    </div> -->
+  </div>
+
+  <!-- <sa-widgets-grid> -->
+    <div class="row" *ngIf="loading == false">
+      <article class="col-sm-12">
+        <table class="table table-bordered responsive bg-white">
+          <thead>
+              <tr>
+                  <th>Screen Name</th>
+                  <th class="text-center">Action</th>
+              </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of dataList">
+              <td class="ellipse" [title]="row.ScreenName">{{row.ScreenName}}</td>
+              <td class="action" align="center">
+                <a href="javascript:void(0)" (click)="openConfigurationPopup(row)">Configure</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </article>
+    </div>
+  <!-- </sa-widgets-grid> -->
+  </div>
+  

@@ -1,0 +1,82 @@
+<form name="registerform" class="client-form smart-form" autocomplete="off"
+  novalidate="novalidate" (ngSubmit)="registerClient()" [saUiValidate]="validationOptions" *ngIf="initialLoading == false">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="close.emit(true)">
+      &times;
+    </button>
+    <h4 class="modal-title">Clarity Client</h4>
+  </div>
+  <alert [type]="messageObject.type" class="mb-10" dismissible="true" *ngIf="messageObject" (onClosed)="messageObject = null">
+    <strong class="alert-heading">{{ messageObject.text }}!</strong> {{ messageObject.message }}
+  </alert>
+  <div class="modal-body">
+    <div class="row">
+      <section class="col col-6">
+        <label class="label">Company Name</label>
+        <label class="input">
+          <i class="icon-append fa fa-user"></i>
+          <input type="text" name="companyname" placeholder="Company name" class="form-control" [(ngModel)]="registerModel.CompanyName" />
+        </label>
+      </section>
+      <section class="col col-6">
+        <label class="label">Contact Name</label>
+        <label class="input">
+          <i class="icon-append fa fa-user"></i>
+          <input type="text" name="contactname" placeholder="Contact name" class="form-control" [(ngModel)]="registerModel.ContactName" />
+        </label>
+      </section>
+    </div>
+
+    <div class="row">
+      <section class="col col-6">
+        <label class="label">Email</label>
+        <label class="input">
+          <i class="icon-append fa fa-envelope-o"></i>
+          <input type="text" name="email" placeholder="Email address" class="form-control" [(ngModel)]="registerModel.Email" />
+        </label>
+      </section>
+      <section class="col col-6">
+        <label class="label">Phone</label>
+        <label class="input">
+          <i class="icon-append fa fa-phone"></i>
+          <input type="text" name="phone" placeholder="Phone" class="form-control" [(ngModel)]="registerModel.Phone" />
+        </label>
+      </section>
+    </div>
+
+    <div class="row">
+      <section class="col col-12">
+        <label class="label">Services </label>
+        <div class="row">
+          <div class="col col-6" *ngFor="let service of clarityServices; let i = index;">
+            <div class="form-group">
+              <label class="checkbox">
+                <input type="checkbox" name="services" [value]="service._id" [checked]="checkIfSelected(service._id)" (change)="onCheckboxChange(service, $event)" />
+                <i></i> {{service.ServiceName}}
+              </label>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- <section class="col col-6" *ngIf="!registerModel._id">
+        <label class="label">Locations </label>
+        <div class="form-group">
+          <label class="checkbox" *ngFor="let location of clarityLocations; let i = index;">
+            <input type="checkbox" name="locations" [value]="location._id" [checked]="checkIfSelected(location._id, 'location')" (change)="onCheckboxChange(location, 'location', $event)" />
+            <i></i> {{location.LocationName}}
+          </label>
+        </div>
+      </section> -->
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" (click)="close.emit(true)">
+      Cancel
+    </button>
+    <button type="submit" class="btn btn-primary" [disabled]="loading">
+      Save
+    </button>
+  </div>
+</form>

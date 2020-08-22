@@ -1,0 +1,73 @@
+Imports Entities
+
+
+Public Class SurveyBusinessLayer
+    Private _dlSurvey As New SurveyDataLayer
+    Private _baseResponse As New BaseResponse
+    Private _saveSurveyResponse As New SaveSurveyResponse
+
+    Public Function SaveSurvey(_createSurveyRequest As SaveSurveyRequest
+                                       ) As SaveSurveyResponse
+        _saveSurveyResponse = _dlSurvey.SaveSurvey(_createSurveyRequest)
+
+        Return _saveSurveyResponse
+    End Function
+
+
+    Public Function GetSurveyList() As DataSet
+        Dim _SurveyListDS As DataSet
+
+        _SurveyListDS = _dlSurvey.GetSurveyList()
+
+        If _SurveyListDS Is Nothing Then
+            Return Nothing
+        End If
+
+        Return _SurveyListDS
+    End Function
+
+    Public Function GetSelectedSurveyDetails(strSurveyId As String) As SurveyDetailsResponse
+        Dim _surveyDetailsResponse As New SurveyDetailsResponse
+
+        _surveyDetailsResponse = _dlSurvey.GetSelectedSurveyDetails(strSurveyId)
+
+        Return _surveyDetailsResponse
+    End Function
+
+    Public Function DeleteSurvey(survey_id As String) As BaseResponse
+        _baseResponse = _dlSurvey.DeleteSurvey(survey_id)
+        Return _baseResponse
+    End Function
+
+    Public Function GetAllQuestionsBySurveyId(survey_id As String) As GetAllQuestionsResponse
+        Dim getAllQuestionsResponse As New GetAllQuestionsResponse
+        getAllQuestionsResponse = _dlSurvey.GetAllQuestionsBySurveyId(survey_id)
+        Return getAllQuestionsResponse
+    End Function
+
+    Public Function SaveQuestion(ByVal survey_id As String, ByVal SaveQuestionRequest As String) As BaseResponse
+        _baseResponse = _dlSurvey.SaveQuestion(survey_id, SaveQuestionRequest)
+        Return _baseResponse
+    End Function
+
+    Public Function EditQuestion(question_id As String) As GetSelectedQuestionResponse
+        Dim getSelectedQuestionResponse As New GetSelectedQuestionResponse
+        getSelectedQuestionResponse = _dlSurvey.EditQuestion(question_id)
+        Return getSelectedQuestionResponse
+    End Function
+
+    Public Function DeleteQuestion(question_id As String) As BaseResponse
+        _baseResponse = _dlSurvey.DeleteQuestion(question_id)
+        Return _baseResponse
+    End Function
+
+
+
+
+    Public Function DeleteOption(ByVal question_id As String, option_id As Integer) As BaseResponse
+        _baseResponse = _dlSurvey.DeleteOption(question_id, option_id)
+        Return _baseResponse
+    End Function
+
+
+End Class
